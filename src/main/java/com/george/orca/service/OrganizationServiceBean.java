@@ -16,7 +16,6 @@ public class OrganizationServiceBean implements OrganizationService {
 
     private final OrganizationRepository organizationRepository;
 
-
     @Override
     public OrganizationEntity get(Long id) {
         Optional<OrganizationEntity> optionalOrganizationEntity = organizationRepository.findById(id);

@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonContactController {
 
-    private PersonContactService personContactService;
+    private final PersonContactService personContactService;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public ResponseEntity<PersonContactEntity> getEmployee(@RequestParam(name = "id") Long id) {
