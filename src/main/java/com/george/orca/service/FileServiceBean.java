@@ -77,7 +77,7 @@ public class FileServiceBean implements FileService {
         InputStream in = getClass().getClassLoader().getResourceAsStream(filename);
 
         try {
-            if (Objects.nonNull(in)) {
+            if (Objects.nonNull(in) && Objects.nonNull(in.readAllBytes())) {
                 byte[] bytes = in.readAllBytes();
                 log.info("file size: " + bytes.length);
             }
