@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("file")
@@ -24,24 +25,25 @@ public class FileController {
     @GetMapping("check")
     public ResponseEntity<String> check() {
         String filename = "grafikebi.xlsx";
-        fileReaderService.readFile(filename);
-        return ResponseEntity.ok("read");
+        File file = fileReaderService.readFile(filename);
+        return ResponseEntity.ok("checked");
+    }
+
+    @GetMapping("upload/list")
+    public ResponseEntity<List<String>> uploadFileList() {
+        List<String> fileNames = fileService.getUploadedFileNames();
+        return ResponseEntity.ok(fileNames);
+    }
+
+    @PostMapping("example")
+    public ResponseEntity<String> example(@RequestParam("filename") String filename) {
+        File file = fileReaderService.readFile(filename);
+        return ResponseEntity.ok("grafikebi.xlsx file read!");
     }
 
     @PostMapping("upload")
-    public ResponseEntity<String> importExcel(@RequestParam("file") MultipartFile file) {
-
-        try {
-            byte[] bytes = file.getBytes();
-            log.info("upload file size: " + bytes.length);
-            String name = file.getOriginalFilename();
-            log.info("file name: " + name);
-
-            fileService.readFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+        fileService.uploadFile(multipartFile);
         return ResponseEntity.ok("file read");
     }
 
