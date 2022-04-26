@@ -22,24 +22,37 @@ public class OrganizationEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "LOAN_NUMBER")
-    private Long loanNumber;
-
-    @Column(name = "IDENTIFICATION_CODE")
+    @Column(name = "CADASTRIAL_CODE")
     private String organizationName;
 
-    @Column(name = "PERSONAL_NUMBER")
-    private String personalNumber;
+    @Column(name = "ORGANISATION_NAME")
+    private String orgName;
 
-    @Column(name = "LOAN_AMOUNT")
-    private BigDecimal loanAmount;
+    @Column(name = "WORKING_FIELD")
+    private String workingField;
 
-    @Column(name = "RESPONSIBLE_PERSON")
-    private String responsiblePerson;
+    @Column(name = "OWNER")
+    private String owner;
+
+    @Column(name = "DIRECTOR")
+    private String director;
+
+    @Column(name = "MAIN_ACCOUNTANT")
+    private String mainAccountant;
+
+    @Column(name = "PHONE_NUMBER")
+    private Integer phoneNumber;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "BANK_ACCOUNT")
+    private String bankAccount;
+
+    @Column(name = "PHYSICAL_ADDRESS")
+    private String physicalAddress;
 
     @Column(name = "LEGAL_ADDRESS")
     private String legalAddress;
 
-    @Column(name = "PHYSICAL_ADDRESS")
-    private String physicalAddress;
 }

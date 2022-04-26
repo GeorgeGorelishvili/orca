@@ -36,7 +36,7 @@ public class CustomEmployeeRepositoryImpl implements CustomEmployeeRepository {
 
         TypedQuery<EmployeeEntity> query = em.createQuery(sb.toString(), EmployeeEntity.class);
         query.setFirstResult(offset);
-        query.setFirstResult(limit);
+        query.setMaxResults(limit);
 
         List<EmployeeEntity> employees = query.getResultList();
         return employees;

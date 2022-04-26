@@ -20,6 +20,6 @@ public class EmployeePositionEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "POSITION_NANME", length = 50)
+    @Column(name = "POSITION_NAME", length = 50)
     private String positionName;
 }

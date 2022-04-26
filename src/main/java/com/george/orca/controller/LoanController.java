@@ -48,8 +48,8 @@ public class LoanController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<LoanEntity>> list() {
-        List<LoanEntity> loans = loanService.list();
+    public ResponseEntity<List<LoanEntity>> list(BigDecimal amount, Integer limit, Integer start) {
+        List<LoanEntity> loans = loanService.list(amount, limit, start);
         return ResponseEntity.ok(loans);
     }
 

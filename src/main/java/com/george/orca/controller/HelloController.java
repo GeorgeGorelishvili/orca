@@ -15,6 +15,6 @@ public class HelloController {
 
     @GetMapping(value = "/")
     public String hi() {
-        return "HI REGO";
+        return "<a href='http://localhost:8080/swagger-ui/index.html'>SWAGGER</a>";
     }
 }

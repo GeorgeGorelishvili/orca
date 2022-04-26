@@ -23,27 +23,22 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationEntity);
     }
 
-    @GetMapping("add")
-    public ResponseEntity<OrganizationEntity> add(
-            @RequestParam(name = "loanNumber") Long loanNumber,
-            @RequestParam(name = "organizationName") String organizationName,
-            @RequestParam(name = "personalNumber") String personalNumber,
-            @RequestParam(name = "loanAmount") BigDecimal loanAmount,
-            @RequestParam(name = "responsiblePerson") String responsiblePerson,
-            @RequestParam(name = "legalAddress") String legalAddress,
-            @RequestParam(name = "physicalAddress") String physicalAddress) {
-        OrganizationEntity organization = OrganizationEntity.builder()
-                .loanNumber(loanNumber)
-                .organizationName(organizationName)
-                .personalNumber(personalNumber)
-                .loanAmount(loanAmount)
-                .responsiblePerson(responsiblePerson)
-                .legalAddress(legalAddress)
-                .physicalAddress(physicalAddress)
-                .build();
-        organization = organizationService.edit(organization);
-        return ResponseEntity.ok(organization);
-    }
+//    @GetMapping("add")
+//    public ResponseEntity<OrganizationEntity> add(
+//            @RequestParam(name = "loanNumber") Long loanNumber,
+//            @RequestParam(name = "organizationName") String organizationName,
+//            @RequestParam(name = "personalNumber") String personalNumber,
+//            @RequestParam(name = "loanAmount") BigDecimal loanAmount,
+//            @RequestParam(name = "responsiblePerson") String responsiblePerson,
+//            @RequestParam(name = "legalAddress") String legalAddress,
+//            @RequestParam(name = "physicalAddress") String physicalAddress) {
+//        OrganizationEntity organization = OrganizationEntity.builder()
+//                .organizationName(organizationName)
+//                .physicalAddress(physicalAddress)
+//                .build();
+//        organization = organizationService.edit(organization);
+//        return ResponseEntity.ok(organization);
+//    }
 
     @PostMapping("edit")
     public ResponseEntity<OrganizationEntity> edit(@RequestBody OrganizationEntity organization) {
