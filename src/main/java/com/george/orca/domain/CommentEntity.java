@@ -12,6 +12,10 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "COMMENTS")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class CommentEntity implements Serializable {
 
     @Id

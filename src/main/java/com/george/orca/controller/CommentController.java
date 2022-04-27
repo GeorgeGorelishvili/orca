@@ -17,6 +17,18 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @GetMapping("add")
+    public ResponseEntity<CommentEntity> add(@RequestParam String comment,
+                                          @RequestParam Long loanId) {
+        CommentEntity commentEntity = CommentEntity.builder()
+                .comment(comment)
+                .loan_id(loanId)
+                .build();
+        commentEntity = commentService.edit(commentEntity);
+        return ResponseEntity.ok(commentEntity);
+    }
+
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public CommentEntity edit(@RequestBody CommentEntity commentEntity) {
         return commentService.edit(commentEntity);
