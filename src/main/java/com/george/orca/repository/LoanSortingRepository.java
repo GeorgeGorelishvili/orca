@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEntity, Long> {
 
-    @Query("select l from LoanEntity l WHERE l.amount  =:amount")
-    List<LoanEntity> loanWithPaging(@Param("amount") BigDecimal amount, Pageable pageable);
+    @Query("select l from LoanEntity l WHERE 1=1")
+    List<LoanEntity> loanWithPaging(Pageable pageable);
 }

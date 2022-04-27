@@ -28,6 +28,18 @@ public class LoanEntity {
     @Column(name = "CREATE_DATE")
     private Date createDate;
 
+    @ManyToOne
+    private OrganizationEntity debtorOrganization;
+
+    @ManyToOne
+    private OrganizationEntity creditorOrganization;
+
+    @ManyToOne
+    private PersonEntity debtorPerson;
+
+    @ManyToOne
+    private PersonEntity creditorPerson;
+
     @Column(name = "INCOME_DATE")
     private Date incomeDate;
 

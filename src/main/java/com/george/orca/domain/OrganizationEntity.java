@@ -23,7 +23,7 @@ public class OrganizationEntity implements Serializable {
     private Long id;
 
     @Column(name = "CADASTRIAL_CODE")
-    private String organizationName;
+    private String cadastrialCode;
 
     @Column(name = "ORGANISATION_NAME")
     private String orgName;

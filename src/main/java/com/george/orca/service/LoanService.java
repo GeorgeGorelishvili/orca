@@ -11,7 +11,7 @@ public interface LoanService {
 
     LoanEntity edit(LoanEntity entity);
 
-    List<LoanEntity> list(BigDecimal amount, Integer limit, Integer start);
+    List<LoanEntity> list(Integer limit, Integer start);
 
     void delete(Long id);
 }

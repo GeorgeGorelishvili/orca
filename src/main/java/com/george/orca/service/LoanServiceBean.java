@@ -35,11 +35,11 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public List<LoanEntity> list(BigDecimal amount, Integer limit, Integer start) {
+    public List<LoanEntity> list(Integer limit, Integer start) {
 //        Iterable<LoanEntity> iterableLoanEntities = loanRepository.findAll();
         Pageable paging = PageRequest.of(limit, start);
 
-        List<LoanEntity> loanEntity = loanSortingRepository.loanWithPaging(amount, paging);
+        List<LoanEntity> loanEntity = loanSortingRepository.loanWithPaging(paging);
 
         return loanEntity;
     }
