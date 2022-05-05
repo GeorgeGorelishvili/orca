@@ -30,6 +30,9 @@ public class PersonEntity implements Serializable {
     @Column(name = "PHYSICAL_ADDRESS")
     private String physicalAddress;
 
+    @Column(name = "JURIDICAL_PERSON")
+    private Boolean juridicalPerson;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "CONTACT_ID")
     private List<PersonContactEntity> contactEntities;

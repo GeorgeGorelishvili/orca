@@ -41,9 +41,11 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "MOBILE_NUMBER", length = 20)
     private String mobileNumber;
 
-    // TODO [GG] 6.ოჯახის წევრი და მისი საკონტაქტო ნომერი
     @Column(name = "CONNECTED_PERSON", length = 500)
     private String connectedPerson;
+
+    @Column(name="CONNECTED_PERSON_NUMBER", length=20)
+    private String connectedPersonMobileNumber;
 
     @Column(name = "EMAIL", length = 100)
     private String email;

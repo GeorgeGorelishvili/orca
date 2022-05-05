@@ -55,4 +55,7 @@ public class OrganizationEntity implements Serializable {
     @Column(name = "LEGAL_ADDRESS")
     private String legalAddress;
 
+    @Column(name="RESPONSIBLE_PERSON")
+    private String responsiblePerson;
+
 }

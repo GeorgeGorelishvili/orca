@@ -40,21 +40,18 @@ public class FileServiceBean implements FileService {
     }
 
     @Override
-    public void uploadFile(MultipartFile multipartFile) {
+    public void uploadFile(MultipartFile multipartFile, String id) {
 
         try {
-            int randomValue = new Random().nextInt();
-            if (randomValue < 0) {
-                randomValue = randomValue * -1;
-            }
+//            int randomValue = new Random().nextInt();
+//            if (randomValue < 0) {
+//                randomValue = randomValue * -1;
+//            }
 
             String originalName = multipartFile.getOriginalFilename();
-            if (StringUtils.isBlank(originalName)) {
-                originalName = "uploaded.xlsx";
-            }
 
             String[] names = originalName.split("\\.");
-            String filename = names[0] + "_" + randomValue + "." + names[1];
+            String filename = id + "." + names[1];
 
             String filePath = fileConfig.getFolderPath() + "/" + filename;
             File file = new File(filePath);
@@ -62,10 +59,6 @@ public class FileServiceBean implements FileService {
             fos.write(multipartFile.getBytes());
             fos.close();
 
-//            log.info("upload folder: " + uploadFolderPath);
-//            String filename = "grafikebi.xlsx";
-//            File file = fileReaderService.readFile(filename);
-//            FileInputStream fis = new FileInputStream(file);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
         }

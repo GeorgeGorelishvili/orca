@@ -24,7 +24,7 @@ public class FileController {
 
     @GetMapping("check")
     public ResponseEntity<String> check() {
-        String filename = "grafikebi.xlsx";
+        String filename = "test.xlsx";
         File file = fileReaderService.readFile(filename);
         return ResponseEntity.ok("checked");
     }
@@ -41,9 +41,10 @@ public class FileController {
         return ResponseEntity.ok("grafikebi.xlsx file read!");
     }
 
-    @PostMapping("upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        fileService.uploadFile(multipartFile);
+    @PostMapping(value = "upload", consumes = "multipart/form-data")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile,
+                                             @RequestParam("id") String id) {
+        fileService.uploadFile(multipartFile, id);
         return ResponseEntity.ok("file read");
     }
 
@@ -51,6 +52,6 @@ public class FileController {
     public ResponseEntity<String> readFileFromResource(@RequestParam String filename) {
 
         fileService.readFileFromResource(filename);
-        return ResponseEntity.ok("reeded!");
+        return ResponseEntity.ok("read!");
     }
 }

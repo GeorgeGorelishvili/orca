@@ -63,5 +63,6 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 
-
+    @Column(name = "ATTACHED_FILE")
+    private String attachedFile;
 }
