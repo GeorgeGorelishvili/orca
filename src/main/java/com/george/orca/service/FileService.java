@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FileService {
 
-    void uploadFile(MultipartFile multipartFile, String id);
+    void uploadFile(MultipartFile multipartFile, Long id);
 
     void readFileFromResource(String filename);
 

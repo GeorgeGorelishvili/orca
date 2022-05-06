@@ -1,6 +1,7 @@
 package com.george.orca.service;
 
 import com.george.orca.config.FileConfig;
+import com.george.orca.domain.LoanEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,8 @@ public class FileServiceBean implements FileService {
 
     private final FileReaderService fileReaderService;
 
+    private final LoanService loanService;
+
     @Override
     public List<String> getUploadedFileNames() {
         File uploadFolder = new File(fileConfig.getFolderPath());
@@ -40,7 +43,7 @@ public class FileServiceBean implements FileService {
     }
 
     @Override
-    public void uploadFile(MultipartFile multipartFile, String id) {
+    public void uploadFile(MultipartFile multipartFile, Long id) {
 
         try {
 //            int randomValue = new Random().nextInt();
@@ -54,10 +57,15 @@ public class FileServiceBean implements FileService {
             String filename = id + "." + names[1];
 
             String filePath = fileConfig.getFolderPath() + "/" + filename;
+            LoanEntity loanEntity = loanService.get(id);
+            loanEntity.setAttachedFile(filename);
             File file = new File(filePath);
+
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(multipartFile.getBytes());
             fos.close();
+            loanService.edit(loanEntity);
+
 
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

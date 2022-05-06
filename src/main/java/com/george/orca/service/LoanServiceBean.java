@@ -6,12 +6,13 @@ import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.utils.TemplateUtil;
 //import jdk.incubator.vector.VectorOperators;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -35,11 +36,11 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public List<LoanEntity> list(Integer limit, Integer start) {
-//        Iterable<LoanEntity> iterableLoanEntities = loanRepository.findAll();
-        Pageable paging = PageRequest.of(limit, start);
+    public Page<LoanEntity> page(Integer start, Integer limit) {
+        Pageable paging = PageRequest.of(start, limit);
 
-        List<LoanEntity> loanEntity = loanSortingRepository.loanWithPaging(paging);
+        Page<LoanEntity> loanEntity = loanSortingRepository.loanWithPaging(paging);
+
 
         return loanEntity;
     }

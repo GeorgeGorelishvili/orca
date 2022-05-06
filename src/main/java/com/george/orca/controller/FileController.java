@@ -41,9 +41,9 @@ public class FileController {
         return ResponseEntity.ok("grafikebi.xlsx file read!");
     }
 
-    @PostMapping(value = "upload", consumes = "multipart/form-data")
+    @PostMapping(value = "upload/loanfile", consumes = "multipart/form-data")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile,
-                                             @RequestParam("id") String id) {
+                                             @RequestParam("id") Long id) {
         fileService.uploadFile(multipartFile, id);
         return ResponseEntity.ok("file read");
     }

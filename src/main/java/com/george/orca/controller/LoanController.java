@@ -3,6 +3,7 @@ package com.george.orca.controller;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,8 @@ public class LoanController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<LoanEntity>> list(Integer limit, Integer start) {
-        List<LoanEntity> loans = loanService.list(limit, start);
+    public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start) {
+        Page<LoanEntity> loans = loanService.page(start, limit);
         return ResponseEntity.ok(loans);
     }
 
