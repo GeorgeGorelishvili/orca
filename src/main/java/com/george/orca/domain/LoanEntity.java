@@ -63,6 +63,10 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 
+    @ManyToOne
+    private LoanStatusEntity loanStatus;
+
+
     @Column(name = "ATTACHED_FILE")
     private String attachedFile;
 }
