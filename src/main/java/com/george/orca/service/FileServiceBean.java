@@ -66,7 +66,6 @@ public class FileServiceBean implements FileService {
             fos.close();
             loanService.edit(loanEntity);
 
-
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
         }

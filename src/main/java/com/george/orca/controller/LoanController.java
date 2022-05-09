@@ -1,8 +1,10 @@
 package com.george.orca.controller;
-
-import com.george.orca.domain.LoanEntity;
+import com.george.orca.domain.*;
+import com.george.orca.dto.LoanEditDTO;
+import com.george.orca.service.EmployeeService;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 public class LoanController {
 
     private final LoanService loanService;
+    private final EmployeeService employeeService;
 
     @GetMapping("get")
     public ResponseEntity<LoanEntity> get(@RequestParam(name = "id") Long loanId) {
@@ -43,12 +46,38 @@ public class LoanController {
     }
 
     @PostMapping("edit")
-    public ResponseEntity<LoanEntity> edit(@RequestBody LoanEntity loanEntity) {
-        loanEntity = loanService.edit(loanEntity);
+    @CrossOrigin
+    public ResponseEntity<LoanEntity> edit(@RequestBody LoanEditDTO loan) {
+
+        LoanEntity loanEntity = loan.getLoanEntity();
+        EmployeeEntity assignedEmployee = employeeService.get(loan.getAssignedEmployeeId());
+        loanEntity.setAssignedAgent(assignedEmployee);
+
+        loanService.edit(loanEntity);
+        ResponseEntity.ok().body(loanEntity);
+
         return ResponseEntity.ok(loanEntity);
+
     }
 
-    @GetMapping("list")
+
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+//    public Page<LoanEntity> find(
+//            @RequestParam(required = false) String debtorOrganizationId,
+//            @RequestParam(required = false) String lastName,
+//            @RequestParam(required = false) String personalNumber,
+//            @RequestParam Integer offset,
+//            @RequestParam Integer limit) {
+//        if(debtorOrganizationId==null) {
+//            OrganizationEntity searchOrg = new OrganizationEntity();
+//        }
+//        LoanEntity searchParams = LoanEntity.builder()
+//                .comments(debtorOrganizationId)
+//                .lastName(lastName)
+//                .personalNumber(personalNumber)
+//                .build();
+//        return loanService.page(searchParams, limit, offset);
+//    }
     public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start) {
         Page<LoanEntity> loans = loanService.page(start, limit);
         return ResponseEntity.ok(loans);

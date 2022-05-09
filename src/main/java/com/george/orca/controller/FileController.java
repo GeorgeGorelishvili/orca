@@ -1,7 +1,9 @@
 package com.george.orca.controller;
 
+import com.george.orca.domain.LoanEntity;
 import com.george.orca.service.FileReaderService;
 import com.george.orca.service.FileService;
+import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
 public class FileController {
 
     private final FileService fileService;
+    private final LoanService loanService;
 
     private final FileReaderService fileReaderService;
 
@@ -42,10 +45,14 @@ public class FileController {
     }
 
     @PostMapping(value = "upload/loanfile", consumes = "multipart/form-data")
+    @CrossOrigin
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile,
                                              @RequestParam("id") Long id) {
         fileService.uploadFile(multipartFile, id);
-        return ResponseEntity.ok("file read");
+        LoanEntity loanEntity = new LoanEntity();
+        loanEntity = loanService.get(id);
+        String AttachedFile = loanEntity.getAttachedFile();
+        return ResponseEntity.ok(AttachedFile);
     }
 
     @GetMapping("read")
