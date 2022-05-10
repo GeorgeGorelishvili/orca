@@ -33,6 +33,7 @@ public class FileController {
     }
 
     @GetMapping("upload/list")
+    @CrossOrigin
     public ResponseEntity<List<String>> uploadFileList() {
         List<String> fileNames = fileService.getUploadedFileNames();
         return ResponseEntity.ok(fileNames);

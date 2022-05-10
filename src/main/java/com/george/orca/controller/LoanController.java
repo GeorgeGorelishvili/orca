@@ -50,8 +50,14 @@ public class LoanController {
     public ResponseEntity<LoanEntity> edit(@RequestBody LoanEditDTO loan) {
 
         LoanEntity loanEntity = loan.getLoanEntity();
-        EmployeeEntity assignedEmployee = employeeService.get(loan.getAssignedEmployeeId());
-        loanEntity.setAssignedAgent(assignedEmployee);
+        if(loan.getAssignedEmployeeId() != null) {
+            Long assignedEmployeeId = Long.parseLong(loan.getAssignedEmployeeId());
+
+            EmployeeEntity assignedEmployee = employeeService.get(assignedEmployeeId);
+            loanEntity.setAssignedAgent(assignedEmployee);
+
+        }
+
 
         loanService.edit(loanEntity);
         ResponseEntity.ok().body(loanEntity);
@@ -62,6 +68,8 @@ public class LoanController {
 
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
+    @CrossOrigin
+
 //    public Page<LoanEntity> find(
 //            @RequestParam(required = false) String debtorOrganizationId,
 //            @RequestParam(required = false) String lastName,

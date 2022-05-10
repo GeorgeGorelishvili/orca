@@ -28,11 +28,13 @@ public class EmployeeController {
     }
 
     @GetMapping("list")
+    @CrossOrigin
     public List<EmployeeEntity> employees() {
         return employeeService.list();
     }
 
     @RequestMapping(value = "search", method = RequestMethod.POST)
+    @CrossOrigin
     public List<EmployeeEntity> find(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class LoanEditDTO {
     private LoanEntity loanEntity;
-    private Long assignedEmployeeId;
+
+    private String assignedEmployeeId;
 
 }
