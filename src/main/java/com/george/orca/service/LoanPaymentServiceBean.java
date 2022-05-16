@@ -27,9 +27,8 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
     }
 
     @Override
-    public List<LoanPaymentEntity> list() {
-        Iterable<LoanPaymentEntity> iterableLoanPaymentEntities = loanPaymentRepository.findAll();
-        return new TemplateUtil<LoanPaymentEntity>().list(iterableLoanPaymentEntities);
+    public List<LoanPaymentEntity> list(Long id) {
+        return loanPaymentRepository.findAllByLoanId(id);
     }
 
     @Override

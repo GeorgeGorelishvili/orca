@@ -55,11 +55,11 @@ public class LoanEntity {
     @Column(name = "DELETED", nullable = false, columnDefinition = "boolean default false")
     private boolean deleted = Boolean.FALSE;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "LOAN_ID")
     private List<LoanPaymentEntity> loanPayments;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 

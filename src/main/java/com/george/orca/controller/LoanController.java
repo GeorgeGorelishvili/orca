@@ -23,6 +23,7 @@ public class LoanController {
     private final EmployeeService employeeService;
 
     @GetMapping("get")
+    @CrossOrigin
     public ResponseEntity<LoanEntity> get(@RequestParam(name = "id") Long loanId) {
         LoanEntity loanEntity = loanService.get(loanId);
         return ResponseEntity.ok(loanEntity);

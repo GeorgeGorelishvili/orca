@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,10 +20,17 @@ public class CommentController {
 
     @GetMapping("add")
     public ResponseEntity<CommentEntity> add(@RequestParam String comment,
-                                          @RequestParam Long loanId) {
+                                          @RequestParam Long loanId,
+                                          @RequestParam Boolean promise,
+                                          @RequestParam Date promiseDate) {
+        //TODO ავტორის ამოღება დალოგინებული იუზერიდან
+        String author = "";
         CommentEntity commentEntity = CommentEntity.builder()
                 .comment(comment)
-                .loan_id(loanId)
+                .loanId(loanId)
+                .author(author)
+                .promise(promise)
+                .promiseDate(promiseDate)
                 .build();
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);
@@ -34,9 +42,9 @@ public class CommentController {
         return commentService.edit(commentEntity);
     }
 
-    @GetMapping("list")
-    public List<CommentEntity> employees() {
-        return commentService.list();
+    @GetMapping("get")
+    public List<CommentEntity> add(@RequestParam Long loanId) {
+        return commentService.list(loanId);
     }
 
 

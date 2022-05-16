@@ -10,7 +10,7 @@ public interface LoanPaymentService {
 
     LoanPaymentEntity edit(LoanPaymentEntity entity);
 
-    List<LoanPaymentEntity> list();
+    List<LoanPaymentEntity> list(Long id);
 
     void delete(Long id);
 }

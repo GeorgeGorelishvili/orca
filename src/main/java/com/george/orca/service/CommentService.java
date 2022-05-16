@@ -9,7 +9,7 @@ public interface CommentService {
 
     CommentEntity edit(CommentEntity entity);
 
-    List<CommentEntity> list();
+    List<CommentEntity> list(Long id);
 
     void delete(Long id);
 }

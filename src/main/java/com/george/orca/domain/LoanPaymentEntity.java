@@ -1,12 +1,18 @@
 package com.george.orca.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "LOAN_PAYMENT")
 public class LoanPaymentEntity {
@@ -23,5 +29,8 @@ public class LoanPaymentEntity {
 
     @Column(name = "PAYED")
     private Boolean payed;
+
+    @Column(name="loan_id")
+    private Long loanId;
 
 }

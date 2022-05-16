@@ -29,9 +29,8 @@ public class CommentServiceBean implements CommentService{
         }
 
         @Override
-        public List<CommentEntity> list() {
-            Iterable<CommentEntity> iterableCommentEntities = commentRepository.findAll();
-            return new TemplateUtil<CommentEntity>().list(iterableCommentEntities);
+        public List<CommentEntity> list(Long id) {
+            return commentRepository.findAllByLoanId(id);
         }
 
         @Override
