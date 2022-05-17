@@ -3,6 +3,9 @@ import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.service.EmployeeService;
 import com.george.orca.service.LoanService;
+import io.github.classgraph.Resource;
+import org.springframework.http.HttpHeaders;
+
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
@@ -10,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -70,26 +76,8 @@ public class LoanController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @CrossOrigin
-
-//    public Page<LoanEntity> find(
-//            @RequestParam(required = false) String debtorOrganizationId,
-//            @RequestParam(required = false) String lastName,
-//            @RequestParam(required = false) String personalNumber,
-//            @RequestParam Integer offset,
-//            @RequestParam Integer limit) {
-//        if(debtorOrganizationId==null) {
-//            OrganizationEntity searchOrg = new OrganizationEntity();
-//        }
-//        LoanEntity searchParams = LoanEntity.builder()
-//                .comments(debtorOrganizationId)
-//                .lastName(lastName)
-//                .personalNumber(personalNumber)
-//                .build();
-//        return loanService.page(searchParams, limit, offset);
-//    }
     public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start) {
         Page<LoanEntity> loans = loanService.page(start, limit);
         return ResponseEntity.ok(loans);
     }
-
 }

@@ -4,18 +4,19 @@ import com.george.orca.config.FileConfig;
 import com.george.orca.domain.LoanEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 @Service
 @Slf4j
@@ -84,5 +85,25 @@ public class FileServiceBean implements FileService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Resource downloadLoanAttachment(String filename){
+
+        Resource resource = null;
+
+        String filePath = fileConfig.getFolderPath() + "/";
+
+        String fileBasePath = filePath;
+
+        Path path = Paths.get(fileBasePath + filename);
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // Try to determine file's content type
+
+        return resource;
     }
 }
