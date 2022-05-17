@@ -22,7 +22,8 @@ public class CommentController {
     public ResponseEntity<CommentEntity> add(@RequestParam String comment,
                                           @RequestParam Long loanId,
                                           @RequestParam Boolean promise,
-                                          @RequestParam Date promiseDate) {
+                                          @RequestParam Date promiseDate,
+                                             @RequestParam Date createDate) {
         //TODO ავტორის ამოღება დალოგინებული იუზერიდან
         String author = "";
         CommentEntity commentEntity = CommentEntity.builder()
@@ -31,6 +32,7 @@ public class CommentController {
                 .author(author)
                 .promise(promise)
                 .promiseDate(promiseDate)
+                .createDate(createDate)
                 .build();
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);

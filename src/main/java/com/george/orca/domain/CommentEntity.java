@@ -39,4 +39,7 @@ public class CommentEntity implements Serializable {
     @Column(name="promise_date")
     private Date promiseDate;
 
+    @Column(name="create_date")
+    private Date createDate;
+
 }
