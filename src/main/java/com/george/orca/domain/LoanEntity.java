@@ -69,6 +69,9 @@ public class LoanEntity {
     @ManyToOne
     private EmployeeEntity assignedAgent;
 
+    @ManyToOne
+    private EmployeeEntity visitor;
+
     @Column(name = "ATTACHED_FILE")
     private String attachedFile;
 }
