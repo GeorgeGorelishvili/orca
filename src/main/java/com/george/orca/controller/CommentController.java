@@ -18,33 +18,24 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("add")
-    public ResponseEntity<CommentEntity> add(@RequestParam String comment,
-                                          @RequestParam Long loanId,
-                                          @RequestParam Boolean promise,
-                                          @RequestParam Date promiseDate,
-                                             @RequestParam Date createDate) {
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @CrossOrigin
+    public ResponseEntity<CommentEntity> add(@RequestBody CommentEntity commentEntity) {
         //TODO ავტორის ამოღება დალოგინებული იუზერიდან
         String author = "";
-        CommentEntity commentEntity = CommentEntity.builder()
-                .comment(comment)
-                .loanId(loanId)
-                .author(author)
-                .promise(promise)
-                .promiseDate(promiseDate)
-                .createDate(createDate)
-                .build();
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);
     }
 
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @CrossOrigin
     public CommentEntity edit(@RequestBody CommentEntity commentEntity) {
         return commentService.edit(commentEntity);
     }
 
     @GetMapping("get")
+    @CrossOrigin
     public List<CommentEntity> add(@RequestParam Long loanId) {
         return commentService.list(loanId);
     }
