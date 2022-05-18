@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -41,5 +42,8 @@ public class CommentEntity implements Serializable {
 
     @Column(name="create_date")
     private Date createDate;
+
+    @Column(name="VALUE")
+    private BigDecimal value;
 
 }
