@@ -12,6 +12,11 @@ public interface EmployeeService {
 
     List<EmployeeEntity> list();
 
+    List<EmployeeEntity> getAgents();
+
+    List<EmployeeEntity> getVisitors();
+
+
     void delete(Long id);
 
     List<EmployeeEntity> find(EmployeeEntity employee, Integer limit, Integer offset);

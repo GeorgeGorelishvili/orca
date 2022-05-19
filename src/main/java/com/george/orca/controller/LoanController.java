@@ -57,12 +57,21 @@ public class LoanController {
     public ResponseEntity<LoanEntity> edit(@RequestBody LoanEditDTO loan) {
 
         LoanEntity loanEntity = loan.getLoanEntity();
+
+
         if(loan.getAssignedEmployeeId() != null) {
             Long assignedEmployeeId = Long.parseLong(loan.getAssignedEmployeeId());
 
             EmployeeEntity assignedEmployee = employeeService.get(assignedEmployeeId);
             loanEntity.setAssignedAgent(assignedEmployee);
 
+        }
+
+        if(loan.getVisitorId() != null){
+            Long visitorId = Long.parseLong(loan.getVisitorId());
+
+            EmployeeEntity visitor = employeeService.get(visitorId);
+            loanEntity.setVisitor(visitor);
         }
 
 

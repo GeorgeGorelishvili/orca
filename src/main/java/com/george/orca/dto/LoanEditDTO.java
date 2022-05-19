@@ -5,8 +5,11 @@ import lombok.Data;
 
 @Data
 public class LoanEditDTO {
+
     private LoanEntity loanEntity;
 
     private String assignedEmployeeId;
+
+    private String visitorId;
 
 }
