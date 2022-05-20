@@ -60,7 +60,7 @@ public class LoanEntity {
     private List<LoanPaymentEntity> loanPayments;
 
     @OneToMany
-//    @JoinColumn(cascade = CascadeType.ALL, name = "LOAN_ID")
+    @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 
     @ManyToOne

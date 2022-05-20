@@ -1,6 +1,7 @@
 package com.george.orca.controller;
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
+import com.george.orca.service.CommentService;
 import com.george.orca.service.EmployeeService;
 import com.george.orca.service.LoanService;
 import io.github.classgraph.Resource;
@@ -27,6 +28,8 @@ public class LoanController {
 
     private final LoanService loanService;
     private final EmployeeService employeeService;
+
+    private final CommentService commentService;
 
     @GetMapping("get")
     @CrossOrigin
@@ -73,6 +76,10 @@ public class LoanController {
             EmployeeEntity visitor = employeeService.get(visitorId);
             loanEntity.setVisitor(visitor);
         }
+
+        List<CommentEntity> comments = commentService.list(loanEntity.getId());
+
+        loanEntity.setComments(comments);
 
 
         loanService.edit(loanEntity);

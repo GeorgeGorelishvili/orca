@@ -17,7 +17,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class CommentEntity implements Serializable {
 
     @Id
