@@ -33,4 +33,7 @@ public class LoanPaymentEntity {
     @Column(name="loan_id")
     private Long loanId;
 
+    @Column(name="comment")
+    private String comment;
+
 }

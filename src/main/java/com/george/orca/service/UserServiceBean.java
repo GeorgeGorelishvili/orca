@@ -15,6 +15,7 @@ public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
 
+
     @Override
     public UserEntity get(Long id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,17 +24,10 @@ public class LoanPaymentController {
     private final LoanPaymentRepository loanPaymentRepository;
 
 
-    @GetMapping("add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
-    public ResponseEntity<LoanPaymentEntity> add(@RequestParam BigDecimal amount,
-                                                 @RequestParam Long loanId,
-                                                 @RequestParam Boolean payed) {
+    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymententity){
 
-        LoanPaymentEntity loanPaymententity = LoanPaymentEntity.builder()
-                .payed(payed)
-                .amount(amount)
-                .loanId(loanId)
-                .build();
         loanPaymententity = loanPaymentService.edit(loanPaymententity);
         return ResponseEntity.ok(loanPaymententity);
     }

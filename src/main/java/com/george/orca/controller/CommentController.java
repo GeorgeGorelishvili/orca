@@ -21,8 +21,15 @@ public class CommentController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @CrossOrigin
     public ResponseEntity<CommentEntity> add(@RequestBody CommentEntity commentEntity) {
+
+        Date date = new Date();
+
+
         //TODO ავტორის ამოღება დალოგინებული იუზერიდან
+        commentEntity.setCreateDate(date);
+
         String author = "";
+
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);
     }
@@ -31,6 +38,10 @@ public class CommentController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @CrossOrigin
     public CommentEntity edit(@RequestBody CommentEntity commentEntity) {
+        Date date = new Date();
+
+
+        commentEntity.setCreateDate(date);
         return commentService.edit(commentEntity);
     }
 

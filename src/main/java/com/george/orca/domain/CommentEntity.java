@@ -42,6 +42,9 @@ public class CommentEntity implements Serializable {
     @Column(name="create_date")
     private Date createDate;
 
+    @Column(name ="CALL_DATE")
+    private Date callDate;
+
     @Column(name="VALUE")
     private BigDecimal value;
 
