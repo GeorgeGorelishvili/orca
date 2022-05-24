@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,20 @@ public class LoanPaymentController {
     public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymententity){
 
         loanPaymententity = loanPaymentService.edit(loanPaymententity);
+        loanPaymentRepository.save(loanPaymententity);
+
+        MathContext mc = new MathContext(10);
+
+        BigDecimal paymentAmount = loanPaymententity.getAmount();
+        LoanEntity loan = loanService.get(loanPaymententity.getLoanId());
+        BigDecimal oldAmount = loan.getAmount();
+
+
+        BigDecimal newLoanAmount =  oldAmount.subtract(paymentAmount, mc);
+
+        loan.setAmount(newLoanAmount);
+        loanService.edit(loan);
+
         return ResponseEntity.ok(loanPaymententity);
     }
 
