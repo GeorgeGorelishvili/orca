@@ -5,6 +5,7 @@ import com.george.orca.service.CommentService;
 import com.george.orca.service.EmployeeService;
 import com.george.orca.service.LoanService;
 import io.github.classgraph.Resource;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -101,7 +103,6 @@ public class LoanController {
 
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    @CrossOrigin
     public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start) {
 
         Page<LoanEntity> loans = loanService.page(start, limit);

@@ -48,9 +48,11 @@ public class LoanServiceBean implements LoanService {
         Page<LoanEntity> loanEntity;
 
         //დალოგინებული იუზერი
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity currentUser = userRepository.findByUsername(authentication.getName());
         EmployeeEntity assignedAgent = currentUser.getEmployeeEntity();
+
 
 
         if (assignedAgent.getEmployeePosition().getId() == 1) {

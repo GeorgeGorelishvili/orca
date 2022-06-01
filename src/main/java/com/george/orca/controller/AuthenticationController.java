@@ -3,12 +3,15 @@ package com.george.orca.controller;
 import com.george.orca.domain.UserEntity;
 import com.george.orca.service.LoginServiceBean;
 import com.george.orca.service.UserService;
-import jdk.jfr.Description;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
@@ -39,23 +42,26 @@ import java.util.Objects;
 public class AuthenticationController {
 
 
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private  UserService userService;
+    @Autowired
+    private  AuthenticationManager authenticationManager;
 
-//    @Autowired
-//    public void UserAuthController(@Qualifier("customAuthenticationManager") AuthenticationManager authenticationManager, UserService userService) {
-//        this.authenticationManager = authenticationManager;
-//        this.userService = userService;
-//
-//    }
+    @Autowired
+    public void UserAuthController(@Qualifier("customAuthenticationManager") AuthenticationManager authenticationManager, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+
+    }
 
 
-    @PostMapping( "/login")
+    @PostMapping("login")
     @CrossOrigin
     public ResponseEntity<UserEntity> login(@RequestBody UserEntity user,
                                             HttpServletRequest request) {
         String username = user.getUsername();
         String password = user.getPassword();
+
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(username);
@@ -69,17 +75,12 @@ public class AuthenticationController {
             Authentication auth = authenticationManager.authenticate(token);
             token.setDetails(new WebAuthenticationDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
-//            authenticatedUser = ((UserEntity) auth.getPrincipal());
             authenticatedUser = userService.getUserByUsername(username);
             success = true;
         } catch (RuntimeException e) {
             success = false;
             exToRethrow = e;
         }
-
-    //        String ipAddress = "192.168.0.1";
-    //        String userAgent = request.getHeader("User-Agent");
-//        userService.registerAuthLog(userByUserName, ipAddress, userAgent, success);
 
         if (success) {
             return ResponseEntity.ok(authenticatedUser);
@@ -89,7 +90,8 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("/logout")
+    @PostMapping("signout")
+    @CrossOrigin
     public ResponseEntity<Boolean> logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -98,13 +100,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(true);
     }
 
-//    @GetMapping("/isActive")
-//    public ResponseEntity<UserEntity> isActive(final Principal principal) {
-//        UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) principal;
-//        if (Objects.nonNull(user) && user.isAuthenticated()) {
-//            return Description.valid(((UserAdapter) user.getPrincipal()).getUser());
-//        } else {
-//            return Description.invalid("Not Active");
-//        }
-//    }
+    @GetMapping("/isActive")
+    public ResponseEntity<Authentication> isActive(final UserEntity userEntity) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(auth) && auth.isAuthenticated()) {
+            return ResponseEntity.ok(auth);
+        } else {
+            return ResponseEntity.ok(auth);
+        }
+    }
 }

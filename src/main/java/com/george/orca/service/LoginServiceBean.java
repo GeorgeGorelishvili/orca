@@ -36,7 +36,7 @@ public class LoginServiceBean implements UserDetailsService {
 
         UserDetails user = User.withUsername(userEntity.getUsername())
                 .password(userEntity.getPassword())
-                .authorities("USER").build();
+                .authorities("ADMIN").build();
 
         return user;
     }
