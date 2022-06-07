@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
+
 public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEntity, Long> {
 
     Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity assignedAgent, Pageable pageable);
@@ -22,7 +24,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, Pageable paging);
+    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, BigDecimal amount, Pageable paging);
 }

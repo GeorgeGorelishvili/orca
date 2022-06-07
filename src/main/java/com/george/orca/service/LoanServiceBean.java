@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -43,13 +44,18 @@ public class LoanServiceBean implements LoanService {
                                  Integer limit,
                                  String id,
                                  String creditor,
-                                 String debtor) {
+                                 String debtor,
+                                 BigDecimal amount) {
         Long localId = null;
         Pageable paging = PageRequest.of(start, limit);
         Page<LoanEntity> loanEntity;
 
         if (id != null) {
             localId = Long.valueOf(id);
+        }
+
+        if(amount != null){
+
         }
 
         //დალოგინებული იუზერი
@@ -62,7 +68,7 @@ public class LoanServiceBean implements LoanService {
         if (assignedAgent.getEmployeePosition().getId() == 1) {
             loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(assignedAgent, paging);
         } else {
-            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, paging);
+            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, amount, paging);
         }
         return loanEntity;
     }

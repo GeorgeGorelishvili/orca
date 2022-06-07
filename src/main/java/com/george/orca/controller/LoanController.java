@@ -111,8 +111,9 @@ public class LoanController {
     public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start,
                                                  @RequestParam(required = false) String id,
                                                  @RequestParam(required = false) String creditor,
-                                                 @RequestParam(required = false) String debtor) {
-        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor);
+                                                 @RequestParam(required = false) String debtor,
+                                                 @RequestParam(required = false) BigDecimal amount) {
+        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor, amount);
         return ResponseEntity.ok(loans);
     }
 }
