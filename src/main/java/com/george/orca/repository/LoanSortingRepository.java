@@ -23,7 +23,6 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "WHERE (1=1) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
-            "(:debtor IS NULL OR do.orgName LIKE %:debtor%)")
-//            "(:debtor IS NULL OR dp.lastname LIKE %:debtor%)")
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, Pageable paging);
 }

@@ -4,6 +4,7 @@ import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.service.CommentService;
 import com.george.orca.service.EmployeeService;
+import com.george.orca.service.LoanPaymentService;
 import com.george.orca.service.LoanService;
 import io.github.classgraph.Resource;
 import org.apache.tomcat.util.http.parser.Authorization;
@@ -42,6 +43,7 @@ public class LoanController {
     private final EmployeeService employeeService;
 
     private final CommentService commentService;
+    private final LoanPaymentService loanPaymentService;
 
 
     @GetMapping("get")
@@ -91,8 +93,10 @@ public class LoanController {
         }
 
         List<CommentEntity> comments = commentService.list(loanEntity.getId());
+        List<LoanPaymentEntity> payments = loanPaymentService.list(loanEntity.getId());
 
         loanEntity.setComments(comments);
+        loanEntity.setLoanPayments(payments);
 
 
         loanService.edit(loanEntity);
