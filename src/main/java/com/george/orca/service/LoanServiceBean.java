@@ -10,17 +10,13 @@ import com.george.orca.utils.TemplateUtil;
 //import jdk.incubator.vector.VectorOperators;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +39,18 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public Page<LoanEntity> page(Integer start, Integer limit) {
+    public Page<LoanEntity> page(Integer start,
+                                 Integer limit,
+                                 String id,
+                                 String creditor,
+                                 String debtor) {
+        Long localId = null;
         Pageable paging = PageRequest.of(start, limit);
         Page<LoanEntity> loanEntity;
+
+        if (id != null) {
+            localId = Long.valueOf(id);
+        }
 
         //დალოგინებული იუზერი
 
@@ -54,11 +59,10 @@ public class LoanServiceBean implements LoanService {
         EmployeeEntity assignedAgent = currentUser.getEmployeeEntity();
 
 
-
         if (assignedAgent.getEmployeePosition().getId() == 1) {
             loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(assignedAgent, paging);
         } else {
-            loanEntity = loanSortingRepository.loanWithPaging(paging);
+            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, paging);
         }
         return loanEntity;
     }

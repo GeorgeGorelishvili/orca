@@ -1,6 +1,7 @@
 package com.george.orca.controller;
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
+import com.george.orca.repository.UserRepository;
 import com.george.orca.service.CommentService;
 import com.george.orca.service.EmployeeService;
 import com.george.orca.service.LoanService;
@@ -103,9 +104,11 @@ public class LoanController {
 
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start) {
-
-        Page<LoanEntity> loans = loanService.page(start, limit);
+    public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start,
+                                                 @RequestParam(required = false) String id,
+                                                 @RequestParam(required = false) String creditor,
+                                                 @RequestParam(required = false) String debtor) {
+        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor);
         return ResponseEntity.ok(loans);
     }
 }

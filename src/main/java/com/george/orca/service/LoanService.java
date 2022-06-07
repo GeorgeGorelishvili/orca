@@ -12,7 +12,11 @@ public interface LoanService {
 
     LoanEntity edit(LoanEntity entity);
 
-    Page<LoanEntity> page( Integer start, Integer limit);
+    Page<LoanEntity> page(Integer start,
+                          Integer limit,
+                          String id,
+                          String creditor,
+                          String debtor);
 
     void delete(Long id);
 }
