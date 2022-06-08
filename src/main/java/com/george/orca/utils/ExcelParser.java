@@ -91,10 +91,8 @@ public class ExcelParser {
         Iterator<Row> rowIterator = sheet.iterator();
         Row row = rowIterator.next();
         List<ExcelRowDTO> rowData = new ArrayList<>();
-        Integer counter = 0;
 
         for (Row myrow : sheet) {
-            counter += 1;
             ExcelRowDTO rowDTO = new ExcelRowDTO();
 
 //
@@ -149,40 +147,31 @@ public class ExcelParser {
 
 
             DataFormatter formatter = new DataFormatter();
-            long posId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
-            rowDTO.setPositionId(posId);
 
-            String fn = formatter.formatCellValue(myrow.getCell(1));
-            rowDTO.setFirstname(fn);
 
-            String ln = formatter.formatCellValue(myrow.getCell(2));
-            rowDTO.setLastName(ln);
-
-            String pn = formatter.formatCellValue(myrow.getCell(3));
-            rowDTO.setPersonalNo(pn);
-
-            String addr = formatter.formatCellValue(myrow.getCell(4));
-            rowDTO.setPersonalNo(addr);
-
-            String phone = formatter.formatCellValue(myrow.getCell(5));
-            rowDTO.setPersonalNo(phone);
-
-            String email = formatter.formatCellValue(myrow.getCell(6));
-            rowDTO.setEMail(email);
+            long id = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+            rowDTO.setId(id);
 
 
 
+            String comment = formatter.formatCellValue(myrow.getCell(3));
+            rowDTO.setComment(comment);
 
-            String baccount = formatter.formatCellValue(myrow.getCell(7));
-            rowDTO.setBankAccount(baccount);
+            Double amountToConvert = new BigDecimal(myrow.getCell(2).getNumericCellValue()).doubleValue();
 
-            String connPerson = formatter.formatCellValue(myrow.getCell(8));
-            rowDTO.setConnectedPerson(connPerson);
+//            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+            rowDTO.setAmount(amountToConvert);
 
-            String conpersonphone = formatter.formatCellValue(myrow.getCell(9));
-            rowDTO.setConnectedPersonPhone(conpersonphone);
+            Date date = myrow.getCell(1).getDateCellValue();
+            Date convertedDate;
 
-
+//            try {
+//                convertedDate = new SimpleDateFormat("M.d.yyyy h:mm").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                throw new RuntimeException(e);
+//            }
+            rowDTO.setDate(date);
 
 
             rowData.add(rowDTO);

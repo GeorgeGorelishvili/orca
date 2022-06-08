@@ -50,8 +50,8 @@ public class LoanPaymentController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @CrossOrigin
-    public LoanPaymentEntity edit(@RequestBody LoanPaymentEntity commentEntity) {
-        return loanPaymentService.edit(commentEntity);
+    public LoanPaymentEntity edit(@RequestBody LoanPaymentEntity loanPaymentEntity) {
+        return loanPaymentService.edit(loanPaymentEntity);
     }
 
     @GetMapping("/get")
@@ -64,10 +64,21 @@ public class LoanPaymentController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @CrossOrigin
-    public void delete(@RequestParam Long commentId) {
-        loanPaymentService.delete(commentId);
-    }
+    public void delete(@RequestParam Long paymentId) {
 
+        LoanPaymentEntity loanPaymentEntity = loanPaymentService.get(paymentId);
+        BigDecimal paymentAmount = loanPaymentEntity.getAmount();
+        LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
+        BigDecimal oldAmount = loan.getAmount();
+        MathContext mc = new MathContext(10);
+
+        BigDecimal newLoanAmount =  oldAmount.add(paymentAmount, mc);
+
+        loan.setAmount(newLoanAmount);
+        loanService.edit(loan);
+
+        loanPaymentService.delete(paymentId);
+    }
 
 }
 

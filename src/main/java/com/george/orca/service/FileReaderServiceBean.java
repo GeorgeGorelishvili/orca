@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +37,7 @@ public class FileReaderServiceBean implements FileReaderService {
     private final PersonService personService;
     private final OrganizationService organizationService;
     private final EmployeeService employeeService;
+    private final LoanPaymentService loanPaymentService;
 
     private final LoanService loanService;
 
@@ -57,17 +60,16 @@ public class FileReaderServiceBean implements FileReaderService {
         ExcelParser excelParser = new ExcelParser(file);
 
 
-        List<ExcelRowDTO> rowData  = excelParser.getPersons();
+        List<ExcelRowDTO> rowData = excelParser.getPersons();
         for (ExcelRowDTO record : rowData) {
 
-            EmployeeEntity employee = new EmployeeEntity();
-            EmployeePositionEntity position = new EmployeePositionEntity();
+            LoanPaymentEntity payment = new LoanPaymentEntity();
 
-//
+
 //            OrganizationEntity orgEntity = new OrganizationEntity();
 //
 //            orgEntity.setOrgName(record.getOrganization());
-//            //მისამართები
+            //მისამართები
 //
 //            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
 //            orgEntity.setLegalAddress(record.getLegalAddress());
@@ -84,11 +86,11 @@ public class FileReaderServiceBean implements FileReaderService {
 //
 //            loanEntity.setAmount(record.getAmount());
 //
-////            Long personId = personEntity.getId();
+//            Long personId = personEntity.getId();
 //
 //            loanEntity.setDebtorOrganization(orgEntity);
 //
-////debtor
+//debtor
 //            long creditorOrganization = 7;
 //
 //            OrganizationEntity creditorOrg = new OrganizationEntity();
@@ -99,28 +101,27 @@ public class FileReaderServiceBean implements FileReaderService {
 //            loanEntity.setStartDate(record.getStartDate());
 //            loanEntity.setIncomeDate(record.getIncomeDate());
 
-            position.setId(record.getPositionId());
-            employee.setEmployeePosition(position);
+            payment.setLoanId(record.getId());
+            payment.setAmount(BigDecimal.valueOf(record.getAmount()));
+            payment.setComment(record.getComment());
+            payment.setDate(record.getDate());
+
+            payment.setPayed(true);
 
 
-            employee.setPersonalNumber(record.getPersonalNo());
-            employee.setMobileNumber(record.getPhoneNumber());
+            MathContext mc = new MathContext(10);
+
+            BigDecimal paymentAmount = payment.getAmount();
+            LoanEntity loan = loanService.get(record.getId());
+            BigDecimal oldAmount = loan.getAmount();
 
 
-            employee.setFirstName(record.getFirstname());
-            employee.setLastName(record.getLastName());
+            BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
 
+            loan.setAmount(newLoanAmount);
+            loanService.edit(loan);
 
-
-
-            employee.setAccountNumber(record.getBankAccount());
-            employee.setAddress(record.getAddress());
-
-            employee.setConnectedPerson(record.getConnectedPerson());
-            employee.setConnectedPersonMobileNumber(record.getConnectedPersonPhone());
-
-
-            employeeService.edit(employee);
+            loanPaymentService.edit(payment);
         }
 
 

@@ -30,25 +30,31 @@ public class ExcelRowDTO {
 
 
    //თანამშრომელი
-   private Long positionId;
+//   private Long positionId;
+//
+//   private String firstname;
+//   private String lastName;
+//   private String personalNo;
+//
+//   private Date birthDate;
+//   private String phoneNumber;
+//
+//   private String address;
+//
+//   private String eMail;
+//   private String bankAccount;
+//
+//   private String connectedPerson;
+//   private String connectedPersonPhone;
+//
 
-   private String firstname;
-   private String lastName;
-   private String personalNo;
+   //ლოან ფეიმენთი
 
-   private Date birthDate;
-   private String phoneNumber;
+   private Long id;
 
-   private String address;
+   private Double amount;
+   private Date date;
 
-   private String eMail;
-   private String bankAccount;
-
-   private String connectedPerson;
-   private String connectedPersonPhone;
-
-
-
-
+   private String comment;
 
 }

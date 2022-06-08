@@ -33,7 +33,7 @@ public class LoanPaymentEntity {
     @Column(name="loan_id")
     private Long loanId;
 
-    @Column(name="comment")
+    @Column(name="comment", length = 10000)
     private String comment;
 
 }
