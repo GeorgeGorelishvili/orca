@@ -66,7 +66,7 @@ public class LoanServiceBean implements LoanService {
 
 
         if (assignedAgent.getEmployeePosition().getId() == 1) {
-            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(assignedAgent, paging);
+            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(assignedAgent, localId,  creditor,  debtor,  amount, paging);
         } else {
             loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, amount, paging);
         }
