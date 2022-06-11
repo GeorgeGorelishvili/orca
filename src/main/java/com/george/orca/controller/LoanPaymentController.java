@@ -27,7 +27,7 @@ public class LoanPaymentController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
-    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymententity){
+    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymententity) {
 
         loanPaymententity = loanPaymentService.edit(loanPaymententity);
         loanPaymentRepository.save(loanPaymententity);
@@ -39,9 +39,12 @@ public class LoanPaymentController {
         BigDecimal oldAmount = loan.getAmount();
 
 
-        BigDecimal newLoanAmount =  oldAmount.subtract(paymentAmount, mc);
+        BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
 
         loan.setAmount(newLoanAmount);
+        if (newLoanAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            loan.setNullified(true);
+        }
         loanService.edit(loan);
 
         return ResponseEntity.ok(loanPaymententity);
@@ -56,28 +59,31 @@ public class LoanPaymentController {
 
     @GetMapping("/get")
     @CrossOrigin
-    public List<LoanPaymentEntity> add(@RequestParam Long loanId){
+    public List<LoanPaymentEntity> add(@RequestParam Long loanId) {
         return loanPaymentService.list(loanId);
     }
 
 
-
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @GetMapping("/delete")
     @CrossOrigin
-    public void delete(@RequestParam Long paymentId) {
+    public void delete(@RequestParam Long id) {
 
-        LoanPaymentEntity loanPaymentEntity = loanPaymentService.get(paymentId);
+        LoanPaymentEntity loanPaymentEntity = loanPaymentService.get(id);
         BigDecimal paymentAmount = loanPaymentEntity.getAmount();
         LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
         BigDecimal oldAmount = loan.getAmount();
         MathContext mc = new MathContext(10);
 
-        BigDecimal newLoanAmount =  oldAmount.add(paymentAmount, mc);
+        BigDecimal newLoanAmount = oldAmount.add(paymentAmount, mc);
+
+        if (newLoanAmount.compareTo(BigDecimal.ZERO) >= 0) {
+            loan.setNullified(false);
+        }
 
         loan.setAmount(newLoanAmount);
         loanService.edit(loan);
 
-        loanPaymentService.delete(paymentId);
+        loanPaymentService.delete(id);
     }
 
 }

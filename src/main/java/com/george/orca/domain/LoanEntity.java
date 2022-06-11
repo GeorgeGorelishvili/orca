@@ -74,4 +74,7 @@ public class LoanEntity {
 
     @Column(name = "ATTACHED_FILE")
     private String attachedFile;
+
+    @Column(name = "NULLIFIED", nullable = false, columnDefinition = "boolean default false")
+    private boolean nullified;
 }
