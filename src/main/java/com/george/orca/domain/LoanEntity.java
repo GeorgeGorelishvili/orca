@@ -63,6 +63,9 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 
+    @Column(name ="CALL_DATE")
+    private Date callDate;
+
     @ManyToOne
     private LoanStatusEntity loanStatus;
 

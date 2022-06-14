@@ -2,9 +2,11 @@ package com.george.orca.controller;
 
 import com.george.orca.domain.CommentEntity;
 import com.george.orca.domain.EmployeeEntity;
+import com.george.orca.domain.LoanEntity;
 import com.george.orca.domain.UserEntity;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.service.CommentService;
+import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final UserRepository userRepository;
+    private final LoanService loanService;
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @CrossOrigin
@@ -40,6 +43,11 @@ public class CommentController {
         commentEntity.setCreateDate(date);
         commentEntity.setAuthor(author);
 
+        if (commentEntity.getCallDate() != null) {
+            LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
+            loanEntity.setCallDate(commentEntity.getCallDate());
+            loanService.edit(loanEntity);
+        }
 
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);
