@@ -33,7 +33,8 @@ public class LoanPaymentEntity {
     @Column(name="loan_id")
     private Long loanId;
 
-//    @Column(name="payment_type")
+    @Column(name="with_check")
+    private Boolean withCheck;
 
 
     @Column(name="comment", length = 10000)

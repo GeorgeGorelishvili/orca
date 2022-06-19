@@ -16,12 +16,14 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
-            "WHERE l.assignedAgent = :assignedAgent AND " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "WHERE l.assignedAgent = :currentUser AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity assignedAgent,Long localId, String creditor, String debtor, BigDecimal amount, Pageable paging);
+    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, BigDecimal amount, String assignedAgent, Pageable paging);
 
 
     //    @Query("SELECT l from LoanEntity l WHERE l.id = :id")
@@ -30,11 +32,13 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
     @Query("SELECT l FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, BigDecimal amount, Pageable paging);
+    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, BigDecimal amount, String assignedAgent, Pageable paging);
 }

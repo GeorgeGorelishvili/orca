@@ -45,6 +45,7 @@ public class LoanServiceBean implements LoanService {
                                  String id,
                                  String creditor,
                                  String debtor,
+                                 String assignedAgent,
                                  BigDecimal amount) {
         Long localId = null;
         Pageable paging = PageRequest.of(start, limit);
@@ -54,7 +55,7 @@ public class LoanServiceBean implements LoanService {
             localId = Long.valueOf(id);
         }
 
-        if(amount != null){
+        if (amount != null) {
 
         }
 
@@ -62,13 +63,13 @@ public class LoanServiceBean implements LoanService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity currentUser = userRepository.findByUsername(authentication.getName());
-        EmployeeEntity assignedAgent = currentUser.getEmployeeEntity();
+        EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
 
 
-        if (assignedAgent.getEmployeePosition().getId() == 1) {
-            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(assignedAgent, localId,  creditor,  debtor,  amount, paging);
+        if (currentEmployee.getEmployeePosition().getId() == 1) {
+            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, amount, assignedAgent, paging);
         } else {
-            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, amount, paging);
+            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, amount, assignedAgent, paging);
         }
         return loanEntity;
     }

@@ -25,6 +25,9 @@ public class LoanEntity {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
+    @Column(name = "INITIAL_AMOUNT")
+    private BigDecimal initialAmount;
+
     @Column(name = "CREATE_DATE")
     private Date createDate;
 
@@ -65,6 +68,10 @@ public class LoanEntity {
 
     @Column(name ="CALL_DATE")
     private Date callDate;
+
+
+    @Column(name ="PROMISE_DATE")
+    private Date promiseDate;
 
     @ManyToOne
     private LoanStatusEntity loanStatus;

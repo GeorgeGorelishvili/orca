@@ -27,15 +27,15 @@ public class LoanPaymentController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
-    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymententity) {
+    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymentEntity) {
 
-        loanPaymententity = loanPaymentService.edit(loanPaymententity);
-        loanPaymentRepository.save(loanPaymententity);
+        loanPaymentEntity = loanPaymentService.edit(loanPaymentEntity);
+        loanPaymentRepository.save(loanPaymentEntity);
 
         MathContext mc = new MathContext(10);
 
-        BigDecimal paymentAmount = loanPaymententity.getAmount();
-        LoanEntity loan = loanService.get(loanPaymententity.getLoanId());
+        BigDecimal paymentAmount = loanPaymentEntity.getAmount();
+        LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
         BigDecimal oldAmount = loan.getAmount();
 
 
@@ -47,7 +47,7 @@ public class LoanPaymentController {
         }
         loanService.edit(loan);
 
-        return ResponseEntity.ok(loanPaymententity);
+        return ResponseEntity.ok(loanPaymentEntity);
     }
 
 

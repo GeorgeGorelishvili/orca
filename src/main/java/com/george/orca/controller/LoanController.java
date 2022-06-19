@@ -1,4 +1,5 @@
 package com.george.orca.controller;
+
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
@@ -77,7 +78,7 @@ public class LoanController {
         LoanEntity loanEntity = loan.getLoanEntity();
 
 
-        if(loan.getAssignedEmployeeId() != null) {
+        if (loan.getAssignedEmployeeId() != null) {
             Long assignedEmployeeId = Long.parseLong(loan.getAssignedEmployeeId());
 
             EmployeeEntity assignedEmployee = employeeService.get(assignedEmployeeId);
@@ -85,7 +86,7 @@ public class LoanController {
 
         }
 
-        if(loan.getVisitorId() != null){
+        if (loan.getVisitorId() != null) {
             Long visitorId = Long.parseLong(loan.getVisitorId());
 
             EmployeeEntity visitor = employeeService.get(visitorId);
@@ -112,8 +113,9 @@ public class LoanController {
                                                  @RequestParam(required = false) String id,
                                                  @RequestParam(required = false) String creditor,
                                                  @RequestParam(required = false) String debtor,
+                                                 @RequestParam(required = false) String assignedAgent,
                                                  @RequestParam(required = false) BigDecimal amount) {
-        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor, amount);
+        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor, assignedAgent, amount);
         return ResponseEntity.ok(loans);
     }
 }
