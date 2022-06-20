@@ -49,6 +49,12 @@ public class CommentController {
             loanService.edit(loanEntity);
         }
 
+        if(commentEntity.getPromiseDate() != null){
+            LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
+            loanEntity.setPromiseDate(commentEntity.getPromiseDate());
+            loanService.edit(loanEntity);
+
+        }
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);
     }

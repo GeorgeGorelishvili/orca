@@ -18,6 +18,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
+            "l.nullified = FALSE AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
@@ -35,6 +36,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
+            "l.nullified = FALSE AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
