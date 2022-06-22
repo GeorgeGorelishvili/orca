@@ -95,40 +95,40 @@ public class ExcelParser {
         for (Row myrow : sheet) {
             ExcelRowDTO rowDTO = new ExcelRowDTO();
 
-//
+
             rowDTO.setOrgName(myrow.getCell(1).getStringCellValue());
             rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
 
             long creditorId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
 
             rowDTO.setCreditorOrganizationId(creditorId);
-//
-//
-//
-//            //მისამართები
+
+            //მისამართები
             rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
             rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
-//
-//
-//            //ნებისმიერი ცვლადი სტრინგჰში
-//            // პირადი ნომერი
-//            // ს/კ
+
+
+            //ნებისმიერი ცვლადი სტრინგჰში
+            // პირადი ნომერი
+            // ს/კ
             DataFormatter formatter = new DataFormatter();
             String val = formatter.formatCellValue(myrow.getCell(2));
             rowDTO.setIdentificationCode(val);
-//
-//            //ნუმერიკი ბიგინტში
-//            long loanId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
-//
-//            rowDTO.setLoanId(loanId);
-//
-//
-//            // 5 შემოსვლის
-//            // 6 დაწყების
-//
-            String incomeDate = formatter.formatCellValue(myrow.getCell(8));
 
-            String startDate = formatter.formatCellValue(myrow.getCell(9));;
+            //ნუმერიკი ბიგინტში
+
+//            long loanId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+
+
+//            rowDTO.setLoanId(loanId);
+
+
+            // 5 შემოსვლის
+            // 6 დაწყების
+
+            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
+
+            String startDate = formatter.formatCellValue(myrow.getCell(8));
 
             Date convertedIncomeDate;
             Date convertedStartDate;
