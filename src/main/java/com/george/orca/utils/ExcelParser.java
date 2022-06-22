@@ -96,22 +96,26 @@ public class ExcelParser {
             ExcelRowDTO rowDTO = new ExcelRowDTO();
 
 //
-//            rowDTO.setOrganization(myrow.getCell(1).getStringCellValue());
-//            rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
+            rowDTO.setOrgName(myrow.getCell(1).getStringCellValue());
+            rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
+
+            long creditorId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+
+            rowDTO.setCreditorOrganizationId(creditorId);
 //
 //
 //
 //            //მისამართები
 //            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
-//            rowDTO.setPhysicalAddress(myrow.getCell(6).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(5).getStringCellValue());
 //
 //
 //            //ნებისმიერი ცვლადი სტრინგჰში
 //            // პირადი ნომერი
 //            // ს/კ
-//            DataFormatter formatter = new DataFormatter();
-//            String val = formatter.formatCellValue(myrow.getCell(2));
-//            rowDTO.setIdentificationCode(val);
+            DataFormatter formatter = new DataFormatter();
+            String val = formatter.formatCellValue(myrow.getCell(2));
+            rowDTO.setIdentificationCode(val);
 //
 //            //ნუმერიკი ბიგინტში
 //            long loanId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
@@ -122,48 +126,56 @@ public class ExcelParser {
 //            // 5 შემოსვლის
 //            // 6 დაწყების
 //
-//            String incomeDate = myrow.getCell(7).getStringCellValue();
-//            String startDate = myrow.getCell(8).getStringCellValue();
-//            Date convertedIncomeDate;
-//            Date convertedStartDate;
-//
+            Date incomeDate = myrow.getCell(8).getDateCellValue();
+            Date startDate = myrow.getCell(7).getDateCellValue();
+            Date convertedIncomeDate;
+            Date convertedStartDate;
+
 //            try {
-//                convertedIncomeDate = new SimpleDateFormat("dd.MM.yyyy").parse(incomeDate);
-//                convertedStartDate = new SimpleDateFormat("dd.MM.yyyy").parse(startDate);
+//                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
+//                convertedStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //                throw new RuntimeException(e);
 //            }
-//            rowDTO.setIncomeDate(convertedIncomeDate);
-//            rowDTO.setStartDate(convertedStartDate);
+            rowDTO.setIncomeDate(incomeDate);
+            rowDTO.setStartDate(startDate);
 //
 //
-//            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
+            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
+
+            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+            rowDTO.setAmount(amountToBigDecimal);
+
+            try {
+                //  Block of code to try to write to cell
+                rowDTO.setPhone(myrow.getCell(6).getStringCellValue());
+            }
+            catch(Exception e) {
+
+                //  Block of code to handle errors and crate cell and write to it
+                rowDTO.setPhone(" ");
+            }
+
+
+//            DataFormatter formatter = new DataFormatter();
+
+
+
+//            long id = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+//            rowDTO.setId(id);
+
+
+//            String comment = formatter.formatCellValue(myrow.getCell(3));
+//            rowDTO.setComment(comment);
 //
+//            Double amountToConvert = new BigDecimal(myrow.getCell(2).getNumericCellValue()).doubleValue();
 //
-//            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+////            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+//            rowDTO.setAmount(amountToConvert);
 //
-//            rowDTO.setAmount(amountToBigDecimal);
-
-
-            DataFormatter formatter = new DataFormatter();
-
-
-            long id = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
-            rowDTO.setId(id);
-
-
-
-            String comment = formatter.formatCellValue(myrow.getCell(3));
-            rowDTO.setComment(comment);
-
-            Double amountToConvert = new BigDecimal(myrow.getCell(2).getNumericCellValue()).doubleValue();
-
-//            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
-            rowDTO.setAmount(amountToConvert);
-
-            Date date = myrow.getCell(1).getDateCellValue();
-            Date convertedDate;
+//            Date date = myrow.getCell(1).getDateCellValue();
+//            Date convertedDate;
 
 //            try {
 //                convertedDate = new SimpleDateFormat("M.d.yyyy h:mm").parse(date);
@@ -171,8 +183,8 @@ public class ExcelParser {
 //                e.printStackTrace();
 //                throw new RuntimeException(e);
 //            }
-            rowDTO.setDate(date);
-
+//            rowDTO.setDate(date);
+//
 
             rowData.add(rowDTO);
 

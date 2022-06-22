@@ -63,32 +63,42 @@ public class FileReaderServiceBean implements FileReaderService {
         List<ExcelRowDTO> rowData = excelParser.getPersons();
         for (ExcelRowDTO record : rowData) {
 
-            LoanPaymentEntity payment = new LoanPaymentEntity();
+//            LoanPaymentEntity payment = new LoanPaymentEntity();
 
 
-//            OrganizationEntity orgEntity = new OrganizationEntity();
-//
-//            orgEntity.setOrgName(record.getOrganization());
+            OrganizationEntity orgEntity = new OrganizationEntity();
+
+            orgEntity.setOrgName(record.getOrgName());
+
             //მისამართები
-//
-//            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
-//            orgEntity.setLegalAddress(record.getLegalAddress());
-//
-//            orgEntity.setDirector(record.getDirector());
-//            orgEntity.setCadastrialCode(record.getIdentificationCode());
-//
-//
-//            organizationService.edit(orgEntity);
-//
-//            organizationRepository.save(orgEntity);
-//
-//            LoanEntity loanEntity = new LoanEntity();
-//
-//            loanEntity.setAmount(record.getAmount());
-//
+
+            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
+            orgEntity.setLegalAddress(record.getLegalAddress());
+
+            orgEntity.setDirector(record.getDirector());
+            orgEntity.setCadastrialCode(record.getIdentificationCode());
+            orgEntity.setPhoneNumber(record.getPhone());
+
+            organizationService.edit(orgEntity);
+
+            organizationRepository.save(orgEntity);
+
+            LoanEntity loanEntity = new LoanEntity();
+
+            loanEntity.setAmount(record.getAmount());
+            loanEntity.setInitialAmount(record.getAmount());
+            loanEntity.setIncomeDate(record.getIncomeDate());
+            loanEntity.setStartDate(record.getStartDate());
+
 //            Long personId = personEntity.getId();
-//
-//            loanEntity.setDebtorOrganization(orgEntity);
+
+            OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
+
+            loanEntity.setDebtorOrganization(orgEntity);
+            loanEntity.setCreditorOrganization(creditor);
+
+            loanService.edit(loanEntity);
+
 //
 //debtor
 //            long creditorOrganization = 7;
@@ -101,27 +111,28 @@ public class FileReaderServiceBean implements FileReaderService {
 //            loanEntity.setStartDate(record.getStartDate());
 //            loanEntity.setIncomeDate(record.getIncomeDate());
 
-            payment.setLoanId(record.getId());
-            payment.setAmount(BigDecimal.valueOf(record.getAmount()));
-            payment.setComment(record.getComment());
-            payment.setDate(record.getDate());
-
-            payment.setPayed(true);
-
-
-            MathContext mc = new MathContext(10);
-
-            BigDecimal paymentAmount = payment.getAmount();
-            LoanEntity loan = loanService.get(record.getId());
-            BigDecimal oldAmount = loan.getAmount();
-
-
-            BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
-
-            loan.setAmount(newLoanAmount);
-            loanService.edit(loan);
-
-            loanPaymentService.edit(payment);
+            //ფეიმენთების შეტანა
+//            payment.setLoanId(record.getId());
+//            payment.setAmount(BigDecimal.valueOf(record.getAmount()));
+//            payment.setComment(record.getComment());
+//            payment.setDate(record.getDate());
+//
+//            payment.setPayed(true);
+//
+//
+//            MathContext mc = new MathContext(10);
+//
+//            BigDecimal paymentAmount = payment.getAmount();
+//            LoanEntity loan = loanService.get(record.getId());
+//            BigDecimal oldAmount = loan.getAmount();
+//
+//
+//            BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
+//
+//            loan.setAmount(newLoanAmount);
+//            loanService.edit(loan);
+//
+//            loanPaymentService.edit(payment);
         }
 
 

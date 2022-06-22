@@ -42,7 +42,7 @@ public class OrganizationEntity implements Serializable {
     private String mainAccountant;
 
     @Column(name = "PHONE_NUMBER")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "EMAIL")
     private String email;
