@@ -45,6 +45,7 @@ public class LoanServiceBean implements LoanService {
                                  String id,
                                  String creditor,
                                  String debtor,
+                                 String debtorIdentificator,
                                  String assignedAgent,
                                  BigDecimal amount) {
         Long localId = null;
@@ -67,9 +68,9 @@ public class LoanServiceBean implements LoanService {
 
 
         if (currentEmployee.getEmployeePosition().getId() == 1) {
-            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, amount, assignedAgent, paging);
+            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
         } else {
-            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, amount, assignedAgent, paging);
+            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
         }
         return loanEntity;
     }

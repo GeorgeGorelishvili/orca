@@ -23,8 +23,9 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, BigDecimal amount, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
 
 
     //    @Query("SELECT l from LoanEntity l WHERE l.id = :id")
@@ -40,7 +41,9 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, BigDecimal amount, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
 }

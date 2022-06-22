@@ -106,8 +106,8 @@ public class ExcelParser {
 //
 //
 //            //მისამართები
-//            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
-            rowDTO.setPhysicalAddress(myrow.getCell(5).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 //
 //
 //            //ნებისმიერი ცვლადი სტრინგჰში
@@ -126,20 +126,22 @@ public class ExcelParser {
 //            // 5 შემოსვლის
 //            // 6 დაწყების
 //
-            Date incomeDate = myrow.getCell(8).getDateCellValue();
-            Date startDate = myrow.getCell(7).getDateCellValue();
+            String incomeDate = formatter.formatCellValue(myrow.getCell(8));
+
+            String startDate = formatter.formatCellValue(myrow.getCell(9));;
+
             Date convertedIncomeDate;
             Date convertedStartDate;
 
-//            try {
-//                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
-//                convertedStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//                throw new RuntimeException(e);
-//            }
-            rowDTO.setIncomeDate(incomeDate);
-            rowDTO.setStartDate(startDate);
+            try {
+                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
+                convertedStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            rowDTO.setIncomeDate(convertedIncomeDate);
+            rowDTO.setStartDate(convertedStartDate);
 //
 //
             String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
@@ -149,7 +151,7 @@ public class ExcelParser {
 
             try {
                 //  Block of code to try to write to cell
-                rowDTO.setPhone(myrow.getCell(6).getStringCellValue());
+                rowDTO.setPhone(myrow.getCell(5).getStringCellValue());
             }
             catch(Exception e) {
 
