@@ -20,7 +20,8 @@ public interface LoanService {
                          String debtor,
                          String debtorIdentificator,
                          String assignedAgent,
-                         BigDecimal amount);
+                         BigDecimal amount,
+                         Boolean nullified);
 
     void delete(Long id);
 }

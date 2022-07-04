@@ -109,13 +109,14 @@ public class LoanController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ResponseEntity<LoanSearchQuery> page(Integer limit, Integer start,
-                                                 @RequestParam(required = false) String id,
-                                                 @RequestParam(required = false) String creditor,
-                                                 @RequestParam(required = false) String debtor,
-                                                 @RequestParam(required = false) String debtorIdentificator,
-                                                 @RequestParam(required = false) String assignedAgent,
-                                                 @RequestParam(required = false) BigDecimal amount) {
-        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount);
+                                                @RequestParam(required = false) String id,
+                                                @RequestParam(required = false) String creditor,
+                                                @RequestParam(required = false) String debtor,
+                                                @RequestParam(required = false) String debtorIdentificator,
+                                                @RequestParam(required = false) String assignedAgent,
+                                                @RequestParam(required = false) BigDecimal amount,
+                                                @RequestParam(required = false) Boolean nullified) {
+        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified);
         return ResponseEntity.ok(loanSearchQuery);
     }
 }

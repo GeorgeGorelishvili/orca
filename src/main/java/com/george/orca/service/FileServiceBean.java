@@ -60,6 +60,7 @@ public class FileServiceBean implements FileService {
             AttachedFileEntity entity = AttachedFileEntity.builder()
                     .name(name)
                     .loanId(id)
+                    .uploadingFileName(originalName)
                     .build();
 
 

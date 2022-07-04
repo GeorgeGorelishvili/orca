@@ -1,6 +1,7 @@
 package com.george.orca.controller;
 
 import com.george.orca.domain.AttachedFileEntity;
+import com.george.orca.domain.CommentEntity;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.service.AttachedFileService;
 import com.george.orca.service.FileReaderService;
@@ -128,5 +129,13 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+    @GetMapping("/loan/get")
+    @CrossOrigin
+    public List<AttachedFileEntity> add(@RequestParam Long loanId) {
+        return attachedFileService.list(loanId);
+    }
+
+
 
 }

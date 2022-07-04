@@ -19,14 +19,14 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "l.nullified = FALSE AND " +
+            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Pageable paging);
 
 
     @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
@@ -35,14 +35,14 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "l.nullified = FALSE AND " +
+            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> getSumForAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
+    List<BigDecimal> getSumForAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Pageable paging);
 
 
     //    @Query("SELECT l from LoanEntity l WHERE l.id = :id")
@@ -54,14 +54,14 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "l.nullified = FALSE AND " +
+            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Pageable paging);
 
 
     @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
@@ -70,14 +70,14 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "l.nullified = FALSE AND " +
+            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> getSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, String assignedAgent, Pageable paging);
+    List<BigDecimal> getSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Pageable paging);
 }
 
 

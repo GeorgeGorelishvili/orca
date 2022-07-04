@@ -29,4 +29,7 @@ public class AttachedFileEntity {
     @Column(name = "file_name")
     private String originalFileName;
 
+    @Column(name = "original_name")
+    private String uploadingFileName;
+
 }
