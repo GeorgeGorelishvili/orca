@@ -2,11 +2,9 @@ package com.george.orca.controller;
 
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
+import com.george.orca.dto.LoanSearchQuery;
 import com.george.orca.repository.UserRepository;
-import com.george.orca.service.CommentService;
-import com.george.orca.service.EmployeeService;
-import com.george.orca.service.LoanPaymentService;
-import com.george.orca.service.LoanService;
+import com.george.orca.service.*;
 import io.github.classgraph.Resource;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,7 @@ public class LoanController {
     private final EmployeeService employeeService;
 
     private final CommentService commentService;
+    private final AttachedFileService attachedFileService;
     private final LoanPaymentService loanPaymentService;
 
 
@@ -94,29 +93,29 @@ public class LoanController {
         }
 
         List<CommentEntity> comments = commentService.list(loanEntity.getId());
+        List<AttachedFileEntity> attachedFileEntities = attachedFileService.list(loanEntity.getId());
         List<LoanPaymentEntity> payments = loanPaymentService.list(loanEntity.getId());
 
         loanEntity.setComments(comments);
+        loanEntity.setAttachedFileEntities(attachedFileEntities);
         loanEntity.setLoanPayments(payments);
 
 
         loanService.edit(loanEntity);
-        ResponseEntity.ok().body(loanEntity);
 
         return ResponseEntity.ok(loanEntity);
-
     }
 
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ResponseEntity<Page<LoanEntity>> page(Integer limit, Integer start,
+    public ResponseEntity<LoanSearchQuery> page(Integer limit, Integer start,
                                                  @RequestParam(required = false) String id,
                                                  @RequestParam(required = false) String creditor,
                                                  @RequestParam(required = false) String debtor,
                                                  @RequestParam(required = false) String debtorIdentificator,
                                                  @RequestParam(required = false) String assignedAgent,
                                                  @RequestParam(required = false) BigDecimal amount) {
-        Page<LoanEntity> loans = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount);
-        return ResponseEntity.ok(loans);
+        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount);
+        return ResponseEntity.ok(loanSearchQuery);
     }
 }

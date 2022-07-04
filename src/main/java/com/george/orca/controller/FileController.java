@@ -1,6 +1,8 @@
 package com.george.orca.controller;
 
+import com.george.orca.domain.AttachedFileEntity;
 import com.george.orca.domain.LoanEntity;
+import com.george.orca.service.AttachedFileService;
 import com.george.orca.service.FileReaderService;
 import com.george.orca.service.FileService;
 import com.george.orca.service.LoanService;
@@ -29,6 +31,7 @@ public class FileController {
     @Autowired
     private HttpServletRequest request;
     private final FileService fileService;
+    private final AttachedFileService attachedFileService;
     private final LoanService loanService;
 
     private final FileReaderService fileReaderService;
@@ -55,12 +58,15 @@ public class FileController {
 
     @PostMapping(value = "upload/loanfile", consumes = "multipart/form-data")
     @CrossOrigin
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile,
-                                             @RequestParam("id") Long id) {
-        fileService.uploadFile(multipartFile, id);
+    public ResponseEntity<List<AttachedFileEntity>> uploadFile(@RequestParam("file") MultipartFile multipartFile,
+                                                               @RequestParam("id") Long id,
+                                                               @RequestParam("name") String name) {
+
+        fileService.uploadFile(multipartFile, id, name);
         LoanEntity loanEntity;
         loanEntity = loanService.get(id);
-        String AttachedFile = loanEntity.getAttachedFile();
+
+        List<AttachedFileEntity> AttachedFile = loanEntity.getAttachedFileEntities();
         return ResponseEntity.ok(AttachedFile);
     }
 
@@ -72,6 +78,33 @@ public class FileController {
     }
 
     @RequestMapping(path = "/download/loanAttachment", method = RequestMethod.GET)
+    public ResponseEntity<Resource> get(@RequestParam Long id) {
+
+
+        AttachedFileEntity file = attachedFileService.get(id);
+
+        Resource resource = fileService.downloadLoanAttachment(file.getOriginalFileName());
+
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.println("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        HttpHeaders header = new HttpHeaders();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+    @RequestMapping(path = "/download/oldLoanAttachment", method = RequestMethod.GET)
     public ResponseEntity<Resource> get(@RequestParam String filename) {
 
 

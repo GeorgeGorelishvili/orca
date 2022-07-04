@@ -1,6 +1,7 @@
 package com.george.orca.service;
 
 import com.george.orca.domain.LoanEntity;
+import com.george.orca.dto.LoanSearchQuery;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -12,14 +13,14 @@ public interface LoanService {
 
     LoanEntity edit(LoanEntity entity);
 
-    Page<LoanEntity> page(Integer start,
-                          Integer limit,
-                          String id,
-                          String creditor,
-                          String debtor,
-                          String debtorIdentificator,
-                          String assignedAgent,
-                          BigDecimal amount);
+    LoanSearchQuery page(Integer start,
+                         Integer limit,
+                         String id,
+                         String creditor,
+                         String debtor,
+                         String debtorIdentificator,
+                         String assignedAgent,
+                         BigDecimal amount);
 
     void delete(Long id);
 }

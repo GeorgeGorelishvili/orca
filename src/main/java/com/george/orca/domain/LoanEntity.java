@@ -66,9 +66,12 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<CommentEntity> comments;
 
+    @OneToMany
+    @JoinColumn(name = "LOAN_ID")
+    private List<AttachedFileEntity> attachedFileEntities;
+
     @Column(name ="CALL_DATE")
     private Date callDate;
-
 
     @Column(name ="PROMISE_DATE")
     private Date promiseDate;

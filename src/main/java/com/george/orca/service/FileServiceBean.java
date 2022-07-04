@@ -1,7 +1,9 @@
 package com.george.orca.service;
 
 import com.george.orca.config.FileConfig;
+import com.george.orca.domain.AttachedFileEntity;
 import com.george.orca.domain.LoanEntity;
+import com.george.orca.repository.AttachedFileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -27,6 +29,9 @@ public class FileServiceBean implements FileService {
 
     private final FileReaderService fileReaderService;
 
+    private final AttachedFileRepository attachedFileRepository;
+    private final AttachedFileService attachedFileService;
+
     private final LoanService loanService;
 
     @Override
@@ -44,28 +49,36 @@ public class FileServiceBean implements FileService {
     }
 
     @Override
-    public void uploadFile(MultipartFile multipartFile, Long id) {
+    public void uploadFile(MultipartFile multipartFile, Long id, String name) {
 
         try {
-//            int randomValue = new Random().nextInt();
-//            if (randomValue < 0) {
-//                randomValue = randomValue * -1;
-//            }
 
             String originalName = multipartFile.getOriginalFilename();
 
             String[] names = originalName.split("\\.");
-            String filename = id + "." + names[1];
+
+            AttachedFileEntity entity = AttachedFileEntity.builder()
+                    .name(name)
+                    .loanId(id)
+                    .build();
+
+
+            entity = attachedFileService.edit(entity);
+
+            String filename = entity.getId() + "." + names[1];
+
 
             String filePath = fileConfig.getFolderPath() + "/" + filename;
-            LoanEntity loanEntity = loanService.get(id);
-            loanEntity.setAttachedFile(filename);
+
+            entity.setOriginalFileName(filename);
+
+            attachedFileService.edit(entity);
+
             File file = new File(filePath);
 
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(multipartFile.getBytes());
             fos.close();
-            loanService.edit(loanEntity);
 
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -87,7 +100,7 @@ public class FileServiceBean implements FileService {
         }
     }
 
-    public Resource downloadLoanAttachment(String filename){
+    public Resource downloadLoanAttachment(String filename) {
 
         Resource resource = null;
 
@@ -102,7 +115,6 @@ public class FileServiceBean implements FileService {
             e.printStackTrace();
         }
 
-        // Try to determine file's content type
 
         return resource;
     }

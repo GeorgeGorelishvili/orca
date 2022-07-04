@@ -3,6 +3,7 @@ package com.george.orca.service;
 import com.george.orca.domain.EmployeeEntity;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.domain.UserEntity;
+import com.george.orca.dto.LoanSearchQuery;
 import com.george.orca.repository.LoanRepository;
 import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +42,7 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public Page<LoanEntity> page(Integer start,
+    public LoanSearchQuery page(Integer start,
                                  Integer limit,
                                  String id,
                                  String creditor,
@@ -49,6 +51,7 @@ public class LoanServiceBean implements LoanService {
                                  String assignedAgent,
                                  BigDecimal amount) {
         Long localId = null;
+        LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
         Pageable paging = PageRequest.of(start, limit);
         Page<LoanEntity> loanEntity;
 
@@ -68,11 +71,15 @@ public class LoanServiceBean implements LoanService {
 
 
         if (currentEmployee.getEmployeePosition().getId() == 1) {
-            loanEntity = loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
+            loanSearchQuery.setTotalAmount(totalAmount.get(0));
         } else {
-            loanEntity = loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, assignedAgent, paging);
+            loanSearchQuery.setTotalAmount(totalAmount.get(0));
         }
-        return loanEntity;
+        return loanSearchQuery;
     }
 
     @Override
