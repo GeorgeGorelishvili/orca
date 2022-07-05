@@ -8,6 +8,7 @@ import com.george.orca.service.*;
 import io.github.classgraph.Resource;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -115,8 +117,12 @@ public class LoanController {
                                                 @RequestParam(required = false) String debtorIdentificator,
                                                 @RequestParam(required = false) String assignedAgent,
                                                 @RequestParam(required = false) BigDecimal amount,
-                                                @RequestParam(required = false) Boolean nullified) {
-        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified);
+                                                @RequestParam(required = false) Boolean nullified,
+                                                @RequestParam(required = false) String callDateStart,
+                                                @RequestParam(required = false) String callDateEnd,
+                                                @RequestParam(required = false) String promiseDateStart,
+                                                @RequestParam(required = false) String promiseDateEnd) {
+        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd);
         return ResponseEntity.ok(loanSearchQuery);
     }
 }

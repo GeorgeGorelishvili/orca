@@ -5,6 +5,8 @@ import com.george.orca.dto.LoanSearchQuery;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface LoanService {
@@ -21,7 +23,11 @@ public interface LoanService {
                          String debtorIdentificator,
                          String assignedAgent,
                          BigDecimal amount,
-                         Boolean nullified);
+                         Boolean nullified,
+                         String callDateStart,
+                         String callDateEnd,
+                         String promiseDateStart,
+                         String promiseDateEnd);
 
     void delete(Long id);
 }

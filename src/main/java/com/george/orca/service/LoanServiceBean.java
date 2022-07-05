@@ -18,6 +18,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,27 +46,20 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public LoanSearchQuery page(Integer start,
-                                Integer limit,
-                                String id,
-                                String creditor,
-                                String debtor,
-                                String debtorIdentificator,
-                                String assignedAgent,
-                                BigDecimal amount,
-                                Boolean nullified) {
+    public LoanSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, String callDateStart, String callDateEnd, String promiseDateStart, String promiseDateEnd) {
         Long localId = null;
         LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
         Pageable paging = PageRequest.of(start, limit);
-        Page<LoanEntity> loanEntity;
+
+        Date formattedCallDateStart = null;
+        Date formattedCallDateEnd = null;
+        Date formattedPromiseDateStart = null;
+        Date formattedPromiseDateEnd = null;
 
         if (id != null) {
             localId = Long.valueOf(id);
         }
 
-        if (amount != null) {
-
-        }
 
         //დალოგინებული იუზერი
 
@@ -71,13 +68,31 @@ public class LoanServiceBean implements LoanService {
         EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
 
 
+        //თარიღების ფორმატი
+        if (!(callDateStart == null) && !(callDateEnd == null)) {
+            try {
+                formattedCallDateStart = new SimpleDateFormat("dd/MM/yyyy").parse(callDateStart);
+                formattedCallDateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(callDateEnd);
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+            }
+        } else if (!(promiseDateStart == null) && !(promiseDateEnd == null)) {
+            try {
+                formattedPromiseDateStart = new SimpleDateFormat("dd/MM/yyyy").parse(promiseDateStart);
+                formattedPromiseDateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(promiseDateEnd);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (currentEmployee.getEmployeePosition().getId() == 1) {
-            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, paging));
-            List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, paging);
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         } else {
-            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, paging));
-            List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, paging);
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         }
         return loanSearchQuery;
