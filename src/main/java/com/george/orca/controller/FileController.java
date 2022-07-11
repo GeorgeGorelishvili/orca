@@ -136,6 +136,16 @@ public class FileController {
         return attachedFileService.list(loanId);
     }
 
+    @GetMapping("/loan/delete")
+    @CrossOrigin
+    public ResponseEntity<String> delete(@RequestParam Long fileId) {
+
+
+        attachedFileService.delete(fileId);
+
+        return ResponseEntity.ok("successfully deleted");
+
+    }
 
 
 }
