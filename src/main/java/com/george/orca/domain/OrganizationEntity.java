@@ -59,4 +59,7 @@ public class OrganizationEntity implements Serializable {
     @Column(name="RESPONSIBLE_PERSON")
     private String responsiblePerson;
 
+    @OneToMany
+    @JoinColumn(name = "ORGANIZATION_ID")
+    private List<OrganisationContactEntity> contacts;
 }

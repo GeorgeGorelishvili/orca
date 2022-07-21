@@ -1,5 +1,4 @@
 package com.george.orca.domain;
-
 import com.george.orca.domain.enums.ContactType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +9,11 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "PERSON_CONTACT")
+@Table(name = "ORGANISATION_CONTACT")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PersonContactEntity {
+public class OrganisationContactEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -33,7 +33,7 @@ public class PersonEntity implements Serializable {
     @Column(name = "JURIDICAL_PERSON")
     private Boolean juridicalPerson;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "CONTACT_ID")
     private List<PersonContactEntity> contactEntities;
 }
