@@ -1,5 +1,6 @@
 package com.george.orca.controller;
 
+import com.george.orca.domain.OrganisationContactEntity;
 import com.george.orca.domain.PersonContactEntity;
 import com.george.orca.service.PersonContactService;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,11 @@ public class PersonContactController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    @GetMapping("add")
-    public ResponseEntity<PersonContactEntity> add(
-            @RequestParam(name = "contactType") String contactType,
-            @RequestParam(name = "contact") String contact) {
-        PersonContactEntity loan = PersonContactEntity.builder()
-                .contact(contact)
-                .contactType(contactType)
-                .build();
-        loan = personContactService.edit(loan);
-        return ResponseEntity.ok(loan);
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public ResponseEntity<PersonContactEntity> add(@RequestBody PersonContactEntity personContactEntity) {
+        PersonContactEntity orgContact = personContactService.edit(personContactEntity);
+
+        return ResponseEntity.ok(orgContact);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

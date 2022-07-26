@@ -26,4 +26,7 @@ public class PersonContactEntity {
     @Column(name = "CONTACT")
     private String contact;
 
+    @Column(name ="person_id")
+    private Long personId;
+
 }

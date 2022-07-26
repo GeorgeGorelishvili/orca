@@ -25,4 +25,7 @@ public class OrganisationContactEntity {
     @Column(name = "CONTACT")
     private String contact;
 
+    @Column(name ="ORGANIZATION_ID")
+    private Long organizationId;
+
 }

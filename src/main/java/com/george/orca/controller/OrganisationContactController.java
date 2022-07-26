@@ -25,16 +25,11 @@ public class OrganisationContactController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    @GetMapping("add")
-    public ResponseEntity<OrganisationContactEntity> add(
-            @RequestParam(name = "contactType") String contactType,
-            @RequestParam(name = "contact") String contact) {
-        OrganisationContactEntity loan = OrganisationContactEntity.builder()
-                .contact(contact)
-                .contactType(contactType)
-                .build();
-        loan = organisationContactService.edit(loan);
-        return ResponseEntity.ok(loan);
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public ResponseEntity<OrganisationContactEntity> add(@RequestBody OrganisationContactEntity orgContactEntity) {
+        OrganisationContactEntity orgContact = organisationContactService.edit(orgContactEntity);
+
+        return ResponseEntity.ok(orgContact);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

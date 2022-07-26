@@ -34,6 +34,6 @@ public class PersonEntity implements Serializable {
     private Boolean juridicalPerson;
 
     @OneToMany
-    @JoinColumn(name = "CONTACT_ID")
-    private List<PersonContactEntity> contactEntities;
+    @JoinColumn(name = "person_Id")
+    private List<PersonContactEntity> contacts;
 }
