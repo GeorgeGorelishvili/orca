@@ -35,6 +35,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FileReaderServiceBean implements FileReaderService {
     private final PersonService personService;
+    private final PersonContactService personContactService;
+    private final OrganisationContactService organisationContactService;
     private final OrganizationService organizationService;
     private final EmployeeService employeeService;
     private final LoanPaymentService loanPaymentService;
@@ -63,41 +65,62 @@ public class FileReaderServiceBean implements FileReaderService {
         List<ExcelRowDTO> rowData = excelParser.getPersons();
         for (ExcelRowDTO record : rowData) {
 
+
 //            LoanPaymentEntity payment = new LoanPaymentEntity();
 
+            LoanEntity loan = loanService.get(record.getLoanId());
 
-            OrganizationEntity orgEntity = new OrganizationEntity();
+            if (loan != null) {
+                if (loan.getDebtorOrganization() != null) {
+                    OrganisationContactEntity orgContact = OrganisationContactEntity.builder()
+                            .contact(record.getContact())
+                            .organizationId(loan.getDebtorOrganization().getId())
+                            .build();
+                    organisationContactService.edit(orgContact);
+                } else if (loan.getDebtorPerson() != null) {
+                    PersonContactEntity personContact = PersonContactEntity.builder()
+                            .contact(record.getContact())
+                            .personId(loan.getDebtorPerson().getId())
+                            .build();
+                    personContactService.edit(personContact);
+                }
+            }else{
+                log.info("loan: "+ record.getLoanId());
 
-            orgEntity.setOrgName(record.getOrgName());
-
-            //მისამართები
-
-            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
-            orgEntity.setLegalAddress(record.getLegalAddress());
-
-            orgEntity.setDirector(record.getDirector());
-            orgEntity.setCadastrialCode(record.getIdentificationCode());
-            orgEntity.setPhoneNumber(record.getPhone());
-
-            organizationService.edit(orgEntity);
-
-            organizationRepository.save(orgEntity);
-
-            LoanEntity loanEntity = new LoanEntity();
-
-            loanEntity.setAmount(record.getAmount());
-            loanEntity.setInitialAmount(record.getAmount());
-            loanEntity.setIncomeDate(record.getIncomeDate());
-            loanEntity.setStartDate(record.getStartDate());
-
-//            Long personId = personEntity.getId();
-
-            OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
-
-            loanEntity.setDebtorOrganization(orgEntity);
-            loanEntity.setCreditorOrganization(creditor);
-
-            loanService.edit(loanEntity);
+            }
+//
+//            OrganizationEntity orgEntity = new OrganizationEntity();
+//
+//            orgEntity.setOrgName(record.getOrgName());
+//
+//            //მისამართები
+//
+//            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
+//            orgEntity.setLegalAddress(record.getLegalAddress());
+//
+//            orgEntity.setDirector(record.getDirector());
+//            orgEntity.setCadastrialCode(record.getIdentificationCode());
+//            orgEntity.setPhoneNumber(record.getPhone());
+//
+//            organizationService.edit(orgEntity);
+//
+//            organizationRepository.save(orgEntity);
+//
+//            LoanEntity loanEntity = new LoanEntity();
+//
+//            loanEntity.setAmount(record.getAmount());
+//            loanEntity.setInitialAmount(record.getAmount());
+//            loanEntity.setIncomeDate(record.getIncomeDate());
+//            loanEntity.setStartDate(record.getStartDate());
+//
+////            Long personId = personEntity.getId();
+//
+//            OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
+//
+//            loanEntity.setDebtorOrganization(orgEntity);
+//            loanEntity.setCreditorOrganization(creditor);
+//
+//            loanService.edit(loanEntity);
 
 //
 //debtor

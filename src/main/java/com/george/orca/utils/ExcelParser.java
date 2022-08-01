@@ -96,24 +96,26 @@ public class ExcelParser {
             ExcelRowDTO rowDTO = new ExcelRowDTO();
 
 
-            rowDTO.setOrgName(myrow.getCell(1).getStringCellValue());
-            rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
+//            rowDTO.setOrgName(myrow.getCell(1).getStringCellValue());
+//            rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
 
-            long creditorId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+            long loanId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
 
-            rowDTO.setCreditorOrganizationId(creditorId);
+            rowDTO.setLoanId(loanId);
 
             //მისამართები
-            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
-            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
+//            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
+//            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
             // პირადი ნომერი
             // ს/კ
             DataFormatter formatter = new DataFormatter();
-            String val = formatter.formatCellValue(myrow.getCell(2));
-            rowDTO.setIdentificationCode(val);
+            String val = formatter.formatCellValue(myrow.getCell(1));
+            String val2 = formatter.formatCellValue(myrow.getCell(2));
+
+            rowDTO.setContact(val + " - " + val2);
 
             //ნუმერიკი ბიგინტში
 
@@ -126,42 +128,41 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
-
-            String startDate = formatter.formatCellValue(myrow.getCell(8));
-
-            Date convertedIncomeDate;
-            Date convertedStartDate;
-
-            try {
-                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
-                convertedStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-            rowDTO.setIncomeDate(convertedIncomeDate);
-            rowDTO.setStartDate(convertedStartDate);
+//            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
+//
+//            String startDate = formatter.formatCellValue(myrow.getCell(8));
+//
+//            Date convertedIncomeDate;
+//            Date convertedStartDate;
+//
+//            try {
+//                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
+//                convertedStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                throw new RuntimeException(e);
+//            }
+//            rowDTO.setIncomeDate(convertedIncomeDate);
+//            rowDTO.setStartDate(convertedStartDate);
 //
 //
-            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
+//            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
+//
+//            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+//            rowDTO.setAmount(amountToBigDecimal);
 
-            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
-            rowDTO.setAmount(amountToBigDecimal);
-
-            try {
-                //  Block of code to try to write to cell
-                rowDTO.setPhone(myrow.getCell(5).getStringCellValue());
-            }
-            catch(Exception e) {
-
-                //  Block of code to handle errors and crate cell and write to it
-                rowDTO.setPhone(" ");
-            }
+//            try {
+//                //  Block of code to try to write to cell
+//                rowDTO.setPhone(myrow.getCell(5).getStringCellValue());
+//            }
+//            catch(Exception e) {
+//
+//                //  Block of code to handle errors and crate cell and write to it
+//                rowDTO.setPhone(" ");
+//            }
 
 
 //            DataFormatter formatter = new DataFormatter();
-
 
 
 //            long id = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
