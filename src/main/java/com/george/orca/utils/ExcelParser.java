@@ -106,8 +106,8 @@ public class ExcelParser {
 //            rowDTO.setLoanId(loanId);
 
             //მისამართები
-            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
-            rowDTO.setPhysicalAddress(myrow.getCell(6).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(7).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(8).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
@@ -126,8 +126,8 @@ public class ExcelParser {
             rowDTO.setPersonalNumber(personalNumber);
 
 
-            String cont1 = formatter.formatCellValue(myrow.getCell(7));
-            String cont2 = formatter.formatCellValue(myrow.getCell(8));
+            String cont1 = formatter.formatCellValue(myrow.getCell(5));
+            String cont2 = formatter.formatCellValue(myrow.getCell(6));
 
             rowDTO.setContact(cont1 + " - " + cont2);
 
@@ -150,7 +150,7 @@ public class ExcelParser {
             Date convertedStartDate;
 
             try {
-                convertedStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+                convertedStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
                 convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
             } catch (ParseException e) {
                 e.printStackTrace();
