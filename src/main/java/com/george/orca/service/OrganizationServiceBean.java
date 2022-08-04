@@ -23,6 +23,12 @@ public class OrganizationServiceBean implements OrganizationService {
     }
 
     @Override
+    public OrganizationEntity getOrganizationByID(String code) {
+        Optional<OrganizationEntity> optionalOrganizationEntity = organizationRepository.findOrganizationEntityByCadastrialCode(code);
+        return new TemplateUtil<OrganizationEntity>().get(optionalOrganizationEntity);
+    }
+
+    @Override
     public OrganizationEntity edit(OrganizationEntity entity) {
         return organizationRepository.save(entity);
     }

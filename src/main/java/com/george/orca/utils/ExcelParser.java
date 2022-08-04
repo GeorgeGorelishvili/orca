@@ -99,23 +99,37 @@ public class ExcelParser {
 //            rowDTO.setOrgName(myrow.getCell(1).getStringCellValue());
 //            rowDTO.setDirector(myrow.getCell(4).getStringCellValue());
 
-            long loanId = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+            long creditorOrganization = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
+            rowDTO.setCreditorOrganizationId(creditorOrganization);
 
-            rowDTO.setLoanId(loanId);
+//
+//            rowDTO.setLoanId(loanId);
 
             //მისამართები
-//            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
-//            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(6).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
             // პირადი ნომერი
             // ს/კ
             DataFormatter formatter = new DataFormatter();
-            String val = formatter.formatCellValue(myrow.getCell(1));
-            String val2 = formatter.formatCellValue(myrow.getCell(2));
+            String name = formatter.formatCellValue(myrow.getCell(1));
 
-            rowDTO.setContact(val + " - " + val2);
+            rowDTO.setFirstname(name);
+
+            String lastname = formatter.formatCellValue(myrow.getCell(2));
+
+            String personalNumber = formatter.formatCellValue(myrow.getCell(3));
+
+            rowDTO.setLastname(lastname);
+            rowDTO.setPersonalNumber(personalNumber);
+
+
+            String cont1 = formatter.formatCellValue(myrow.getCell(7));
+            String cont2 = formatter.formatCellValue(myrow.getCell(8));
+
+            rowDTO.setContact(cont1 + " - " + cont2);
 
             //ნუმერიკი ბიგინტში
 
@@ -128,28 +142,27 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-//            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
+            String startDate = formatter.formatCellValue(myrow.getCell(9));
+            String incomeDate = formatter.formatCellValue(myrow.getCell(10));
+
+
+            Date convertedIncomeDate;
+            Date convertedStartDate;
+
+            try {
+                convertedStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            rowDTO.setIncomeDate(convertedIncomeDate);
+            rowDTO.setStartDate(convertedStartDate);
 //
-//            String startDate = formatter.formatCellValue(myrow.getCell(8));
 //
-//            Date convertedIncomeDate;
-//            Date convertedStartDate;
-//
-//            try {
-//                convertedIncomeDate = new SimpleDateFormat("dd/MM/yyyy").parse(incomeDate);
-//                convertedStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//                throw new RuntimeException(e);
-//            }
-//            rowDTO.setIncomeDate(convertedIncomeDate);
-//            rowDTO.setStartDate(convertedStartDate);
-//
-//
-//            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
-//
-//            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
-//            rowDTO.setAmount(amountToBigDecimal);
+            String amountToConvert = formatter.formatCellValue(myrow.getCell(4));
+            BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
+            rowDTO.setAmount(amountToBigDecimal);
 
 //            try {
 //                //  Block of code to try to write to cell

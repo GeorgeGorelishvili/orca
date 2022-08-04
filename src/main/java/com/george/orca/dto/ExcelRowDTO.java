@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 public class ExcelRowDTO {
 
-   private Long loanId;
+//   private Long loanId;
    private String contact;
 
    //ხზ
-//   private Long creditorOrganizationId;
+   private Long creditorOrganizationId;
 //
 //   private String orgName;
 //   private String responsiblePerson;
@@ -25,15 +25,18 @@ public class ExcelRowDTO {
 //
 //   private String phone;
 //
-//   private Date incomeDate;
-//   private Date startDate;
+   private Date incomeDate;
+   private Date startDate;
+   private String firstname;
+   private String lastname;
+   private String personalNumber;
 //
-//   private String legalAddress;
-//   private String physicalAddress;
+   private String legalAddress;
+   private String physicalAddress;
 //
 //
 //
-//   private BigDecimal amount;
+   private BigDecimal amount;
 
 
    //თანამშრომელი

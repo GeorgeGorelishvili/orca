@@ -68,33 +68,56 @@ public class FileReaderServiceBean implements FileReaderService {
 
 //            LoanPaymentEntity payment = new LoanPaymentEntity();
 
-            LoanEntity loan = loanService.get(record.getLoanId());
+//            LoanEntity loan = loanService.get(record.getLoanId());
 
-            if (loan != null) {
-                if (loan.getDebtorOrganization() != null) {
-                    OrganisationContactEntity orgContact = OrganisationContactEntity.builder()
-                            .contact(record.getContact())
-                            .organizationId(loan.getDebtorOrganization().getId())
-                            .build();
-                    organisationContactService.edit(orgContact);
-                } else if (loan.getDebtorPerson() != null) {
-                    PersonContactEntity personContact = PersonContactEntity.builder()
-                            .contact(record.getContact())
-                            .personId(loan.getDebtorPerson().getId())
-                            .build();
-                    personContactService.edit(personContact);
-                }
-            }else{
-                log.info("loan: "+ record.getLoanId());
+//            if (loan != null) {
+//                if (loan.getDebtorOrganization() != null) {
+//                    OrganisationContactEntity orgContact = OrganisationContactEntity.builder()
+//                            .contact(record.getContact())
+//                            .organizationId(loan.getDebtorOrganization().getId())
+//                            .build();
+//                    organisationContactService.edit(orgContact);
+//                } else if (loan.getDebtorPerson() != null) {
+//                    PersonContactEntity personContact = PersonContactEntity.builder()
+//                            .contact(record.getContact())
+//                            .personId(loan.getDebtorPerson().getId())
+//                            .build();
+//                    personContactService.edit(personContact);
+//                }
+//            }else{
+//                log.info("loan: "+ record.getLoanId());
+//
+//            }
+//
+            PersonEntity person = PersonEntity.builder()
+                    .firstname(record.getFirstname())
+                    .lastname(record.getLastname())
+                    .personalNumber(record.getPersonalNumber())
+                    .physicalAddress(record.getPhysicalAddress())
+                    .legalAddress(record.getLegalAddress()).build();
+            person = personService.edit(person);
 
-            }
-//
-//            OrganizationEntity orgEntity = new OrganizationEntity();
-//
-//            orgEntity.setOrgName(record.getOrgName());
-//
-//            //მისამართები
-//
+            PersonContactEntity personContact = PersonContactEntity.builder()
+                    .personId(person.getId())
+                    .contact(record.getContact()).build();
+
+            personContactService.edit(personContact);
+
+            OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
+
+            LoanEntity loan = LoanEntity.builder()
+                    .amount(record.getAmount())
+                    .initialAmount(record.getAmount())
+                    .incomeDate(record.getIncomeDate())
+                    .startDate(record.getStartDate())
+                    .creditorOrganization(creditor)
+                    .debtorPerson(person).build();
+
+            loanService.edit(loan);
+
+
+//მისამართები
+
 //            orgEntity.setPhysicalAddress(record.getPhysicalAddress());
 //            orgEntity.setLegalAddress(record.getLegalAddress());
 //

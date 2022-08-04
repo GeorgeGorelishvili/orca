@@ -1,6 +1,9 @@
 package com.george.orca.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +12,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "PERSON")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PersonEntity implements Serializable {
 
     @Id

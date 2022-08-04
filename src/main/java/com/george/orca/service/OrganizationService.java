@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrganizationService {
 
     OrganizationEntity get(Long id);
+    OrganizationEntity getOrganizationByID(String code);
 
     OrganizationEntity edit(OrganizationEntity entity);
 
