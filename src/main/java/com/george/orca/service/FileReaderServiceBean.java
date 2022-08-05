@@ -1,6 +1,7 @@
 package com.george.orca.service;
 
 import com.george.orca.config.FileConfig;
+import com.george.orca.controller.OrganizationController;
 import com.george.orca.domain.*;
 import com.george.orca.dto.ExcelRowDTO;
 import com.george.orca.repository.OrganizationRepository;
@@ -36,7 +37,7 @@ import java.util.Map;
 public class FileReaderServiceBean implements FileReaderService {
     private final PersonService personService;
     private final PersonContactService personContactService;
-    private final OrganisationContactService organisationContactService;
+    private final OrganisationContactService organizationContactService;
     private final OrganizationService organizationService;
     private final EmployeeService employeeService;
     private final LoanPaymentService loanPaymentService;
@@ -89,19 +90,18 @@ public class FileReaderServiceBean implements FileReaderService {
 //
 //            }
 //
-            PersonEntity person = PersonEntity.builder()
-                    .firstname(record.getFirstname())
-                    .lastname(record.getLastname())
-                    .personalNumber(record.getPersonalNumber())
+            OrganizationEntity org = OrganizationEntity.builder()
+                    .orgName(record.getOrgName())
+                    .cadastrialCode(record.getCadastrialCode())
                     .physicalAddress(record.getPhysicalAddress())
                     .legalAddress(record.getLegalAddress()).build();
-            person = personService.edit(person);
+            org = organizationService.edit(org);
 
-            PersonContactEntity personContact = PersonContactEntity.builder()
-                    .personId(person.getId())
+            OrganisationContactEntity personContact = OrganisationContactEntity.builder()
+                    .organizationId(org.getId())
                     .contact(record.getContact()).build();
 
-            personContactService.edit(personContact);
+            organizationContactService.edit(personContact);
 
             OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
 
@@ -111,7 +111,7 @@ public class FileReaderServiceBean implements FileReaderService {
                     .incomeDate(record.getIncomeDate())
                     .startDate(record.getStartDate())
                     .creditorOrganization(creditor)
-                    .debtorPerson(person).build();
+                    .debtorOrganization(org).build();
 
             loanService.edit(loan);
 

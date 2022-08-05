@@ -106,8 +106,8 @@ public class ExcelParser {
 //            rowDTO.setLoanId(loanId);
 
             //მისამართები
-            rowDTO.setLegalAddress(myrow.getCell(7).getStringCellValue());
-            rowDTO.setPhysicalAddress(myrow.getCell(8).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
@@ -116,18 +116,15 @@ public class ExcelParser {
             DataFormatter formatter = new DataFormatter();
             String name = formatter.formatCellValue(myrow.getCell(1));
 
-            rowDTO.setFirstname(name);
+            rowDTO.setOrgName(name);
 
-            String lastname = formatter.formatCellValue(myrow.getCell(2));
+            String cadCode = formatter.formatCellValue(myrow.getCell(2));
 
-            String personalNumber = formatter.formatCellValue(myrow.getCell(3));
-
-            rowDTO.setLastname(lastname);
-            rowDTO.setPersonalNumber(personalNumber);
+            rowDTO.setCadastrialCode(cadCode);
 
 
-            String cont1 = formatter.formatCellValue(myrow.getCell(5));
-            String cont2 = formatter.formatCellValue(myrow.getCell(6));
+            String cont1 = formatter.formatCellValue(myrow.getCell(4));
+            String cont2 = formatter.formatCellValue(myrow.getCell(5));
 
             rowDTO.setContact(cont1 + " - " + cont2);
 
@@ -142,8 +139,8 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-            String startDate = formatter.formatCellValue(myrow.getCell(9));
-            String incomeDate = formatter.formatCellValue(myrow.getCell(10));
+            String startDate = formatter.formatCellValue(myrow.getCell(8));
+            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
 
 
             Date convertedIncomeDate;
@@ -160,7 +157,7 @@ public class ExcelParser {
             rowDTO.setStartDate(convertedStartDate);
 //
 //
-            String amountToConvert = formatter.formatCellValue(myrow.getCell(4));
+            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
             BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
             rowDTO.setAmount(amountToBigDecimal);
 

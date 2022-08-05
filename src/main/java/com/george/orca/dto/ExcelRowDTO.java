@@ -27,9 +27,8 @@ public class ExcelRowDTO {
 //
    private Date incomeDate;
    private Date startDate;
-   private String firstname;
-   private String lastname;
-   private String personalNumber;
+   private String orgName;
+   private String cadastrialCode;
 //
    private String legalAddress;
    private String physicalAddress;
