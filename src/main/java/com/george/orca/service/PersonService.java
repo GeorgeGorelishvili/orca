@@ -10,7 +10,10 @@ public interface PersonService {
     PersonEntity edit(PersonEntity entity);
 
     Page<PersonEntity> page(Integer start,
-                            Integer limit);
+                            Integer limit,
+                            String firstname,
+                            String lastname,
+                            String personalNumber);
 
     void delete(Long id);
 

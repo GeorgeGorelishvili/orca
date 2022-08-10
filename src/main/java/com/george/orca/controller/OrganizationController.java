@@ -47,9 +47,11 @@ public class OrganizationController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<OrganizationEntity>> Page(Integer limit, Integer start) {
+    public ResponseEntity<Page<OrganizationEntity>> Page(Integer limit, Integer start,
+                                                         @RequestParam(required = false) String orgName,
+                                                         @RequestParam(required = false) String cadastrialCode) {
 
-        Page<OrganizationEntity> orgSearchQuery = organizationService.page(start, limit);
+        Page<OrganizationEntity> orgSearchQuery = organizationService.page(start, limit, orgName, cadastrialCode);
 
         return ResponseEntity.ok(orgSearchQuery);
     }

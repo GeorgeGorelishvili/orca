@@ -15,8 +15,9 @@ public interface OrganizationRepository extends PagingAndSortingRepository<Organ
 
     Optional<OrganizationEntity> findOrganizationEntityByCadastrialCode(String code);
 
-    @Query("SELECT o FROM OrganizationEntity o WHERE 1=1")
-    Page<OrganizationEntity> findPagedOrganizations(Pageable paging);
-
+    @Query("SELECT o FROM OrganizationEntity o WHERE 1=1 AND " +
+            "(:orgName IS NULL OR o.orgName  LIKE %:orgName%) AND " +
+            "(:cadastrialCode IS NULL OR o.cadastrialCode  LIKE %:cadastrialCode%)")
+    Page<OrganizationEntity> findPagedOrganizations(String orgName, String cadastrialCode, Pageable paging);
 
 }

@@ -45,12 +45,12 @@ public class OrganizationServiceBean implements OrganizationService {
 
 
     @Override
-    public Page<OrganizationEntity> page(Integer start, Integer limit) {
+    public Page<OrganizationEntity> page(Integer start, Integer limit, String orgName, String cadastrialCode) {
 
         Pageable paging = PageRequest.of(start, limit);
 
 
-        return organizationRepository.findPagedOrganizations(paging);
+        return organizationRepository.findPagedOrganizations(orgName, cadastrialCode, paging);
     }
 
     @Override

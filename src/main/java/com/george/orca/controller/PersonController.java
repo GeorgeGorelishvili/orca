@@ -44,9 +44,12 @@ public class PersonController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<PersonEntity>> page(Integer limit, Integer start) {
+    public ResponseEntity<Page<PersonEntity>> page(Integer limit, Integer start,
+                                                   @RequestParam(required = false) String firstname,
+                                                   @RequestParam(required = false) String lastname,
+                                                   @RequestParam(required = false) String personalNumber) {
 
-        Page<PersonEntity> persSearchQuery = personService.page(start, limit);
+        Page<PersonEntity> persSearchQuery = personService.page(start, limit, firstname, lastname, personalNumber);
 
         return ResponseEntity.ok(persSearchQuery);
     }

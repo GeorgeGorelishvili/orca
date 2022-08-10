@@ -16,7 +16,9 @@ public interface OrganizationService {
 
 
     Page<OrganizationEntity> page(Integer start,
-                                  Integer limit);
+                                  Integer limit,
+                                  String orgName,
+                                  String cadastrialCode);
 
     void delete(Long id);
 }

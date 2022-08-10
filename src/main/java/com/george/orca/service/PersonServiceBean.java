@@ -32,17 +32,13 @@ public class PersonServiceBean implements PersonService {
     }
 
     @Override
-    public Page<PersonEntity> page(Integer start, Integer limit) {
+    public Page<PersonEntity> page(Integer start, Integer limit, String firstname, String lastname, String personalNumber) {
 
         Pageable paging = PageRequest.of(start, limit);
 
-        return personRepository.findPagedPersons(paging);
+        return personRepository.findPagedPersons(firstname, lastname, personalNumber, paging);
     }
 
-    public List<PersonEntity> page() {
-        Iterable<PersonEntity> iterablePersonEntities = personRepository.findAll();
-        return new TemplateUtil<PersonEntity>().list(iterablePersonEntities);
-    }
 
     @Override
     public void delete(Long id) {
