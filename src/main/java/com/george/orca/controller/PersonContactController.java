@@ -36,8 +36,8 @@ public class PersonContactController {
     }
 
     @GetMapping("list")
-    public List<PersonContactEntity> employees() {
-        return personContactService.list();
+    public List<PersonContactEntity> employees(@RequestParam(name = "id") Long id) {
+        return personContactService.list(id);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
