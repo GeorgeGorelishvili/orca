@@ -1,14 +1,17 @@
 package com.george.orca.controller;
 
+import com.george.orca.domain.OrganisationContactEntity;
+import com.george.orca.domain.PersonContactEntity;
 import com.george.orca.domain.PersonEntity;
+import com.george.orca.service.PersonContactService;
 import com.george.orca.service.PersonService;
-import com.george.orca.utils.TemplateUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("person")
@@ -16,9 +19,10 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonContactService personContactService;
 
     @GetMapping("get")
-    public ResponseEntity<PersonEntity> get(@RequestParam(name = "personId") Long personId)  {
+    public ResponseEntity<PersonEntity> get(@RequestParam(name = "personId") Long personId) {
         PersonEntity personEntity = personService.get(personId);
         return ResponseEntity.ok(personEntity);
     }
@@ -32,15 +36,21 @@ public class PersonController {
 
     @PostMapping("edit")
     public ResponseEntity<PersonEntity> edit(@RequestBody PersonEntity person) {
+
+        List<PersonContactEntity> contacts = personContactService.list(person.getId());
+        person.setContacts(contacts);
         person = personService.edit(person);
         return ResponseEntity.ok(person);
     }
 
     @GetMapping("list")
-    public List<PersonEntity> list() {
-        Iterable<PersonEntity> personEntityIterable = personService.list();
-        return new TemplateUtil<PersonEntity>().list(personEntityIterable);
+    public ResponseEntity<Page<PersonEntity>> page(Integer limit, Integer start) {
+
+        Page<PersonEntity> persSearchQuery = personService.page(start, limit);
+
+        return ResponseEntity.ok(persSearchQuery);
     }
+
 
     @GetMapping("delete")
     public void delete(@RequestParam("personId") Long personId) {

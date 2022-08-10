@@ -1,5 +1,6 @@
 package com.george.orca.service;
 
+import com.george.orca.domain.CommentEntity;
 import com.george.orca.domain.OrganisationContactEntity;
 import com.george.orca.domain.PersonContactEntity;
 import com.george.orca.repository.OrganisationContactRepository;
@@ -29,9 +30,8 @@ public class OrganisationContactServiceBean implements OrganisationContactServic
     }
 
     @Override
-    public List<OrganisationContactEntity> list() {
-        Iterable<OrganisationContactEntity> iterableOrganisationContactEntities = organisationContactRepository.findAll();
-        return new TemplateUtil<OrganisationContactEntity>().list(iterableOrganisationContactEntities);
+    public List<OrganisationContactEntity> list(Long id) {
+        return organisationContactRepository.findAllByOrganizationId(id);
     }
 
     @Override

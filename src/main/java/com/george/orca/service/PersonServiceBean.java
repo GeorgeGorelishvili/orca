@@ -1,9 +1,13 @@
 package com.george.orca.service;
 
+import com.george.orca.domain.OrganizationEntity;
 import com.george.orca.domain.PersonEntity;
 import com.george.orca.repository.PersonRepository;
 import com.george.orca.utils.TemplateUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +32,14 @@ public class PersonServiceBean implements PersonService {
     }
 
     @Override
-    public List<PersonEntity> list() {
+    public Page<PersonEntity> page(Integer start, Integer limit) {
+
+        Pageable paging = PageRequest.of(start, limit);
+
+        return personRepository.findPagedPersons(paging);
+    }
+
+    public List<PersonEntity> page() {
         Iterable<PersonEntity> iterablePersonEntities = personRepository.findAll();
         return new TemplateUtil<PersonEntity>().list(iterablePersonEntities);
     }

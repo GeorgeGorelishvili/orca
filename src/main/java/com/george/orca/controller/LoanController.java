@@ -103,7 +103,7 @@ public class LoanController {
         loanEntity.setLoanPayments(payments);
 
 
-        loanService.edit(loanEntity);
+        loanEntity = loanService.edit(loanEntity);
 
         return ResponseEntity.ok(loanEntity);
     }

@@ -10,7 +10,7 @@ public interface PersonContactService {
 
     PersonContactEntity edit(PersonContactEntity entity);
 
-    List<PersonContactEntity> list();
+    List<PersonContactEntity> list(Long id);
 
     void delete(Long id);
 }

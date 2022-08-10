@@ -1,10 +1,7 @@
 package com.george.orca.controller;
 
 import com.george.orca.domain.OrganisationContactEntity;
-import com.george.orca.domain.PersonContactEntity;
-import com.george.orca.repository.OrganisationContactRepository;
 import com.george.orca.service.OrganisationContactService;
-import com.george.orca.service.PersonContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +24,8 @@ public class OrganisationContactController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseEntity<OrganisationContactEntity> add(@RequestBody OrganisationContactEntity orgContactEntity) {
-        OrganisationContactEntity orgContact = organisationContactService.edit(orgContactEntity);
-
-        return ResponseEntity.ok(orgContact);
+         orgContactEntity = organisationContactService.edit(orgContactEntity);
+        return ResponseEntity.ok(orgContactEntity);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -37,10 +33,6 @@ public class OrganisationContactController {
         return organisationContactService.edit(employeeEntity);
     }
 
-    @GetMapping("list")
-    public List<OrganisationContactEntity> employees() {
-        return organisationContactService.list();
-    }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public void delete(@RequestParam(name = "employeeId") Long employeeId) {

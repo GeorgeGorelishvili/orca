@@ -9,7 +9,7 @@ public interface OrganisationContactService {
 
     OrganisationContactEntity edit(OrganisationContactEntity entity);
 
-    List<OrganisationContactEntity> list();
+    List<OrganisationContactEntity> list(Long id);
 
     void delete(Long id);
 }

@@ -27,9 +27,9 @@ public class PersonContactServiceBean implements PersonContactService {
     }
 
     @Override
-    public List<PersonContactEntity> list() {
-        Iterable<PersonContactEntity> iterableEmployeeEntities = personContactRepository.findAll();
-        return new TemplateUtil<PersonContactEntity>().list(iterableEmployeeEntities);
+    public List<PersonContactEntity> list(Long id) {
+        return personContactRepository.findAllByPersonId(id);
+
     }
 
     @Override
