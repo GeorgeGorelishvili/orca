@@ -55,19 +55,8 @@ public class LoanController {
         return ResponseEntity.ok(loanEntity);
     }
 
-    @GetMapping("add")
-    public ResponseEntity<LoanEntity> add(@RequestParam BigDecimal amount,
-                                          @RequestParam Date createDate,
-                                          @RequestParam Date incomeDate,
-                                          @RequestParam Date startDate,
-                                          @RequestParam Date endDate) {
-        LoanEntity loan = LoanEntity.builder()
-                .amount(amount)
-                .createDate(createDate)
-                .incomeDate(incomeDate)
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
+    @PostMapping("add")
+    public ResponseEntity<LoanEntity> add(@RequestBody LoanEntity loan) {
         loan = loanService.edit(loan);
         return ResponseEntity.ok(loan);
     }

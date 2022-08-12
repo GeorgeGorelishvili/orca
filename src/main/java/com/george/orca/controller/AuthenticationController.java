@@ -101,7 +101,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/isActive")
-    public ResponseEntity<Authentication> isActive(final UserEntity userEntity) {
+    public ResponseEntity<Authentication> isActive() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.nonNull(auth) && auth.isAuthenticated()) {
             return ResponseEntity.ok(auth);
