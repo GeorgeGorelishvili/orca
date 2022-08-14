@@ -41,8 +41,11 @@ public class EmployeeServiceBean implements EmployeeService {
 
     public List<EmployeeEntity> getAgents() {
         Long agentId = Long.valueOf(1);
-        Iterable<EmployeeEntity> iterableEmployeeEntities = employeeRepository.findAllByEmployeePositionId(agentId);
-        return new TemplateUtil<EmployeeEntity>().list(iterableEmployeeEntities);
+        Long analyticId = Long.valueOf(12);
+
+        Iterable<EmployeeEntity> iterableAgentEntities = employeeRepository.findAllByEmployeePosition(agentId, analyticId);
+
+        return new TemplateUtil<EmployeeEntity>().list(iterableAgentEntities);
     }
 
     public List<EmployeeEntity> getVisitors() {

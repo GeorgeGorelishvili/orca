@@ -32,8 +32,7 @@ public class EmployeeController {
     @RequestMapping(value = "/getAgents", method = RequestMethod.POST)
     @CrossOrigin
     public List<EmployeeEntity> getAgents() {
-        List<EmployeeEntity> agents = employeeService.getAgents();
-        return agents;
+        return employeeService.getAgents();
     }
 
 
