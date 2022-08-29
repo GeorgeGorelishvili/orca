@@ -9,6 +9,8 @@ public interface PersonService {
 
     PersonEntity edit(PersonEntity entity);
 
+    PersonEntity search(String personalNumber);
+
     Page<PersonEntity> page(Integer start,
                             Integer limit,
                             String firstname,

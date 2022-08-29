@@ -32,6 +32,12 @@ public class PersonServiceBean implements PersonService {
     }
 
     @Override
+    public PersonEntity search(String personalNumber) {
+
+        return new TemplateUtil<PersonEntity>().get( personRepository.findByPersonalNumberLike(personalNumber));
+    }
+
+    @Override
     public Page<PersonEntity> page(Integer start, Integer limit, String firstname, String lastname, String personalNumber) {
 
         Pageable paging = PageRequest.of(start, limit);

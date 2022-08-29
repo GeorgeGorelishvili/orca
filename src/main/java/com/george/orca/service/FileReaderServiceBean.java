@@ -3,15 +3,18 @@ package com.george.orca.service;
 import com.george.orca.config.FileConfig;
 import com.george.orca.controller.OrganizationController;
 import com.george.orca.domain.*;
+import com.george.orca.domain.personEntities.Persons1Entity;
 import com.george.orca.dto.ExcelRowDTO;
 import com.george.orca.repository.OrganizationRepository;
 import com.george.orca.repository.PersonRepository;
+import com.george.orca.service.PersonsDBServices.Persons1Service;
 import com.george.orca.utils.ExcelParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,9 @@ public class FileReaderServiceBean implements FileReaderService {
     private final EmployeeService employeeService;
     private final LoanPaymentService loanPaymentService;
 
+    private final Persons1Service personsDB1;
+
+
     private final LoanService loanService;
 
     private final PersonRepository personRepository;
@@ -60,14 +66,43 @@ public class FileReaderServiceBean implements FileReaderService {
         log.info("reading file: " + filePath);
 
         File file = new File(filePath);
+
+        IOUtils.setByteArrayMaxOverride(245304546);
+
         ExcelParser excelParser = new ExcelParser(file);
 
-
+        Integer counter = 0;
         List<ExcelRowDTO> rowData = excelParser.getPersons();
+
         for (ExcelRowDTO record : rowData) {
 
 
-//            LoanPaymentEntity payment = new LoanPaymentEntity();
+            Persons1Entity persona = new Persons1Entity().builder()
+                    .firstname(record.getName())
+                    .lastname(record.getLastname())
+                    .birthYear(record.getBirthYear())
+                    .personalNumber(record.getPersonalNumber())
+                    .phone(record.getPhone())
+                    .build();
+            personsDB1.edit(persona);
+
+            PersonEntity person = personService.search(record.getPersonalNumber());
+
+            if (person != null) {
+                log.info("we have a match !! : " + record.getPersonalNumber());
+                PersonContactEntity personContact = PersonContactEntity.builder()
+                        .contact(record.getName() + " " + record.getLastname())
+                        .personId(person.getId())
+                        .phone(record.getPhone())
+                        .contactInfo("დაბ წელი: " + record.getBirthYear())
+                        .build();
+
+                personContactService.edit(personContact);
+            }
+            counter++;
+            log.info("current: " + counter);
+//            personsDB1.edit(persona);
+
 
 //            LoanEntity loan = loanService.get(record.getLoanId());
 
@@ -90,30 +125,7 @@ public class FileReaderServiceBean implements FileReaderService {
 //
 //            }
 //
-            OrganizationEntity org = OrganizationEntity.builder()
-                    .orgName(record.getOrgName())
-                    .cadastrialCode(record.getCadastrialCode())
-                    .physicalAddress(record.getPhysicalAddress())
-                    .legalAddress(record.getLegalAddress()).build();
-            org = organizationService.edit(org);
-
-            OrganisationContactEntity personContact = OrganisationContactEntity.builder()
-                    .organizationId(org.getId())
-                    .contact(record.getContact()).build();
-
-            organizationContactService.edit(personContact);
-
-            OrganizationEntity creditor = organizationService.get(record.getCreditorOrganizationId());
-
-            LoanEntity loan = LoanEntity.builder()
-                    .amount(record.getAmount())
-                    .initialAmount(record.getAmount())
-                    .incomeDate(record.getIncomeDate())
-                    .startDate(record.getStartDate())
-                    .creditorOrganization(creditor)
-                    .debtorOrganization(org).build();
-
-            loanService.edit(loan);
+//
 
 
 //მისამართები

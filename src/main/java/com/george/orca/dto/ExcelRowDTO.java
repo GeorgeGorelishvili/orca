@@ -10,52 +10,37 @@ import java.util.List;
 @Data
 public class ExcelRowDTO {
 
+   private String address;
+   private String name;
+   private String lastname;
+   private String birthYear;
+   private String phone;
+   private String personalNumber;
+   
+//   private String orgName;
+//   private String orgLegalAddress;
+//   private String orgPhysicalAddress;
+//   private String idCode;
+//   private String director;
+//   private String accountant;
+//   private String responsiblePerson;
+
+
+
 //   private Long loanId;
-   private String contact;
+//   private String contact;
 
    //ხზ
-   private Long creditorOrganizationId;
-//
+//   private Long creditorOrganizationId;
+
 //   private String orgName;
 //   private String responsiblePerson;
-//
 //   private String identificationCode;
+
 //   private String director;
-//
-//
 //   private String phone;
-//
-   private Date incomeDate;
-   private Date startDate;
-   private String orgName;
-   private String cadastrialCode;
-//
-   private String legalAddress;
-   private String physicalAddress;
-//
-//
-//
-   private BigDecimal amount;
 
 
-   //თანამშრომელი
-//   private Long positionId;
-//
-//   private String firstname;
-//   private String lastName;
-//   private String personalNo;
-//
-//   private Date birthDate;
-//   private String phoneNumber;
-//
-//   private String address;
-//
-//   private String eMail;
-//   private String bankAccount;
-//
-//   private String connectedPerson;
-//   private String connectedPersonPhone;
-//
 
    //ლოან ფეიმენთი
 
