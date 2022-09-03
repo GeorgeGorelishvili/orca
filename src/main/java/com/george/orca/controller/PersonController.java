@@ -3,10 +3,15 @@ package com.george.orca.controller;
 import com.george.orca.domain.OrganisationContactEntity;
 import com.george.orca.domain.PersonContactEntity;
 import com.george.orca.domain.PersonEntity;
+import com.george.orca.domain.personEntities.Persons1Entity;
+import com.george.orca.repository.PersonsDBRepositories.Persons1Repository;
 import com.george.orca.service.PersonContactService;
 import com.george.orca.service.PersonService;
+import com.george.orca.service.PersonsDBServices.Persons1Service;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +24,7 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
+    private final Persons1Service persons1Service;
     private final PersonContactService personContactService;
 
     @GetMapping("get")
@@ -28,10 +34,31 @@ public class PersonController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<PersonEntity> add(@RequestBody PersonEntity person) {
+    public ResponseEntity<String> add(@RequestBody PersonEntity person) {
 
-        person = personService.edit(person);
-        return ResponseEntity.ok(person);
+        PersonEntity alreadyExistsPerson = personService.search(person.getPersonalNumber());
+
+        if (alreadyExistsPerson == null) {
+            person = personService.edit(person);
+
+            for(Persons1Entity match : persons1Service.search(person.getPersonalNumber())){
+                PersonContactEntity personContact = PersonContactEntity.builder()
+                        .contact(match.getFirstname() + " " + match.getLastname())
+                        .personId(person.getId())
+                        .phone(match.getPhone())
+                        .contactInfo("დაბ წელი: " + match.getBirthYear())
+                        .build();
+                personContactService.edit(personContact);
+            }
+
+
+            return ResponseEntity.status(HttpStatus.OK).body("წარმატებით დაემატა");
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("პერსონა უკვე ბაზაშია");
+        }
+
     }
 
     @PostMapping("edit")

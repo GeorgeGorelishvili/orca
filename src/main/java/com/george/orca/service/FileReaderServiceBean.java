@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +48,7 @@ public class FileReaderServiceBean implements FileReaderService {
 
     private final Persons1Service personsDB1;
 
+    private final EntityManager entitymanager;
 
     private final LoanService loanService;
 
@@ -101,6 +103,8 @@ public class FileReaderServiceBean implements FileReaderService {
             }
             counter++;
             log.info("current: " + counter);
+            entitymanager.clear();
+
 //            personsDB1.edit(persona);
 
 

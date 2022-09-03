@@ -14,6 +14,6 @@ public interface Persons1Repository extends CrudRepository<Persons1Entity, Long>
     //    @Query("SELECT o FROM OrganizationEntity o WHERE 1=1 AND " +
 //            "(:orgName IS NULL OR o.orgName  LIKE %:orgName%) AND " +
 //            "(:cadastrialCode IS NULL OR o.cadastrialCode  LIKE %:cadastrialCode%)")
-    Optional<List<Persons1Entity>> findByPersonalNumberLike(String personalNumber);
+    List<Persons1Entity> findPersons1EntitiesByPersonalNumberLike(String personalNumber);
 
 }

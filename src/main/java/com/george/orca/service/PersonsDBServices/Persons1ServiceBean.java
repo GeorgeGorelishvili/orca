@@ -1,9 +1,6 @@
 package com.george.orca.service.PersonsDBServices;
 
-import com.george.orca.domain.CommentEntity;
-import com.george.orca.domain.EmployeePositionEntity;
 import com.george.orca.domain.personEntities.Persons1Entity;
-import com.george.orca.repository.CommentRepository;
 import com.george.orca.repository.PersonsDBRepositories.Persons1Repository;
 import com.george.orca.utils.TemplateUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +27,11 @@ public class Persons1ServiceBean implements Persons1Service {
         return persons1Repository.save(entity);
     }
 
+    @Override
+    public List<Persons1Entity> search(String personalNumber) {
 
+        return persons1Repository.findPersons1EntitiesByPersonalNumberLike(personalNumber);
+    }
 
     @Override
     public List<Persons1Entity> list() {
