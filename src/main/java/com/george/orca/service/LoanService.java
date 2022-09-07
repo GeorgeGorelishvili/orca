@@ -27,7 +27,8 @@ public interface LoanService {
                          String callDateStart,
                          String callDateEnd,
                          String promiseDateStart,
-                         String promiseDateEnd);
+                         String promiseDateEnd,
+                         Boolean nullificationRequest);
 
     void delete(Long id);
 }

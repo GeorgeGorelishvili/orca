@@ -43,7 +43,7 @@ public class LoanPaymentController {
 
         loan.setAmount(newLoanAmount);
         if (newLoanAmount.compareTo(BigDecimal.ZERO) <= 0) {
-            loan.setNullified(true);
+            loan.setNullificationRequest(true);
         }
         loanService.edit(loan);
 

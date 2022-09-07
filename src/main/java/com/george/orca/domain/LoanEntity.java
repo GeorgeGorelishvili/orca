@@ -70,10 +70,10 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<AttachedFileEntity> attachedFileEntities;
 
-    @Column(name ="CALL_DATE")
+    @Column(name = "CALL_DATE")
     private Date callDate;
 
-    @Column(name ="PROMISE_DATE")
+    @Column(name = "PROMISE_DATE")
     private Date promiseDate;
 
     @ManyToOne
@@ -90,4 +90,7 @@ public class LoanEntity {
 
     @Column(name = "NULLIFIED", nullable = false, columnDefinition = "boolean default false")
     private boolean nullified;
+
+    @Column(name = "nullification_request", nullable = false, columnDefinition = "boolean default false")
+    private boolean nullificationRequest;
 }

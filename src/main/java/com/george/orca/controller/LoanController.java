@@ -111,7 +111,26 @@ public class LoanController {
                                                 @RequestParam(required = false) String callDateEnd,
                                                 @RequestParam(required = false) String promiseDateStart,
                                                 @RequestParam(required = false) String promiseDateEnd) {
-        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd);
+        boolean nullificationRequest = false;
+        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd,nullificationRequest);
+        return ResponseEntity.ok(loanSearchQuery);
+    }
+
+    @RequestMapping(value = "nullificationRequest", method = RequestMethod.GET)
+    public ResponseEntity<LoanSearchQuery> nullificationRequest(Integer limit, Integer start,
+                                                @RequestParam(required = false) String id,
+                                                @RequestParam(required = false) String creditor,
+                                                @RequestParam(required = false) String debtor,
+                                                @RequestParam(required = false) String debtorIdentificator,
+                                                @RequestParam(required = false) String assignedAgent,
+                                                @RequestParam(required = false) BigDecimal amount,
+                                                @RequestParam(required = false) Boolean nullified,
+                                                @RequestParam(required = false) String callDateStart,
+                                                @RequestParam(required = false) String callDateEnd,
+                                                @RequestParam(required = false) String promiseDateStart,
+                                                @RequestParam(required = false) String promiseDateEnd) {
+        boolean nullificationRequest = true;
+        LoanSearchQuery loanSearchQuery = loanService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd, nullificationRequest);
         return ResponseEntity.ok(loanSearchQuery);
     }
 }
