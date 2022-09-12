@@ -20,7 +20,9 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
+            "l.nullified =:nullified AND " +
+            "l.nullificationRequest =:nullificationRequest AND " +
+            "l.archived =:archived AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -29,7 +31,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findLoanEntitiesByAssignedAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, Pageable paging);
 
 
     @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
@@ -38,7 +40,9 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
+            "l.nullified =:nullified AND " +
+            "l.nullificationRequest =:nullificationRequest AND " +
+            "l.archived =:archived AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
@@ -47,7 +51,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> getSumForAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent);
+    List<BigDecimal> getSumForAgent(EmployeeEntity currentUser, Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 
 
     //    @Query("SELECT l from LoanEntity l WHERE l.id = :id")
@@ -59,8 +63,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
-            "(:nullificationRequest IS NULL OR l.nullificationRequest = :nullificationRequest) AND " +
+            "l.nullified = :nullified AND l.archived = :archived AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
@@ -69,7 +73,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Pageable paging);
+    Page<LoanEntity> findLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, Pageable paging);
 
 
     @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
@@ -78,8 +82,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "(:nullified IS NULL OR l.nullified = :nullified) AND " +
-            "(:nullificationRequest IS NULL OR l.nullificationRequest = :nullificationRequest) AND " +
+            "l.nullified = :nullified AND l.archived = :archived AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
@@ -88,7 +92,44 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> getSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest);
+    List<BigDecimal> getSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
+
+    @Query("SELECT l FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "WHERE (1=1) AND " +
+            "(l.nullified = :nullified OR l.archived = :archived) AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
+            "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
+            "(:amount IS NULL OR l.amount = :amount) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    Page<LoanEntity> findArchiveLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, Pageable paging);
+
+
+    @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "WHERE (1=1) AND " +
+            "(l.nullified = :nullified OR l.archived = :archived) AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
+            "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
+            "(:amount IS NULL OR l.amount = :amount) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 }
 
 

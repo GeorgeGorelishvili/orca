@@ -93,4 +93,13 @@ public class LoanEntity {
 
     @Column(name = "nullification_request", nullable = false, columnDefinition = "boolean default false")
     private boolean nullificationRequest;
+
+    @Column(name = "archived")
+    private boolean archived;
+
+    @Column(name = "archive_reason")
+    private String archiveReason;
+
+    @Column(name = "archive_status")
+    private String archiveStatus;
 }

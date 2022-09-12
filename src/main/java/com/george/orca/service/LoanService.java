@@ -28,7 +28,24 @@ public interface LoanService {
                          String callDateEnd,
                          String promiseDateStart,
                          String promiseDateEnd,
-                         Boolean nullificationRequest);
+                         Boolean nullificationRequest,
+                         Boolean archived);
+
+    LoanSearchQuery getArchive(Integer start,
+                         Integer limit,
+                         String id,
+                         String creditor,
+                         String debtor,
+                         String debtorIdentificator,
+                         String assignedAgent,
+                         BigDecimal amount,
+                         Boolean nullified,
+                         String callDateStart,
+                         String callDateEnd,
+                         String promiseDateStart,
+                         String promiseDateEnd,
+                         Boolean nullificationRequest,
+                         Boolean archived);
 
     void delete(Long id);
 }

@@ -46,7 +46,7 @@ public class LoanServiceBean implements LoanService {
     }
 
     @Override
-    public LoanSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, String callDateStart, String callDateEnd, String promiseDateStart, String promiseDateEnd, Boolean nullificationRequest) {
+    public LoanSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, String callDateStart, String callDateEnd, String promiseDateStart, String promiseDateEnd, Boolean nullificationRequest, Boolean archived) {
         Long localId = null;
         LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
         Pageable paging = PageRequest.of(start, limit);
@@ -87,14 +87,61 @@ public class LoanServiceBean implements LoanService {
         }
 
         if (currentEmployee.getEmployeePosition().getId() == 1) {
-            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, paging));
-            List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent);
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         } else {
-            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, paging));
-            List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest);
+                loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         }
+        return loanSearchQuery;
+    }
+
+
+    public LoanSearchQuery getArchive(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, String callDateStart, String callDateEnd, String promiseDateStart, String promiseDateEnd, Boolean nullificationRequest, Boolean archived) {
+        Long localId = null;
+        LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
+        Pageable paging = PageRequest.of(start, limit);
+
+        Date formattedCallDateStart = null;
+        Date formattedCallDateEnd = null;
+        Date formattedPromiseDateStart = null;
+        Date formattedPromiseDateEnd = null;
+
+        if (id != null) {
+            localId = Long.valueOf(id);
+        }
+
+
+        //დალოგინებული იუზერი
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
+
+
+        //თარიღების ფორმატი
+        if (!(callDateStart == null) && !(callDateEnd == null)) {
+            try {
+                formattedCallDateStart = new SimpleDateFormat("dd/MM/yyyy").parse(callDateStart);
+                formattedCallDateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(callDateEnd);
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+            }
+        } else if (!(promiseDateStart == null) && !(promiseDateEnd == null)) {
+            try {
+                formattedPromiseDateStart = new SimpleDateFormat("dd/MM/yyyy").parse(promiseDateStart);
+                formattedPromiseDateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(promiseDateEnd);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findArchiveLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
+            List<BigDecimal> totalAmount = loanSortingRepository.getArchiveSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
+            loanSearchQuery.setTotalAmount(totalAmount.get(0));
+
         return loanSearchQuery;
     }
 
