@@ -7,6 +7,7 @@ import com.george.orca.repository.LoanPaymentRepository;
 import com.george.orca.service.LoanPaymentService;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +67,7 @@ public class LoanPaymentController {
 
     @GetMapping("/delete")
     @CrossOrigin
-    public void delete(@RequestParam Long id) {
+    public ResponseEntity<LoanEntity> delete(@RequestParam Long id) {
 
         LoanPaymentEntity loanPaymentEntity = loanPaymentService.get(id);
         BigDecimal paymentAmount = loanPaymentEntity.getAmount();
@@ -84,6 +85,8 @@ public class LoanPaymentController {
         loanService.edit(loan);
 
         loanPaymentService.delete(id);
+
+        return ResponseEntity.ok(loan);
     }
 
 }
