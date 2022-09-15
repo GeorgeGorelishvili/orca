@@ -29,24 +29,27 @@ public class LoanPaymentController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
     public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymentEntity) {
+        if (loanPaymentEntity.getDeniedPayment() == true) {
+            loanPaymentService.edit(loanPaymentEntity);
+        } else {
+            loanPaymentEntity = loanPaymentService.edit(loanPaymentEntity);
+            loanPaymentRepository.save(loanPaymentEntity);
 
-        loanPaymentEntity = loanPaymentService.edit(loanPaymentEntity);
-        loanPaymentRepository.save(loanPaymentEntity);
+            MathContext mc = new MathContext(10);
 
-        MathContext mc = new MathContext(10);
-
-        BigDecimal paymentAmount = loanPaymentEntity.getAmount();
-        LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
-        BigDecimal oldAmount = loan.getAmount();
+            BigDecimal paymentAmount = loanPaymentEntity.getAmount();
+            LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
+            BigDecimal oldAmount = loan.getAmount();
 
 
-        BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
+            BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
 
-        loan.setAmount(newLoanAmount);
-        if (newLoanAmount.compareTo(BigDecimal.ZERO) <= 0) {
-            loan.setNullificationRequest(true);
+            loan.setAmount(newLoanAmount);
+            if (newLoanAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                loan.setNullificationRequest(true);
+            }
+            loanService.edit(loan);
         }
-        loanService.edit(loan);
 
         return ResponseEntity.ok(loanPaymentEntity);
     }
@@ -62,6 +65,13 @@ public class LoanPaymentController {
     @CrossOrigin
     public List<LoanPaymentEntity> add(@RequestParam Long loanId) {
         return loanPaymentService.list(loanId);
+    }
+
+
+    @GetMapping("/getDeniedPayments")
+    @CrossOrigin
+    public List<LoanPaymentEntity> getDeniedPayments(@RequestParam Long loanId) {
+        return loanPaymentService.deniedList(loanId);
     }
 
 

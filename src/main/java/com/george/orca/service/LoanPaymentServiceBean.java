@@ -32,6 +32,13 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
     }
 
     @Override
+    public List<LoanPaymentEntity> deniedList(Long id) {
+        return loanPaymentRepository.findDeniedPayments(id);
+    }
+
+
+
+    @Override
     public void delete(Long id) {
         LoanPaymentEntity loanPaymentEntity = get(id);
         loanPaymentRepository.delete(loanPaymentEntity);

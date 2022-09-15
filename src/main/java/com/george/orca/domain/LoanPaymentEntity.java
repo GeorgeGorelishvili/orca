@@ -36,6 +36,8 @@ public class LoanPaymentEntity {
     @Column(name="with_check")
     private Boolean withCheck;
 
+    @Column(name="denied_payment")
+    private Boolean deniedPayment;
 
     @Column(name="comment", length = 10000)
     private String comment;

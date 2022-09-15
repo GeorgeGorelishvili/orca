@@ -11,6 +11,7 @@ public interface LoanPaymentService {
     LoanPaymentEntity edit(LoanPaymentEntity entity);
 
     List<LoanPaymentEntity> list(Long id);
+    List<LoanPaymentEntity> deniedList(Long id);
 
     void delete(Long id);
 }
