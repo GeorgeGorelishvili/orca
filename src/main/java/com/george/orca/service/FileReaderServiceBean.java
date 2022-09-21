@@ -85,6 +85,7 @@ public class FileReaderServiceBean implements FileReaderService {
                     .birthYear(record.getBirthYear())
                     .personalNumber(record.getPersonalNumber())
                     .phone(record.getPhone())
+                    .physicalAddress(record.getPhysicalAddress())
                     .build();
             personsDB1.edit(persona);
 
@@ -93,19 +94,20 @@ public class FileReaderServiceBean implements FileReaderService {
             if (person != null) {
                 log.info("we have a match !! : " + record.getPersonalNumber());
                 PersonContactEntity personContact = PersonContactEntity.builder()
-                        .contact(record.getName() + " " + record.getLastname())
+                        .contact(record.getName() + " " + record.getLastname() + " პ/ნ : " + record.getPersonalNumber())
                         .personId(person.getId())
                         .phone(record.getPhone())
-                        .contactInfo("დაბ წელი: " + record.getBirthYear())
+                        .physicalAddress(record.getPhysicalAddress())
+                        .contactInfo(record.getBirthYear())
                         .build();
 
                 personContactService.edit(personContact);
             }
             counter++;
-            log.info("current: " + counter);
             entitymanager.clear();
 
-//            personsDB1.edit(persona);
+//            log.info("current: " + counter);
+
 
 
 //            LoanEntity loan = loanService.get(record.getLoanId());
@@ -173,28 +175,7 @@ public class FileReaderServiceBean implements FileReaderService {
 //            loanEntity.setStartDate(record.getStartDate());
 //            loanEntity.setIncomeDate(record.getIncomeDate());
 
-            //ფეიმენთების შეტანა
-//            payment.setLoanId(record.getId());
-//            payment.setAmount(BigDecimal.valueOf(record.getAmount()));
-//            payment.setComment(record.getComment());
-//            payment.setDate(record.getDate());
-//
-//            payment.setPayed(true);
-//
-//
-//            MathContext mc = new MathContext(10);
-//
-//            BigDecimal paymentAmount = payment.getAmount();
-//            LoanEntity loan = loanService.get(record.getId());
-//            BigDecimal oldAmount = loan.getAmount();
-//
-//
-//            BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
-//
-//            loan.setAmount(newLoanAmount);
-//            loanService.edit(loan);
-//
-//            loanPaymentService.edit(payment);
+
         }
 
 

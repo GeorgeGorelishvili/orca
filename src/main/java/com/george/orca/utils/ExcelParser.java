@@ -99,12 +99,17 @@ public class ExcelParser {
             DataFormatter formatter = new DataFormatter(); //creating formatter using the default locale
             String personalNumber = formatter.formatCellValue(myrow.getCell(2));
 
-            rowDTO.setName(myrow.getCell(0).getStringCellValue());
-            rowDTO.setLastname(myrow.getCell(1).getStringCellValue());
-            rowDTO.setPersonalNumber(personalNumber);
-            rowDTO.setBirthYear(myrow.getCell(3).getStringCellValue());
-            rowDTO.setPhone(myrow.getCell(4).getStringCellValue());
+            Integer length = personalNumber.length();
+            if (personalNumber.length() > 7 && personalNumber.length() < 12) {
 
+                rowDTO.setName(formatter.formatCellValue(myrow.getCell(1)));
+                rowDTO.setLastname(formatter.formatCellValue(myrow.getCell(0)));
+                rowDTO.setPersonalNumber(personalNumber);
+                rowDTO.setPhysicalAddress(formatter.formatCellValue(myrow.getCell(4)));
+                rowDTO.setPhone(formatter.formatCellValue(myrow.getCell(3)));
+
+                rowData.add(rowDTO);
+            }
 //            long creditorOrganization = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
 //            rowDTO.setCreditorOrganizationId(creditorOrganization);
 
@@ -206,8 +211,6 @@ public class ExcelParser {
 //
 
 //            log.info("Current: " + rowData.size());
-            rowData.add(rowDTO);
-
         }
 
         return rowData;

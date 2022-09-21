@@ -18,10 +18,10 @@ public class Persons1Entity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Column(name = "FIRSTNAME", length = 150)
     private String firstname;
 
-    @Column(name = "LASTNAME", length = 50)
+    @Column(name = "LASTNAME", length = 150)
     private String lastname;
 
     @Column(name = "PERSONAL_NUMBER", length = 11)
@@ -30,10 +30,13 @@ public class Persons1Entity {
     @Column(name = "YEAR")
     private String birthYear;
 
-     @Column(name = "PHONE")
+    @Column(name = "PHONE")
     private String phone;
 
+    @Column(name = "physical_address")
+    private String physicalAddress;
 
-
+    @Column(name = "legal_address")
+    private String legalAddress;
 
 }

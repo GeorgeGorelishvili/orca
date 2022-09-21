@@ -10,7 +10,8 @@ import java.util.List;
 @Data
 public class ExcelRowDTO {
 
-   private String address;
+   private String legalAddress;
+   private String physicalAddress;
    private String name;
    private String lastname;
    private String birthYear;
