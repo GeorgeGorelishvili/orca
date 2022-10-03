@@ -91,7 +91,7 @@ public class LoanServiceBean implements LoanService {
             List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         } else {
-                loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
+            loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
             List<BigDecimal> totalAmount = loanSortingRepository.getSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));
         }
@@ -138,9 +138,9 @@ public class LoanServiceBean implements LoanService {
                 e.printStackTrace();
             }
         }
-            loanSearchQuery.setLoanEntities(loanSortingRepository.findArchiveLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
-            List<BigDecimal> totalAmount = loanSortingRepository.getArchiveSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
-            loanSearchQuery.setTotalAmount(totalAmount.get(0));
+        loanSearchQuery.setLoanEntities(loanSortingRepository.findArchiveLoanEntities(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
+        List<BigDecimal> totalAmount = loanSortingRepository.getArchiveSum(localId, creditor, debtor, debtorIdentificator, amount, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, archived, nullificationRequest);
+        loanSearchQuery.setTotalAmount(totalAmount.get(0));
 
         return loanSearchQuery;
     }

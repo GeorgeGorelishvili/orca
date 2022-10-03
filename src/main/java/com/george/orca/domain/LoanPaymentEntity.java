@@ -42,4 +42,7 @@ public class LoanPaymentEntity {
     @Column(name="comment", length = 10000)
     private String comment;
 
+    @Column(name="author")
+    private String author;
+
 }

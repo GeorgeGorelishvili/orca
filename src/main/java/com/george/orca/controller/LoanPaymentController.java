@@ -1,19 +1,39 @@
 package com.george.orca.controller;
 
-import com.george.orca.domain.CommentEntity;
+import com.george.orca.domain.EmployeeEntity;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.domain.LoanPaymentEntity;
+import com.george.orca.domain.UserEntity;
+import com.george.orca.dto.LoanPaymentsSearchQuery;
 import com.george.orca.repository.LoanPaymentRepository;
+import com.george.orca.repository.UserRepository;
 import com.george.orca.service.LoanPaymentService;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.george.orca.domain.EmployeeEntity;
+import com.george.orca.domain.LoanEntity;
+import com.george.orca.domain.UserEntity;
+import com.george.orca.dto.LoanSearchQuery;
+import com.george.orca.repository.LoanRepository;
+import com.george.orca.repository.LoanSortingRepository;
+import com.george.orca.repository.UserRepository;
+import com.george.orca.utils.TemplateUtil;
+//import jdk.incubator.vector.VectorOperators;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,17 +43,27 @@ public class LoanPaymentController {
 
     private final LoanPaymentService loanPaymentService;
     private final LoanService loanService;
-    private final LoanPaymentRepository loanPaymentRepository;
+    private final UserRepository userRepository;
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
     public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymentEntity) {
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity employee = currentUser.getEmployeeEntity();
+
+        String author = employee.getFirstName() + " " + employee.getLastName();
+        loanPaymentEntity.setAuthor(author);
+
+
         if (loanPaymentEntity.getDeniedPayment() == true) {
             loanPaymentService.edit(loanPaymentEntity);
         } else {
             loanPaymentEntity = loanPaymentService.edit(loanPaymentEntity);
-            loanPaymentRepository.save(loanPaymentEntity);
+            loanPaymentService.edit(loanPaymentEntity);
 
             MathContext mc = new MathContext(10);
 
@@ -65,6 +95,19 @@ public class LoanPaymentController {
     @CrossOrigin
     public List<LoanPaymentEntity> add(@RequestParam Long loanId) {
         return loanPaymentService.list(loanId);
+    }
+
+    @GetMapping("/getPagedPayments")
+    @CrossOrigin
+    public LoanPaymentsSearchQuery page(Integer start, Integer limit,
+                                        @RequestParam(required = false) String creditor,
+                                        @RequestParam(required = false) String debtor,
+                                        @RequestParam(required = false) String debtorIdentificator,
+                                        @RequestParam(required = false) BigDecimal amountStart,
+                                        @RequestParam(required = false) BigDecimal amountEnd,
+                                        @RequestParam(required = false) String dateStart,
+                                        @RequestParam(required = false) String dateEnd) {
+        return loanPaymentService.page(start, limit, creditor, debtor,debtorIdentificator, amountStart, amountEnd, dateStart, dateEnd);
     }
 
 
