@@ -18,12 +18,15 @@ public interface LoanPaymentService {
     LoanPaymentsSearchQuery page(Integer start,
                                  Integer limit,
                                  String creditor,
+                                 String id,
                                  String debtor,
                                  String debtorIdentificator,
+                                 String assignedAgent,
                                  BigDecimal amountStart,
                                  BigDecimal amountEnd,
                                  String dateStart,
                                  String dateEnd);
+
 
     List<LoanPaymentEntity> deniedList(Long id);
 

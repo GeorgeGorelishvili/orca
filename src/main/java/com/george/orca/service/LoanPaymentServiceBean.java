@@ -5,6 +5,7 @@ import com.george.orca.domain.LoanPaymentEntity;
 import com.george.orca.domain.UserEntity;
 import com.george.orca.dto.LoanPaymentsSearchQuery;
 import com.george.orca.repository.LoanPaymentRepository;
+import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.repository.PaymentSortingRepository;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.utils.TemplateUtil;
@@ -29,6 +30,7 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
 
     private final LoanPaymentRepository loanPaymentRepository;
     private final PaymentSortingRepository paymentSortingRepository;
+    private final LoanSortingRepository loanSortingRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -39,9 +41,9 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
 
     @Override
     public LoanPaymentEntity edit(LoanPaymentEntity entity) {
-        Date createDate = new Date();
-
-        entity.setDate(createDate);
+//        Date createDate = new Date();
+//
+//        entity.setDate(createDate);
 
         return loanPaymentRepository.save(entity);
     }
@@ -52,7 +54,7 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
     }
 
     @Override
-    public LoanPaymentsSearchQuery page(Integer start, Integer limit, String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, String dateStart, String dateEnd) {
+    public LoanPaymentsSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amountStart, BigDecimal amountEnd, String dateStart, String dateEnd) {
         Pageable paging = PageRequest.of(start, limit);
 
         LoanPaymentsSearchQuery loanPaymentsSearchQuery = new LoanPaymentsSearchQuery();
@@ -68,10 +70,14 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
             }
         }
 
-        loanPaymentsSearchQuery.setLoanPaymentEntities(paymentSortingRepository.getLoanPayments(paging, creditor, debtor, amountStart, amountEnd,formattedDateStart, formattedDateEnd));
-        List<BigDecimal> totalAmount = paymentSortingRepository.getLoanPaymentsSum(creditor, debtor, amountStart, amountEnd,formattedDateStart, formattedDateEnd);
+
+        loanPaymentsSearchQuery.setLoanEntities(loanSortingRepository.findEntitiesWithPayments(creditor, debtor, debtorIdentificator, amountStart, amountEnd, formattedDateStart, formattedDateEnd, assignedAgent, paging));
+
+        List<BigDecimal> totalAmount = loanSortingRepository.findEntitiesWithPaymentsSum(creditor, debtor, debtorIdentificator, amountStart, amountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
+        List<BigDecimal> totalCount = loanSortingRepository.findEntitiesWithPaymentsCount(creditor, debtor, debtorIdentificator, amountStart, amountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
 
         loanPaymentsSearchQuery.setTotalAmount(totalAmount.get(0));
+        loanPaymentsSearchQuery.setPaymentCount(totalCount.get(0));
 
 
         return loanPaymentsSearchQuery;

@@ -10,5 +10,6 @@ import java.math.BigDecimal;
 @Data
 public class LoanPaymentsSearchQuery {
      BigDecimal totalAmount;
-     Page<LoanPaymentEntity> loanPaymentEntities;
+     BigDecimal paymentCount;
+     Page<LoanEntity> loanEntities;
 }

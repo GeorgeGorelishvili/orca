@@ -99,15 +99,17 @@ public class LoanPaymentController {
 
     @GetMapping("/getPagedPayments")
     @CrossOrigin
-    public LoanPaymentsSearchQuery page(Integer start, Integer limit,
+    public LoanPaymentsSearchQuery page(Integer limit, Integer start,
+                                        @RequestParam(required = false) String id,
                                         @RequestParam(required = false) String creditor,
                                         @RequestParam(required = false) String debtor,
                                         @RequestParam(required = false) String debtorIdentificator,
+                                        @RequestParam(required = false) String assignedAgent,
                                         @RequestParam(required = false) BigDecimal amountStart,
                                         @RequestParam(required = false) BigDecimal amountEnd,
                                         @RequestParam(required = false) String dateStart,
                                         @RequestParam(required = false) String dateEnd) {
-        return loanPaymentService.page(start, limit, creditor, debtor,debtorIdentificator, amountStart, amountEnd, dateStart, dateEnd);
+        return loanPaymentService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd);
     }
 
 

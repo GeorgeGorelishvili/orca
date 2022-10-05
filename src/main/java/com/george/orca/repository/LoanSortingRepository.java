@@ -130,6 +130,57 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
+
+
+    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "WHERE " +
+            "size(l.loanPayments) > 0 AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    Page<LoanEntity> findEntitiesWithPayments(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Pageable paging);
+
+    @Query("SELECT SUM(lp.amount) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "WHERE " +
+            "size(l.loanPayments) > 0 AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> findEntitiesWithPaymentsSum(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+
+    @Query("SELECT count(lp.size) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "WHERE " +
+            "size(l.loanPayments) > 0 AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> findEntitiesWithPaymentsCount(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+
+
 }
 
 
