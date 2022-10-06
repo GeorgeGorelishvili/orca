@@ -132,7 +132,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
     List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 
 
-    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent FROM LoanEntity l " +
+    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent, l.id FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
@@ -141,12 +141,13 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
-            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findEntitiesWithPayments(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findEntitiesWithPayments(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Pageable paging);
 
     @Query("SELECT SUM(lp.amount) FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
@@ -157,12 +158,13 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
-            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> findEntitiesWithPaymentsSum(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+    List<BigDecimal> findEntitiesWithPaymentsSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
     @Query("SELECT count(lp.size) FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
@@ -173,12 +175,13 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
-            "(:amountStart IS NULL OR (l.amount >:amountStart AND l.amount < :amountEnd)) AND " +
+            "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> findEntitiesWithPaymentsCount(String creditor, String debtor, String debtorIdentificator, BigDecimal amountStart, BigDecimal amountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+    List<BigDecimal> findEntitiesWithPaymentsCount(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
 
 }

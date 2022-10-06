@@ -47,7 +47,6 @@ public class LoanServiceBean implements LoanService {
 
     @Override
     public LoanSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, String callDateStart, String callDateEnd, String promiseDateStart, String promiseDateEnd, Boolean nullificationRequest, Boolean archived) {
-        Long localId = null;
         LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
         Pageable paging = PageRequest.of(start, limit);
 
@@ -56,6 +55,8 @@ public class LoanServiceBean implements LoanService {
         Date formattedPromiseDateStart = null;
         Date formattedPromiseDateEnd = null;
 
+
+        Long localId = null;
         if (id != null) {
             localId = Long.valueOf(id);
         }

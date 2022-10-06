@@ -59,7 +59,7 @@ public class LoanPaymentController {
         loanPaymentEntity.setAuthor(author);
 
 
-        if (loanPaymentEntity.getDeniedPayment() == true) {
+        if (loanPaymentEntity.getDeniedPayment()) {
             loanPaymentService.edit(loanPaymentEntity);
         } else {
             loanPaymentEntity = loanPaymentService.edit(loanPaymentEntity);
@@ -105,8 +105,8 @@ public class LoanPaymentController {
                                         @RequestParam(required = false) String debtor,
                                         @RequestParam(required = false) String debtorIdentificator,
                                         @RequestParam(required = false) String assignedAgent,
-                                        @RequestParam(required = false) BigDecimal amountStart,
-                                        @RequestParam(required = false) BigDecimal amountEnd,
+                                        @RequestParam(required = false) Long amountStart,
+                                        @RequestParam(required = false) Long amountEnd,
                                         @RequestParam(required = false) String dateStart,
                                         @RequestParam(required = false) String dateEnd) {
         return loanPaymentService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd);

@@ -22,8 +22,8 @@ public interface LoanPaymentService {
                                  String debtor,
                                  String debtorIdentificator,
                                  String assignedAgent,
-                                 BigDecimal amountStart,
-                                 BigDecimal amountEnd,
+                                 Long amountStart,
+                                 Long amountEnd,
                                  String dateStart,
                                  String dateEnd);
 
