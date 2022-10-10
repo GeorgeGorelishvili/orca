@@ -48,7 +48,7 @@ public class LoanPaymentController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @CrossOrigin
-    public ResponseEntity<LoanPaymentEntity> add(@RequestBody LoanPaymentEntity loanPaymentEntity) {
+    public ResponseEntity<LoanEntity> add(@RequestBody LoanPaymentEntity loanPaymentEntity) {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,6 +57,7 @@ public class LoanPaymentController {
 
         String author = employee.getFirstName() + " " + employee.getLastName();
         loanPaymentEntity.setAuthor(author);
+        LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
 
 
         if (loanPaymentEntity.getDeniedPayment()) {
@@ -68,7 +69,6 @@ public class LoanPaymentController {
             MathContext mc = new MathContext(10);
 
             BigDecimal paymentAmount = loanPaymentEntity.getAmount();
-            LoanEntity loan = loanService.get(loanPaymentEntity.getLoanId());
             BigDecimal oldAmount = loan.getAmount();
 
 
@@ -81,7 +81,7 @@ public class LoanPaymentController {
             loanService.edit(loan);
         }
 
-        return ResponseEntity.ok(loanPaymentEntity);
+        return ResponseEntity.ok(loan);
     }
 
 
