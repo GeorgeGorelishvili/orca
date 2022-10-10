@@ -132,7 +132,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
     List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 
 
-    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent, l.id FROM LoanEntity l " +
+    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent, l FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
