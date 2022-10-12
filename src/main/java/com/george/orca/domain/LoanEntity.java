@@ -102,4 +102,8 @@ public class LoanEntity {
 
     @Column(name = "archive_status")
     private String archiveStatus;
+
+    @OneToOne
+    private AssignRequestEntity assignRequest;
+
 }
