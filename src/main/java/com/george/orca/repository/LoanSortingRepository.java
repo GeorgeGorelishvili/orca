@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,6 +19,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
+            "(l.assignRequest IS NULL) AND " +
             "l.nullified =:nullified AND " +
             "l.nullificationRequest =:nullificationRequest AND " +
             "l.archived =:archived AND " +
@@ -40,6 +40,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
+            "(l.assignRequest IS NULL) AND " +
             "l.nullified =:nullified AND " +
             "l.nullificationRequest =:nullificationRequest AND " +
             "l.archived =:archived AND " +
@@ -63,6 +64,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
+            "(l.assignRequest IS NULL) AND " +
             "l.nullified = :nullified AND l.archived = :archived AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -82,6 +84,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
+            "(l.assignRequest IS NULL) AND " +
             "l.nullified = :nullified AND l.archived = :archived AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -100,6 +103,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
+            "(l.assignRequest IS NULL) AND " +
             "(l.nullified = :nullified OR l.archived = :archived) AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -119,6 +123,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
+            "(l.assignRequest IS NULL) AND " +
             "(l.nullified = :nullified OR l.archived = :archived) AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -140,6 +145,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
+            "(l.assignRequest IS NULL) AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
             "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
@@ -157,6 +163,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
+            "(l.assignRequest IS NULL) AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
             "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
@@ -183,6 +190,48 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     List<BigDecimal> findEntitiesWithPaymentsCount(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
+
+    //new -=---=============================================================================================
+
+    @Query("SELECT l FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.assignRequest aR on l.assignRequest.id = aR.id  " +
+            "left join aR.reason r on aR.reason.id = r.id " +
+            "WHERE (1=1) AND " +
+            "(r.id = :assignRequestReasonId) AND " +
+            "l.nullified = :nullified AND l.archived = :archived AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:amount IS NULL OR l.amount = :amount) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    Page<LoanEntity> getAssignRequestLoans(Long localId, Long assignRequestReasonId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Boolean nullificationRequest, Boolean archived, Pageable paging);
+
+
+    @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.assignRequest aR on l.assignRequest.id = aR.id  " +
+            "left join aR.reason r on aR.reason.id = r.id " +
+            "WHERE (1=1) AND " +
+            "r.id = 1 AND " +
+            "l.assignRequest.reason.id = :assignRequestReasonId AND " +
+            "l.nullified = :nullified AND l.archived = :archived AND " +
+            "l.nullificationRequest = :nullificationRequest AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:amount IS NULL OR l.amount = :amount) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> getSumForAssignRequestLoans(Long localId, Long assignRequestReasonId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 
 }
 

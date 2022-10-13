@@ -3,33 +3,14 @@ package com.george.orca.controller;
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.dto.LoanSearchQuery;
-import com.george.orca.repository.UserRepository;
 import com.george.orca.service.*;
-import io.github.classgraph.Resource;
-import org.apache.tomcat.util.http.parser.Authorization;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -154,6 +135,22 @@ public class LoanController {
         boolean nullificationRequest = false;
         boolean archived = true;
         LoanSearchQuery loanSearchQuery = loanService.getArchive(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd, nullificationRequest, archived);
+        return ResponseEntity.ok(loanSearchQuery);
+    }
+
+    @RequestMapping(value = "assignRequest", method = RequestMethod.GET)
+    public ResponseEntity<LoanSearchQuery> getAssignRequestLoans(Integer limit, Integer start,
+                                                                 @RequestParam String assignRequestReason,
+                                                                 @RequestParam(required = false) String id,
+                                                                 @RequestParam(required = false) String creditor,
+                                                                 @RequestParam(required = false) String debtor,
+                                                                 @RequestParam(required = false) String debtorIdentificator,
+                                                                 @RequestParam(required = false) String assignedAgent,
+                                                                 @RequestParam(required = false) BigDecimal amount) {
+        Boolean nullificationRequest = false;
+        Boolean archived = false;
+        Boolean nullified = false;
+        LoanSearchQuery loanSearchQuery = loanService.getAssignRequestLoans(start, limit, id, assignRequestReason, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, nullificationRequest, archived);
         return ResponseEntity.ok(loanSearchQuery);
     }
 }

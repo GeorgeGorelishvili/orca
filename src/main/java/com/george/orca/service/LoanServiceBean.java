@@ -8,9 +8,7 @@ import com.george.orca.repository.LoanRepository;
 import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.utils.TemplateUtil;
-//import jdk.incubator.vector.VectorOperators;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -145,6 +142,32 @@ public class LoanServiceBean implements LoanService {
 
         return loanSearchQuery;
     }
+
+
+    @Override
+    public LoanSearchQuery getAssignRequestLoans(Integer start, Integer limit, String id, String assignRequestReason, String creditor, String debtor, String debtorIdentificator, String assignedAgent, BigDecimal amount, Boolean nullified, Boolean nullificationRequest, Boolean archived) {
+        LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
+        Pageable paging = PageRequest.of(start, limit);
+
+
+        Long localId = null;
+        if (id != null) {
+            localId = Long.valueOf(id);
+        }
+
+        Long assignRequestReasonId = null;
+        if (assignRequestReason != null) {
+            assignRequestReasonId = Long.valueOf(assignRequestReason);
+        }
+
+
+        loanSearchQuery.setLoanEntities(loanSortingRepository.getAssignRequestLoans(localId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest, paging));
+        List<BigDecimal> totalAmount = loanSortingRepository.getSumForAssignRequestLoans(localId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest);
+        loanSearchQuery.setTotalAmount(totalAmount.get(0));
+
+        return loanSearchQuery;
+    }
+
 
     @Override
     public void delete(Long loanId) {
