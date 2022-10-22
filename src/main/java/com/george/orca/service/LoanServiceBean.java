@@ -150,6 +150,15 @@ public class LoanServiceBean implements LoanService {
         Pageable paging = PageRequest.of(start, limit);
 
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
+        Long employeeId = currentEmployee.getId();
+
+        if (currentEmployee.getEmployeePosition().getId() > 7) {
+            employeeId = null;
+        }
+
         Long localId = null;
         if (id != null) {
             localId = Long.valueOf(id);
@@ -161,8 +170,8 @@ public class LoanServiceBean implements LoanService {
         }
 
 
-        loanSearchQuery.setLoanEntities(loanSortingRepository.getAssignRequestLoans(localId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest, paging));
-        List<BigDecimal> totalAmount = loanSortingRepository.getSumForAssignRequestLoans(localId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest);
+        loanSearchQuery.setLoanEntities(loanSortingRepository.getAssignRequestLoans(localId, employeeId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest, paging));
+        List<BigDecimal> totalAmount = loanSortingRepository.getSumForAssignRequestLoans(localId, employeeId, assignRequestReasonId, creditor, debtor, debtorIdentificator, amount, nullified, assignedAgent, archived, nullificationRequest);
         loanSearchQuery.setTotalAmount(totalAmount.get(0));
 
         return loanSearchQuery;
