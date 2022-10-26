@@ -4,6 +4,7 @@ import com.george.orca.domain.EmployeeEntity;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.domain.LoanPaymentEntity;
 import com.george.orca.domain.UserEntity;
+import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.dto.LoanPaymentsSearchQuery;
 import com.george.orca.repository.LoanPaymentRepository;
 import com.george.orca.repository.UserRepository;
@@ -138,7 +139,6 @@ public class LoanPaymentController {
 
         loan.setAmount(newLoanAmount);
         loanService.edit(loan);
-
         loanPaymentService.delete(id);
 
         return ResponseEntity.ok(loan);

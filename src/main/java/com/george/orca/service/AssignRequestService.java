@@ -8,6 +8,7 @@ import java.util.List;
 public interface AssignRequestService {
 
     AssignRequestEntity edit(AssignRequestEntity entity);
+    void delete(Long id);
 
 
 }

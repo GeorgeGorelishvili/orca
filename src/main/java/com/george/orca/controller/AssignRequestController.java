@@ -1,12 +1,14 @@
 package com.george.orca.controller;
 
 import com.george.orca.domain.*;
+import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.service.AssignRequestReasonsService;
 import com.george.orca.service.AssignRequestService;
 import com.george.orca.service.CommentService;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

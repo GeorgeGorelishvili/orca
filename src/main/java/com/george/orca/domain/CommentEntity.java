@@ -48,4 +48,6 @@ public class CommentEntity implements Serializable {
     @Column(name="VALUE")
     private BigDecimal value;
 
+    @OneToOne
+    private EmployeeEntity employee;
 }

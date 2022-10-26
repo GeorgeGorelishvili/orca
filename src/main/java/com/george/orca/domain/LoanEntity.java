@@ -106,4 +106,7 @@ public class LoanEntity {
     @OneToOne
     private AssignRequestEntity assignRequest;
 
+    @OneToMany
+    @JoinColumn(name = "LOAN_ID")
+    private List<LoanAgentHistoryEntity> loanAgentHistoryEntities;
 }

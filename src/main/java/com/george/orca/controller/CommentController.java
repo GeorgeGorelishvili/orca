@@ -4,6 +4,7 @@ import com.george.orca.domain.CommentEntity;
 import com.george.orca.domain.EmployeeEntity;
 import com.george.orca.domain.LoanEntity;
 import com.george.orca.domain.UserEntity;
+import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.service.CommentService;
 import com.george.orca.service.LoanService;
@@ -25,6 +26,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final UserRepository userRepository;
+
     private final LoanService loanService;
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -40,6 +42,8 @@ public class CommentController {
 
         String author = employee.getFirstName() + " " + employee.getLastName();
 
+
+        commentEntity.setEmployee(employee);
         commentEntity.setCreateDate(date);
         commentEntity.setAuthor(author);
 
@@ -53,7 +57,6 @@ public class CommentController {
             LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
             loanEntity.setPromiseDate(commentEntity.getPromiseDate());
             loanService.edit(loanEntity);
-
         }
         commentEntity = commentService.edit(commentEntity);
         return ResponseEntity.ok(commentEntity);

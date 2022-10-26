@@ -1,7 +1,10 @@
 package com.george.orca.service;
 
+import com.george.orca.domain.LoanAgentHistoryEntity;
 import com.george.orca.domain.LoanEntity;
+import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.dto.LoanSearchQuery;
+import com.george.orca.dto.ReassignLoansDTO;
 
 import java.math.BigDecimal;
 
@@ -9,7 +12,7 @@ public interface LoanService {
 
     LoanEntity get(Long id);
 
-    LoanEntity edit(LoanEntity entity);
+    LoanEntity edit(LoanEntity loan);
 
     LoanSearchQuery page(Integer start,
                          Integer limit,
@@ -55,6 +58,8 @@ public interface LoanService {
                                String promiseDateEnd,
                                Boolean nullificationRequest,
                                Boolean archived);
+
+    String loansToReassign(ReassignLoansDTO loans);
 
     void delete(Long id);
 }

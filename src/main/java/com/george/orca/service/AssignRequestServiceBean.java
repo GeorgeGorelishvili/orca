@@ -25,4 +25,9 @@ public class AssignRequestServiceBean implements AssignRequestService {
     public AssignRequestEntity edit(AssignRequestEntity entity) {
         return assignRequestEntity.save(entity);
     }
+
+    @Override
+    public void delete(Long id) {
+        assignRequestEntity.deleteById(id);
+    }
 }

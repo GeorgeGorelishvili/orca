@@ -1,9 +1,9 @@
 package com.george.orca.service;
 
-import com.george.orca.domain.EmployeeEntity;
-import com.george.orca.domain.LoanEntity;
-import com.george.orca.domain.UserEntity;
+import com.george.orca.domain.*;
+import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.dto.LoanSearchQuery;
+import com.george.orca.dto.ReassignLoansDTO;
 import com.george.orca.repository.LoanRepository;
 import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.repository.UserRepository;
@@ -177,6 +177,19 @@ public class LoanServiceBean implements LoanService {
         return loanSearchQuery;
     }
 
+    @Override
+    public String loansToReassign(ReassignLoansDTO loans) {
+        LoanSearchQuery loanSearchQuery = new LoanSearchQuery();
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
+        Long employeeId = currentEmployee.getId();
+
+
+        return "success";
+    }
 
     @Override
     public void delete(Long loanId) {
