@@ -19,7 +19,6 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "(l.assignRequest IS NULL) AND " +
             "l.nullified =:nullified AND " +
             "l.nullificationRequest =:nullificationRequest AND " +
             "l.archived =:archived AND " +
@@ -40,7 +39,6 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "WHERE l.assignedAgent = :currentUser AND " +
-            "(l.assignRequest IS NULL) AND " +
             "l.nullified =:nullified AND " +
             "l.nullificationRequest =:nullificationRequest AND " +
             "l.archived =:archived AND " +
@@ -64,7 +62,6 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "(l.assignRequest IS NULL) AND " +
             "l.nullified = :nullified AND l.archived = :archived AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
@@ -84,7 +81,6 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
             "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
             "WHERE (1=1) AND " +
-            "(l.assignRequest IS NULL) AND " +
             "l.nullified = :nullified AND l.archived = :archived AND " +
             "l.nullificationRequest = :nullificationRequest AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +

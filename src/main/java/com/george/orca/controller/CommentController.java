@@ -1,11 +1,10 @@
 package com.george.orca.controller;
 
-import com.george.orca.domain.CommentEntity;
-import com.george.orca.domain.EmployeeEntity;
-import com.george.orca.domain.LoanEntity;
-import com.george.orca.domain.UserEntity;
+import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
+import com.george.orca.service.AssignRequestReasonsService;
+import com.george.orca.service.AssignRequestService;
 import com.george.orca.service.CommentService;
 import com.george.orca.service.LoanService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,8 @@ public class CommentController {
     private final UserRepository userRepository;
 
     private final LoanService loanService;
+    private final AssignRequestService assignRequestService;
+    private final AssignRequestReasonsService assignRequestReasonsService;
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @CrossOrigin
@@ -53,9 +54,24 @@ public class CommentController {
             loanService.edit(loanEntity);
         }
 
-        if(commentEntity.getPromiseDate() != null){
+        if (commentEntity.getPromiseDate() != null) {
             LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
             loanEntity.setPromiseDate(commentEntity.getPromiseDate());
+            loanService.edit(loanEntity);
+        }
+        if (commentEntity.getAssignRequestReason() != null) {
+            LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
+            AssignRequestReasonsEntity assignRequestEntity = assignRequestReasonsService.get(commentEntity.getAssignRequestReason());
+            AssignRequestEntity assignRequest = AssignRequestEntity.builder()
+                    .loanId(commentEntity.getLoanId())
+                    .reason(assignRequestEntity)
+                    .comment(commentEntity.getComment())
+                    .date(date)
+                    .author(author)
+                    .build();
+            assignRequest = assignRequestService.edit(assignRequest);
+
+            loanEntity.setAssignRequest(assignRequest);
             loanService.edit(loanEntity);
         }
         commentEntity = commentService.edit(commentEntity);
