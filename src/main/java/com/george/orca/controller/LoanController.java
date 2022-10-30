@@ -153,8 +153,8 @@ public class LoanController {
     @RequestMapping(value = "archive", method = RequestMethod.GET)
     public ResponseEntity<LoanSearchQuery> archive(Integer limit, Integer start, @RequestParam(required = false) String id, @RequestParam(required = false) String creditor, @RequestParam(required = false) String debtor, @RequestParam(required = false) String debtorIdentificator, @RequestParam(required = false) String assignedAgent, @RequestParam(required = false) BigDecimal amount, @RequestParam(required = false) String callDateStart, @RequestParam(required = false) String callDateEnd, @RequestParam(required = false) String promiseDateStart, @RequestParam(required = false) String promiseDateEnd) {
         boolean nullified = true;
-        boolean nullificationRequest = false;
         boolean archived = true;
+        boolean nullificationRequest = false;
         LoanSearchQuery loanSearchQuery = loanService.getArchive(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd, nullificationRequest, archived);
         return ResponseEntity.ok(loanSearchQuery);
     }
@@ -183,26 +183,29 @@ public class LoanController {
 
 
             if (employee != null) {
-                LoanAgentHistoryEntity loanAgentHistoryEntity = LoanAgentHistoryEntity.builder()
-                        .date(new Date()).loanId(loan.getId())
-                        .employee(employeeService.get(loan.getAssignedAgent().getId()))
-                        .status("კრედიტ მენეჯერი").build();
-                loanAgentHistoryService.edit(loanAgentHistoryEntity);
+                if (loan.getAssignedAgent() != null) {
+                    LoanAgentHistoryEntity loanAgentHistoryEntity = LoanAgentHistoryEntity.builder()
+                            .date(new Date())
+                            .loanId(loan.getId())
+                            .employee(employeeService.get(loan.getAssignedAgent().getId()))
+                            .status("კრედიტ მენეჯერი").build();
+                    loanAgentHistoryService.edit(loanAgentHistoryEntity);
+                }
 
                 loan.setAssignRequest(null);
                 loan.setAssignedAgent(employee);
                 loanService.edit(loan);
 
             } else if (visitor != null) {
-
-                LoanAgentHistoryEntity loanAgentHistoryEntity = LoanAgentHistoryEntity
-                        .builder()
-                        .date(new Date())
-                        .loanId(loan.getId())
-                        .employee(employeeService.get(loan.getVisitor().getId()))
-                        .status("ვიზიტორი").build();
-
+                if (loan.getVisitor() != null) {
+                    LoanAgentHistoryEntity loanAgentHistoryEntity = LoanAgentHistoryEntity
+                            .builder()
+                            .date(new Date())
+                            .loanId(loan.getId())
+                            .employee(employeeService.get(loan.getVisitor().getId()))
+                            .status("ვიზიტორი").build();
                 loanAgentHistoryService.edit(loanAgentHistoryEntity);
+                }
 
                 loan.setAssignRequest(null);
                 loan.setVisitor(visitor);
