@@ -90,9 +90,11 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
 
         List<BigDecimal> totalAmount = loanSortingRepository.findEntitiesWithPaymentsSum(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
         List<BigDecimal> totalCount = loanSortingRepository.findEntitiesWithPaymentsCount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
+        List<BigDecimal> totalWithCheckCount = loanSortingRepository.findEntitiesWithPaymentsWithCheckAmount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
 
         loanPaymentsSearchQuery.setTotalAmount(totalAmount.get(0));
         loanPaymentsSearchQuery.setPaymentCount(totalCount.get(0));
+        loanPaymentsSearchQuery.setWithCheckAmount(totalWithCheckCount.get(0));
 
 
         return loanPaymentsSearchQuery;

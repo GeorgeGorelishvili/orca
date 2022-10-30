@@ -11,5 +11,6 @@ import java.math.BigDecimal;
 public class LoanPaymentsSearchQuery {
      BigDecimal totalAmount;
      BigDecimal paymentCount;
+     BigDecimal withCheckAmount;
      Page<LoanEntity> loanEntities;
 }
