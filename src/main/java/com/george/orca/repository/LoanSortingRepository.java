@@ -116,11 +116,10 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
-            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
-            "WHERE (1=1) AND " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id WHERE " +
             "(l.assignRequest IS NULL) AND " +
             "(l.nullified = :nullified OR l.archived = :archived) AND " +
-            "l.nullificationRequest = :nullificationRequest AND " +
+            "(l.nullificationRequest = :nullificationRequest) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +

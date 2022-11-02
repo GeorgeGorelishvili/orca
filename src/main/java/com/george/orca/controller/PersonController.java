@@ -40,8 +40,12 @@ public class PersonController {
 
         if (alreadyExistsPerson == null) {
             person = personService.edit(person);
+            PersonContactEntity personAsContact = new PersonContactEntity().builder()
+                    .contact(person.getFirstname() + "  " + person.getLastname()).phone(person.getPhone()).build();
 
-            for(Persons1Entity match : persons1Service.search(person.getPersonalNumber())){
+            personContactService.edit(personAsContact);
+
+            for (Persons1Entity match : persons1Service.search(person.getPersonalNumber())) {
                 PersonContactEntity personContact = PersonContactEntity.builder()
                         .contact(match.getFirstname() + " " + match.getLastname())
                         .personId(person.getId())

@@ -32,6 +32,11 @@ public class OrganizationController {
     public ResponseEntity<OrganizationEntity> add(@RequestBody OrganizationEntity organization) {
 
         OrganizationEntity addedOrg = organizationService.edit(organization);
+        OrganisationContactEntity organisationContactEntity = new OrganisationContactEntity()
+                .builder()
+                .contact(addedOrg.getOrgName())
+                .phone(addedOrg.getPhoneNumber()).build();
+        organisationContactService.edit(organisationContactEntity);
         return ResponseEntity.ok(addedOrg);
     }
 

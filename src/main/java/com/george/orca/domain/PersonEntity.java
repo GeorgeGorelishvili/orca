@@ -36,6 +36,9 @@ public class PersonEntity implements Serializable {
     @Column(name = "PHYSICAL_ADDRESS")
     private String physicalAddress;
 
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "JURIDICAL_PERSON")
     private Boolean juridicalPerson;
 
