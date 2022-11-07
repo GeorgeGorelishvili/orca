@@ -86,12 +86,12 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
         }
 
 
-        loanPaymentsSearchQuery.setLoanEntities(loanSortingRepository.findEntitiesWithPayments(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent,withCheck, paging));
+        loanPaymentsSearchQuery.setLoanEntities(loanSortingRepository.findEntitiesWithPayments(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, withCheck, paging));
 
-        List<BigDecimal> totalAmount = loanSortingRepository.findEntitiesWithPaymentsSum(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
-        List<BigDecimal> totalCount = loanSortingRepository.findEntitiesWithPaymentsCount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
-        List<BigDecimal> totalWithCheckCount = loanSortingRepository.findEntitiesWithPaymentsWithCheckAmount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
-        List<BigDecimal> totalPaidExtra = loanSortingRepository.findPaidExtra(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
+        List<BigDecimal> totalAmount = loanSortingRepository.findEntitiesWithPaymentsSum(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, withCheck);
+        List<BigDecimal> totalCount = loanSortingRepository.findEntitiesWithPaymentsCount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, withCheck);
+        List<BigDecimal> totalWithCheckCount = loanSortingRepository.findEntitiesWithPaymentsWithCheckAmount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, withCheck);
+        List<BigDecimal> totalPaidExtra = loanSortingRepository.findPaidExtra(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, withCheck);
 
         loanPaymentsSearchQuery.setTotalAmount(totalAmount.get(0));
         loanPaymentsSearchQuery.setPaymentCount(totalCount.get(0));
