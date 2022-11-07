@@ -41,5 +41,8 @@ public class PersonContactEntity {
      @Column(name = "phone")
     private String phone;
 
+    @Column(name = "e_mail")
+    private String mail;
+
 
 }

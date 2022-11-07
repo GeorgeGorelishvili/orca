@@ -200,7 +200,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     List<BigDecimal> findEntitiesWithPaymentsWithCheckAmount(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
-    @Query("SELECT SUM(l.paidExtra) FROM LoanEntity l " +
+
+    @Query("SELECT SUM(l.paidExtra) from LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
             "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
             "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +

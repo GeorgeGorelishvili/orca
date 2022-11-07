@@ -204,7 +204,7 @@ public class LoanController {
                             .loanId(loan.getId())
                             .employee(employeeService.get(loan.getVisitor().getId()))
                             .status("ვიზიტორი").build();
-                loanAgentHistoryService.edit(loanAgentHistoryEntity);
+                    loanAgentHistoryService.edit(loanAgentHistoryEntity);
                 }
 
                 loan.setAssignRequest(null);
@@ -216,4 +216,13 @@ public class LoanController {
         return ResponseEntity.ok("ok");
     }
 
+    @PostMapping("cancelAssignRequests")
+    public ResponseEntity<String> reassign(@RequestBody List<Long> loanIds) {
+        for (Long loanId : loanIds) {
+            LoanEntity loan = loanService.get(loanId);
+            loan.setAssignRequest(null);
+            loanService.edit(loan);
+        }
+        return ResponseEntity.ok("ok");
+    }
 }

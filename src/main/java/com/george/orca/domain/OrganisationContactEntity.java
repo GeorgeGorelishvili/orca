@@ -32,4 +32,13 @@ public class OrganisationContactEntity {
     @Column(name = "ORGANIZATION_ID")
     private Long organizationId;
 
+    @Column(name = "contact_legal_address")
+    private String legalAddress;
+
+    @Column(name = "contact_physical_address")
+    private String physicalAddress;
+
+    @Column(name = "e_mail")
+    private String mail;
+
 }
