@@ -1,16 +1,16 @@
 package com.george.orca.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "LOAN")
 @NoArgsConstructor
@@ -27,6 +27,9 @@ public class LoanEntity {
 
     @Column(name = "INITIAL_AMOUNT")
     private BigDecimal initialAmount;
+
+    @Transient
+    private BigDecimal fullAmount;
 
     @Column(name = "CREATE_DATE")
     private Date createDate;
@@ -109,4 +112,18 @@ public class LoanEntity {
     @OneToMany
     @JoinColumn(name = "LOAN_ID")
     private List<LoanAgentHistoryEntity> loanAgentHistoryEntities;
+
+    @Column(name="paid_extra")
+    private BigDecimal paidExtra;
+
+    public BigDecimal getFullAmount() {
+        BigDecimal totalAmount = new BigDecimal(0);
+
+        if (Objects.nonNull(loanPayments)) {
+            for (LoanPaymentEntity loanPayment : loanPayments) {
+                totalAmount.add(loanPayment.getAmount());
+            }
+        }
+        return totalAmount.add(amount);
+    }
 }

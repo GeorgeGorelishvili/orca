@@ -200,8 +200,25 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     List<BigDecimal> findEntitiesWithPaymentsWithCheckAmount(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
+    @Query("SELECT SUM(l.paidExtra) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left outer join l.loanPayments lp ON l.id = lp.loanId " +
+            "WHERE " +
+            "size(l.loanPayments) > 0 AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> findPaidExtra(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
 
-    //new -=---=============================================================================================
+
+    //assignRequests ===========================================================================================
 
     @Query("SELECT l FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +

@@ -12,5 +12,6 @@ public class LoanPaymentsSearchQuery {
      BigDecimal totalAmount;
      BigDecimal paymentCount;
      BigDecimal withCheckAmount;
+     BigDecimal totalExtraPaid;
      Page<LoanEntity> loanEntities;
 }

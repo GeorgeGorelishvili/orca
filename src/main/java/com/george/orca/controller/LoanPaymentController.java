@@ -75,10 +75,16 @@ public class LoanPaymentController {
 
             BigDecimal newLoanAmount = oldAmount.subtract(paymentAmount, mc);
 
-            loan.setAmount(newLoanAmount);
             if (newLoanAmount.compareTo(BigDecimal.ZERO) <= 0) {
                 loan.setNullificationRequest(true);
+                //ექსტრა გადახდილის დათვლა
+                loan.setPaidExtra(paymentAmount.subtract(oldAmount));
+                loan.setAmount(BigDecimal.valueOf(0));
+
+            } else {
+                loan.setAmount(newLoanAmount);
             }
+
             loanService.edit(loan);
         }
 
