@@ -115,8 +115,9 @@ public class LoanPaymentController {
                                         @RequestParam(required = false) Long amountStart,
                                         @RequestParam(required = false) Long amountEnd,
                                         @RequestParam(required = false) String dateStart,
-                                        @RequestParam(required = false) String dateEnd) {
-        return loanPaymentService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd);
+                                        @RequestParam(required = false) String dateEnd,
+                                        @RequestParam(required = false) Boolean withCheck) {
+        return loanPaymentService.page(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd, withCheck);
     }
 
 

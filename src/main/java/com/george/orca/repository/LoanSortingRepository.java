@@ -139,6 +139,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "WHERE " +
             "size(l.loanPayments) > 0 AND " +
+            "(:withCheck IS NULL OR lp.withCheck = :withCheck) AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
             "(:convertedAmountStart IS NULL OR (lp.amount >:convertedAmountStart AND lp.amount < :convertedAmountEnd)) AND " +
             "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
@@ -146,7 +147,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findEntitiesWithPayments(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Pageable paging);
+    Page<LoanEntity> findEntitiesWithPayments(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Boolean withCheck, Pageable paging);
 
     @Query("SELECT SUM(lp.amount) FROM LoanEntity l " +
             "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +

@@ -54,7 +54,7 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
     }
 
     @Override
-    public LoanPaymentsSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, Long amountStart, Long amountEnd, String dateStart, String dateEnd) {
+    public LoanPaymentsSearchQuery page(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, Long amountStart, Long amountEnd, String dateStart, String dateEnd, Boolean withCheck) {
         Long localId = null;
         BigDecimal convertedAmountStart = null;
         BigDecimal convertedAmountEnd = null;
@@ -86,7 +86,7 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
         }
 
 
-        loanPaymentsSearchQuery.setLoanEntities(loanSortingRepository.findEntitiesWithPayments(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, paging));
+        loanPaymentsSearchQuery.setLoanEntities(loanSortingRepository.findEntitiesWithPayments(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent,withCheck, paging));
 
         List<BigDecimal> totalAmount = loanSortingRepository.findEntitiesWithPaymentsSum(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
         List<BigDecimal> totalCount = loanSortingRepository.findEntitiesWithPaymentsCount(localId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);

@@ -25,7 +25,8 @@ public interface LoanPaymentService {
                                  Long amountStart,
                                  Long amountEnd,
                                  String dateStart,
-                                 String dateEnd);
+                                 String dateEnd,
+                                 Boolean withCheck);
 
 
     List<LoanPaymentEntity> deniedList(Long id);
