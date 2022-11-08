@@ -117,11 +117,13 @@ public class LoanController {
         List<AttachedFileEntity> attachedFileEntities = attachedFileService.list(loanEntity.getId());
         List<LoanPaymentEntity> payments = loanPaymentService.list(loanEntity.getId());
         List<LoanAgentHistoryEntity> assignHistory = loanAgentHistoryService.list(loanEntity.getId());
+        AssignRequestEntity assignRequest = loanService.get(loanEntity.getId()).getAssignRequest();
 
         loanEntity.setComments(comments);
         loanEntity.setAttachedFileEntities(attachedFileEntities);
         loanEntity.setLoanPayments(payments);
         loanEntity.setLoanAgentHistoryEntities(assignHistory);
+        loanEntity.setAssignRequest(assignRequest);
 
 
         loanEntity = loanService.edit(loanEntity);
