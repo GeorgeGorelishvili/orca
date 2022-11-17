@@ -153,11 +153,23 @@ public class LoanController {
 
 
     @RequestMapping(value = "archive", method = RequestMethod.GET)
-    public ResponseEntity<LoanSearchQuery> archive(Integer limit, Integer start, @RequestParam(required = false) String id, @RequestParam(required = false) String creditor, @RequestParam(required = false) String debtor, @RequestParam(required = false) String debtorIdentificator, @RequestParam(required = false) String assignedAgent, @RequestParam(required = false) BigDecimal amount, @RequestParam(required = false) String callDateStart, @RequestParam(required = false) String callDateEnd, @RequestParam(required = false) String promiseDateStart, @RequestParam(required = false) String promiseDateEnd) {
+    public ResponseEntity<LoanSearchQuery> archive(Integer limit,
+                                                   Integer start,
+                                                   @RequestParam(required = false) String id,
+                                                   @RequestParam(required = false) String creditor,
+                                                   @RequestParam(required = false) String debtor,
+                                                   @RequestParam(required = false) String debtorIdentificator,
+                                                   @RequestParam(required = false) String assignedAgent,
+                                                   @RequestParam(required = false) BigDecimal amount,
+                                                   @RequestParam(required = false) String callDateStart,
+                                                   @RequestParam(required = false) String callDateEnd,
+                                                   @RequestParam(required = false) String promiseDateStart,
+                                                   @RequestParam(required = false) String promiseDateEnd,
+                                                   @RequestParam(required = false) String status) {
         boolean nullified = true;
         boolean archived = true;
         boolean nullificationRequest = false;
-        LoanSearchQuery loanSearchQuery = loanService.getArchive(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd, nullificationRequest, archived);
+        LoanSearchQuery loanSearchQuery = loanService.getArchive(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amount, nullified, callDateStart, callDateEnd, promiseDateStart, promiseDateEnd, nullificationRequest, archived, status);
         return ResponseEntity.ok(loanSearchQuery);
     }
 

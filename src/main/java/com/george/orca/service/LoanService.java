@@ -57,7 +57,8 @@ public interface LoanService {
                                String promiseDateStart,
                                String promiseDateEnd,
                                Boolean nullificationRequest,
-                               Boolean archived);
+                               Boolean archived,
+                               String status);
 
     String loansToReassign(ReassignLoansDTO loans);
 

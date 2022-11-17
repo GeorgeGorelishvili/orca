@@ -102,6 +102,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(l.nullified = :nullified OR l.archived = :archived) AND " +
             "(l.nullificationRequest = :nullificationRequest) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:status IS NULL OR l.archiveStatus = :status) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
@@ -109,7 +110,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    Page<LoanEntity> findArchiveLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, Pageable paging);
+    Page<LoanEntity> findArchiveLoanEntities(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, String status,Pageable paging);
 
 
     @Query("SELECT SUM(l.amount) FROM LoanEntity l " +
@@ -121,6 +122,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(l.nullified = :nullified OR l.archived = :archived) AND " +
             "(l.nullificationRequest = :nullificationRequest) AND " +
             "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:status IS NULL OR l.archiveStatus = :status) AND " +
             "(:formattedCallDateStart IS NULL OR l.callDate BETWEEN :formattedCallDateStart AND :formattedCallDateEnd) AND " +
             "(:formattedPromiseDateStart IS NULL OR l.promiseDate BETWEEN :formattedPromiseDateStart AND :formattedPromiseDateEnd) AND " +
             "(:amount IS NULL OR l.amount = :amount) AND " +
@@ -128,7 +130,7 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
             "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
-    List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived);
+    List<BigDecimal> getArchiveSum(Long localId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, Date formattedCallDateStart, Date formattedCallDateEnd, Date formattedPromiseDateStart, Date formattedPromiseDateEnd, String assignedAgent, Boolean nullificationRequest, Boolean archived, String status);
 
 
     @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent, l FROM LoanEntity l " +
