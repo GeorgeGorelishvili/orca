@@ -1,10 +1,7 @@
 package com.george.orca.controller;
 
 import com.george.orca.domain.*;
-import com.george.orca.dto.ExcelRowDTO;
-import com.george.orca.dto.LoanEditDTO;
-import com.george.orca.dto.LoanSearchQuery;
-import com.george.orca.dto.ReassignLoansDTO;
+import com.george.orca.dto.*;
 import com.george.orca.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -234,6 +231,19 @@ public class LoanController {
     public ResponseEntity<String> reassign(@RequestBody List<Long> loanIds) {
         for (Long loanId : loanIds) {
             LoanEntity loan = loanService.get(loanId);
+            loan.setAssignRequest(null);
+            loanService.edit(loan);
+        }
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("moveAssignRequestsToArchive")
+    public ResponseEntity<String> moveAssignRequestsToArchive(@RequestBody AssignRequestToArchiveDTO assignRequestToArchiveDTO) {
+        for (Long loanId : assignRequestToArchiveDTO.getLoanIds()) {
+            LoanEntity loan = loanService.get(loanId);
+            loan.setArchiveStatus(assignRequestToArchiveDTO.getArchiveStatus());
+            loan.setArchiveReason(assignRequestToArchiveDTO.getArchiveReason());
+            loan.setArchived(true);
             loan.setAssignRequest(null);
             loanService.edit(loan);
         }
