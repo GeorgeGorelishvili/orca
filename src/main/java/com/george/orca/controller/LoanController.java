@@ -38,6 +38,7 @@ public class LoanController {
     public ResponseEntity<LoanEntity> get(@RequestParam(name = "id") Long loanId) {
         LoanEntity loanEntity = loanService.get(loanId);
         return ResponseEntity.ok(loanEntity);
+
     }
 
     @PostMapping("add")
@@ -249,4 +250,28 @@ public class LoanController {
         }
         return ResponseEntity.ok("ok");
     }
+
+    @PostMapping("returnNullifyingRequestsToAgent")
+    public ResponseEntity<String> returnNullifyingRequestsToAgent(@RequestBody List<Long> loanIds) {
+        for (Long loanId : loanIds) {
+            LoanEntity loan = loanService.get(loanId);
+            loan.setNullificationRequest(false);
+            loanService.edit(loan);
+        }
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("moveNullifyingRequestsToArchive")
+    public ResponseEntity<String> moveNullifyingRequestsToArchive(@RequestBody AssignRequestToArchiveDTO assignRequestToArchiveDTO) {
+        for (Long loanId : assignRequestToArchiveDTO.getLoanIds()) {
+            LoanEntity loan = loanService.get(loanId);
+            loan.setArchiveStatus(assignRequestToArchiveDTO.getArchiveStatus());
+            loan.setArchiveReason(assignRequestToArchiveDTO.getArchiveReason());
+            loan.setArchived(true);
+            loan.setNullificationRequest(false);
+            loanService.edit(loan);
+        }
+        return ResponseEntity.ok("ok");
+    }
+
 }
