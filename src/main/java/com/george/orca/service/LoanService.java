@@ -22,6 +22,8 @@ public interface LoanService {
                          String debtorIdentificator,
                          String assignedAgent,
                          BigDecimal amount,
+                         BigDecimal amountStart,
+                         BigDecimal amountEnd,
                          Boolean nullified,
                          String callDateStart,
                          String callDateEnd,

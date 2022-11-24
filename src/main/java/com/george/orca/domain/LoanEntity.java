@@ -113,8 +113,13 @@ public class LoanEntity {
     @JoinColumn(name = "LOAN_ID")
     private List<LoanAgentHistoryEntity> loanAgentHistoryEntities;
 
-    @Column(name="paid_extra")
+    @Column(name = "paid_extra")
     private BigDecimal paidExtra;
+
+    @OneToMany
+    @JoinColumn(name = "LOAN_ID")
+    private List<PromiseEntity> promises;
+
 
     public BigDecimal getFullAmount() {
         BigDecimal totalAmount = new BigDecimal(0);

@@ -3,10 +3,7 @@ package com.george.orca.controller;
 import com.george.orca.domain.*;
 import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
-import com.george.orca.service.AssignRequestReasonsService;
-import com.george.orca.service.AssignRequestService;
-import com.george.orca.service.CommentService;
-import com.george.orca.service.LoanService;
+import com.george.orca.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +25,7 @@ public class CommentController {
 
     private final LoanService loanService;
     private final AssignRequestService assignRequestService;
+    private final PromiseService promiseService;
     private final AssignRequestReasonsService assignRequestReasonsService;
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -57,6 +55,11 @@ public class CommentController {
         if (commentEntity.getPromiseDate() != null) {
             LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
             loanEntity.setPromiseDate(commentEntity.getPromiseDate());
+            PromiseEntity promiseEntity = new PromiseEntity().builder()
+                    .loanId(loanEntity.getId())
+                    .date(commentEntity.getPromiseDate())
+                    .author(author).build();
+            promiseService.edit(promiseEntity);
             loanService.edit(loanEntity);
         }
         if (commentEntity.getAssignRequestReason() != null) {
