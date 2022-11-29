@@ -4,6 +4,7 @@ import com.george.orca.domain.EmployeeEntity;
 import com.george.orca.domain.LoanPaymentEntity;
 import com.george.orca.domain.UserEntity;
 import com.george.orca.dto.LoanPaymentsSearchQuery;
+import com.george.orca.dto.LoanPromisesSearchQuery;
 import com.george.orca.repository.LoanPaymentRepository;
 import com.george.orca.repository.LoanSortingRepository;
 import com.george.orca.repository.PaymentSortingRepository;
@@ -100,6 +101,57 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
 
 
         return loanPaymentsSearchQuery;
+
+    }
+
+    public LoanPromisesSearchQuery getPromiseLoans(Integer start, Integer limit, String id, String creditor, String debtor, String debtorIdentificator, String assignedAgent, Long amountStart, Long amountEnd, String dateStart, String dateEnd, Boolean withCheck) {
+        Long localId = null, employeeId = null;
+        BigDecimal convertedAmountStart = null;
+        BigDecimal convertedAmountEnd = null;
+
+        if (id != null) {
+            localId = Long.valueOf(id);
+        }
+
+        if (amountStart != null) {
+            convertedAmountStart = BigDecimal.valueOf(amountStart);
+        }
+
+        if (amountEnd != null) {
+            convertedAmountEnd = BigDecimal.valueOf(amountEnd);
+        }
+        Pageable paging = PageRequest.of(start, limit);
+
+        LoanPromisesSearchQuery loanPromisesSearchQuery = new LoanPromisesSearchQuery();
+
+        Date formattedDateStart = null, formattedDateEnd = null;
+
+        if (!(dateStart == null) && !(dateEnd == null)) {
+            try {
+                formattedDateStart = new SimpleDateFormat("dd/MM/yyyy").parse(dateStart);
+                formattedDateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(dateEnd);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity currentEmployee = currentUser.getEmployeeEntity();
+        if (currentEmployee.getEmployeePosition().getId() < 8) {
+            employeeId = currentEmployee.getId();
+        }
+
+        loanPromisesSearchQuery.setLoanEntities(loanSortingRepository.findLoanPromises(localId, employeeId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, paging));
+
+        List<BigDecimal> totalAmount = loanSortingRepository.loanTotalAmountSum(localId, employeeId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
+        List<BigDecimal> totalPromise = loanSortingRepository.loanPromisesSum(localId, employeeId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent);
+
+        loanPromisesSearchQuery.setTotalAmount(totalAmount.get(0));
+        loanPromisesSearchQuery.setTotalPromiseAmount(totalPromise.get(0));
+
+
+        return loanPromisesSearchQuery;
 
     }
 

@@ -277,4 +277,21 @@ public class LoanController {
         return ResponseEntity.ok("ok");
     }
 
+    @GetMapping("/getPromiseLoans")
+    @CrossOrigin
+    public LoanPromisesSearchQuery getPromiseLoans(Integer limit, Integer start,
+                                        @RequestParam(required = false) String id,
+                                        @RequestParam(required = false) String creditor,
+                                        @RequestParam(required = false) String debtor,
+                                        @RequestParam(required = false) String debtorIdentificator,
+                                        @RequestParam(required = false) String assignedAgent,
+                                        @RequestParam(required = false) Long amountStart,
+                                        @RequestParam(required = false) Long amountEnd,
+                                        @RequestParam(required = false) String dateStart,
+                                        @RequestParam(required = false) String dateEnd,
+                                        @RequestParam(required = false) Boolean withCheck) {
+        return loanPaymentService.getPromiseLoans(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd, withCheck);
+    }
+
+
 }

@@ -278,6 +278,71 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
     List<BigDecimal> getSumForAssignRequestLoans(Long localId, Long employeeId, Long assignRequestReasonId, String creditor, String debtor, String debtorIdentificator, BigDecimal amount, Boolean nullified, String assignedAgent, Boolean nullificationRequest, Boolean archived);
 
+
+    //---------------------------------------------------------------------- Promise Grid
+
+    @Query("SELECT DISTINCT dp, do, co, size(lp), l.assignedAgent, l FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "left join l.comments c ON l.id = c.loanId " +
+            "WHERE " +
+            "(l.archived = false) AND " +
+            "(l.nullified = false) AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:convertedAmountStart IS NULL OR (c.value >:convertedAmountStart AND c.value < :convertedAmountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:employeeId IS NULL OR l.assignedAgent.id = :employeeId) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    Page<LoanEntity> findLoanPromises(Long localId, Long employeeId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent, Pageable paging);
+
+
+    @Query("SELECT sum(c.value) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "left join l.comments c ON l.id = c.loanId " +
+            "WHERE " +
+            "(l.archived = false) AND " +
+            "(l.nullified = false) AND " +
+            "(:employeeId IS NULL OR l.assignedAgent.id = :employeeId) AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:convertedAmountStart IS NULL OR (c.value >:convertedAmountStart AND c.value < :convertedAmountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> loanPromisesSum(Long localId, Long employeeId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+
+    @Query("SELECT DISTINCT sum(l.amount) FROM LoanEntity l " +
+            "left join l.creditorOrganization co ON l.creditorOrganization.id = co.id " +
+            "left join l.debtorOrganization do ON l.debtorOrganization.id = do.id " +
+            "left join l.assignedAgent aA ON l.assignedAgent.id = aA.id " +
+            "left join l.debtorPerson dp ON l.debtorPerson.id = dp.id " +
+            "left join l.loanPayments lp ON l.id = lp.loanId " +
+            "left join l.comments c ON l.id = c.loanId " +
+            "WHERE " +
+            "(l.archived = false) AND " +
+            "(l.nullified = false) AND " +
+            "(:employeeId IS NULL OR l.assignedAgent.id = :employeeId) AND " +
+            "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
+            "(:convertedAmountStart IS NULL OR (c.value >:convertedAmountStart AND c.value < :convertedAmountEnd)) AND " +
+            "(:creditor IS NULL OR co.orgName LIKE %:creditor%) AND " +
+            "(:assignedAgent IS NULL OR (CONCAT(aA.firstName,aA.lastName) LIKE %:assignedAgent%)) AND " +
+            "(:debtorIdentificator IS NULL OR (dp.personalNumber LIKE %:debtorIdentificator% OR do.cadastrialCode LIKE %:debtorIdentificator%)) AND " +
+            "(:localId IS NULL OR l.id = :localId) AND " +
+            "(:debtor IS NULL OR (CONCAT(dp.firstname,dp.lastname) LIKE %:debtor% OR do.orgName LIKE %:debtor%))")
+    List<BigDecimal> loanTotalAmountSum(Long localId, Long employeeId, String creditor, String debtor, String debtorIdentificator, BigDecimal convertedAmountStart, BigDecimal convertedAmountEnd, Date formattedDateStart, Date formattedDateEnd, String assignedAgent);
+
+
 }
 
 
