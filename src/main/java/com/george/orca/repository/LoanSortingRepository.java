@@ -289,6 +289,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "left join l.comments c ON l.id = c.loanId " +
             "WHERE " +
+            "(l.nullificationRequest = false) AND " +
+            "(l.promiseDate is not null) AND " +
             "(l.archived = false) AND " +
             "(l.nullified = false) AND " +
             "(:formattedDateStart IS NULL OR lp.date BETWEEN :formattedDateStart AND :formattedDateEnd) AND " +
@@ -310,6 +312,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "left join l.comments c ON l.id = c.loanId " +
             "WHERE " +
+            "(l.nullificationRequest = false) AND " +
+            "(l.promiseDate is not null) AND " +
             "(l.archived = false) AND " +
             "(l.nullified = false) AND " +
             "(:employeeId IS NULL OR l.assignedAgent.id = :employeeId) AND " +
@@ -330,6 +334,8 @@ public interface LoanSortingRepository extends PagingAndSortingRepository<LoanEn
             "left join l.loanPayments lp ON l.id = lp.loanId " +
             "left join l.comments c ON l.id = c.loanId " +
             "WHERE " +
+            "(l.promiseDate is not null) AND " +
+            "(l.nullificationRequest = false) AND " +
             "(l.archived = false) AND " +
             "(l.nullified = false) AND " +
             "(:employeeId IS NULL OR l.assignedAgent.id = :employeeId) AND " +
