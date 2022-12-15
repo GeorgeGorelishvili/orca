@@ -78,36 +78,34 @@ public class FileReaderServiceBean implements FileReaderService {
 
         for (ExcelRowDTO record : rowData) {
 
-
-            Persons1Entity persona = new Persons1Entity().builder()
-                    .firstname(record.getName())
-                    .lastname(record.getLastname())
-                    .birthYear(record.getBirthYear())
-                    .personalNumber(record.getPersonalNumber())
-                    .phone(record.getPhone())
-                    .physicalAddress(record.getPhysicalAddress())
-                    .build();
-            personsDB1.edit(persona);
-
-            PersonEntity person = personService.search(record.getPersonalNumber());
-
-            if (person != null) {
-                log.info("we have a match !! : " + record.getPersonalNumber());
-                PersonContactEntity personContact = PersonContactEntity.builder()
-                        .contact(record.getName() + " " + record.getLastname() + " პ/ნ : " + record.getPersonalNumber())
-                        .personId(person.getId())
-                        .phone(record.getPhone())
-                        .physicalAddress(record.getPhysicalAddress())
-                        .contactInfo(record.getBirthYear())
-                        .build();
-
-                personContactService.edit(personContact);
-            }
-            counter++;
-            entitymanager.clear();
+//
+//            Persons1Entity persona = new Persons1Entity().builder()
+//                    .firstname(record.getName())
+//                    .lastname(record.getLastname())
+//                    .birthYear(record.getBirthYear())
+//                    .personalNumber(record.getPersonalNumber())
+//                    .phone(record.getPhone())
+//                    .physicalAddress(record.getPhysicalAddress())
+//                    .build();
+//            personsDB1.edit(persona);
+//
+//            PersonEntity person = personService.search(record.getPersonalNumber());
+//
+//            if (person != null) {
+//                log.info("we have a match !! : " + record.getPersonalNumber());
+//                PersonContactEntity personContact = PersonContactEntity.builder()
+//                        .contact(record.getName() + " " + record.getLastname() + " პ/ნ : " + record.getPersonalNumber())
+//                        .personId(person.getId())
+//                        .phone(record.getPhone())
+//                        .physicalAddress(record.getPhysicalAddress())
+//                        .contactInfo(record.getBirthYear())
+//                        .build();
+//
+//                personContactService.edit(personContact);
+//            }
+//            counter++;
 
 //            log.info("current: " + counter);
-
 
 
 //            LoanEntity loan = loanService.get(record.getLoanId());
@@ -147,12 +145,7 @@ public class FileReaderServiceBean implements FileReaderService {
 //
 //            organizationRepository.save(orgEntity);
 //
-//            LoanEntity loanEntity = new LoanEntity();
-//
-//            loanEntity.setAmount(record.getAmount());
-//            loanEntity.setInitialAmount(record.getAmount());
-//            loanEntity.setIncomeDate(record.getIncomeDate());
-//            loanEntity.setStartDate(record.getStartDate());
+
 //
 ////            Long personId = personEntity.getId();
 //
@@ -161,19 +154,37 @@ public class FileReaderServiceBean implements FileReaderService {
 //            loanEntity.setDebtorOrganization(orgEntity);
 //            loanEntity.setCreditorOrganization(creditor);
 //
-//            loanService.edit(loanEntity);
 
 //
 //debtor
-//            long creditorOrganization = 7;
-//
-//            OrganizationEntity creditorOrg = new OrganizationEntity();
-//            creditorOrg =  organizationService.get(creditorOrganization);
-//
-//            loanEntity.setCreditorOrganization(creditorOrg);
+            long creditorOrganization = 2633162;
+            LoanEntity loanEntity = new LoanEntity();
+
+            loanEntity.setAmount(record.getAmount());
+            loanEntity.setInitialAmount(record.getAmount());
+            loanEntity.setIncomeDate(record.getIncomeDate());
+            loanEntity.setStartDate(record.getStartDate());
+
+
+            OrganizationEntity debtorOrg = new OrganizationEntity().builder()
+                    .orgName(record.getOrgName())
+                    .cadastrialCode(record.getIdCode())
+                    .build();
+
+            debtorOrg = organizationService.edit(debtorOrg);
+
+            OrganizationEntity creditorOrg = new OrganizationEntity();
+            creditorOrg = organizationService.get(creditorOrganization);
+
+            loanEntity.setCreditorOrganization(creditorOrg);
+            loanEntity.setDebtorOrganization(debtorOrg);
 //            loanEntity.setId(record.getLoanId());
-//            loanEntity.setStartDate(record.getStartDate());
-//            loanEntity.setIncomeDate(record.getIncomeDate());
+            loanEntity.setStartDate(record.getStartDate());
+            loanEntity.setIncomeDate(record.getIncomeDate());
+
+            loanService.edit(loanEntity);
+
+//            entitymanager.clear();
 
 
         }

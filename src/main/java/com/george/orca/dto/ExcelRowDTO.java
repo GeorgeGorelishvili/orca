@@ -10,18 +10,22 @@ import java.util.List;
 @Data
 public class ExcelRowDTO {
 
-   private String legalAddress;
-   private String physicalAddress;
-   private String name;
-   private String lastname;
-   private String birthYear;
-   private String phone;
-   private String personalNumber;
-   
-//   private String orgName;
+//   private String legalAddress;
+//   private String physicalAddress;
+//   private String name;
+//   private String lastname;
+//   private String birthYear;
+//   private String phone;
+//   private String personalNumber;
+//
+   private String orgName;
 //   private String orgLegalAddress;
 //   private String orgPhysicalAddress;
-//   private String idCode;
+   private String idCode;
+   private BigDecimal initialAmount;
+   private BigDecimal amount;
+   private Date startDate;
+   private Date incomeDate;
 //   private String director;
 //   private String accountant;
 //   private String responsiblePerson;
