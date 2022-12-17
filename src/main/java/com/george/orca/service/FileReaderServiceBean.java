@@ -89,12 +89,12 @@ public class FileReaderServiceBean implements FileReaderService {
 //                    .build();
 //            personsDB1.edit(persona);
 //
-//            PersonEntity person = personService.search(record.getPersonalNumber());
 //
+//            PersonEntity person = personService.search(record.getIdCode());
 //            if (person != null) {
-//                log.info("we have a match !! : " + record.getPersonalNumber());
+//                log.info("we have a match !! : " + record.getIdCode());
 //                PersonContactEntity personContact = PersonContactEntity.builder()
-//                        .contact(record.getName() + " " + record.getLastname() + " პ/ნ : " + record.getPersonalNumber())
+//                        .contact(record.getFirstname() + " " + record.getLastname() + " პ/ნ : " + record.getIdCode())
 //                        .personId(person.getId())
 //                        .phone(record.getPhone())
 //                        .physicalAddress(record.getPhysicalAddress())
@@ -165,19 +165,25 @@ public class FileReaderServiceBean implements FileReaderService {
             loanEntity.setIncomeDate(record.getIncomeDate());
             loanEntity.setStartDate(record.getStartDate());
 
+            PersonEntity person = personService.search(record.getIdCode());
+            if (person != null) {
+                log.info("we have a match !! : " + record.getIdCode());
+                loanEntity.setDebtorPerson(person);
+            } else {
+                PersonEntity debtor = new PersonEntity().builder()
+                        .personalNumber(record.getIdCode())
+                        .firstname(record.getFirstname())
+                        .lastname(record.getLastname())
+                        .build();
+                debtor = personService.edit(debtor);
+                loanEntity.setDebtorPerson(debtor);
+            }
 
-            OrganizationEntity debtorOrg = new OrganizationEntity().builder()
-                    .orgName(record.getOrgName())
-                    .cadastrialCode(record.getIdCode())
-                    .build();
 
-            debtorOrg = organizationService.edit(debtorOrg);
-
-            OrganizationEntity creditorOrg = new OrganizationEntity();
+            OrganizationEntity creditorOrg;
             creditorOrg = organizationService.get(creditorOrganization);
 
             loanEntity.setCreditorOrganization(creditorOrg);
-            loanEntity.setDebtorOrganization(debtorOrg);
 //            loanEntity.setId(record.getLoanId());
             loanEntity.setStartDate(record.getStartDate());
             loanEntity.setIncomeDate(record.getIncomeDate());
