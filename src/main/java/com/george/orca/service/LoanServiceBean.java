@@ -92,6 +92,14 @@ public class LoanServiceBean implements LoanService {
         }
 
         if (currentEmployee.getEmployeePosition().getId() == 1) {
+//            if (Objects.isNull(callDateStart) && Objects.isNull(callDateEnd)) {
+//                Date yesterday = new Date(System.currentTimeMillis() - 20 * 60 * 60 * 1000);
+//                yesterday.setHours(0);
+//                Date tomorrow = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+//
+//                formattedCallDateStart = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+//                formattedCallDateEnd = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+//            }
             loanSearchQuery.setLoanEntities(loanSortingRepository.findLoanEntitiesByAssignedAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, amountStart, amountEnd, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived, paging));
             List<BigDecimal> totalAmount = loanSortingRepository.getSumForAgent(currentEmployee, localId, creditor, debtor, debtorIdentificator, amount, amountStart, amountEnd, nullified, formattedCallDateStart, formattedCallDateEnd, formattedPromiseDateStart, formattedPromiseDateEnd, assignedAgent, nullificationRequest, archived);
             loanSearchQuery.setTotalAmount(totalAmount.get(0));

@@ -5,6 +5,7 @@ import com.george.orca.dto.LoanEditDTO;
 import com.george.orca.repository.UserRepository;
 import com.george.orca.service.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("comment")
@@ -38,6 +40,11 @@ public class CommentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity currentUser = userRepository.findByUsername(authentication.getName());
         EmployeeEntity employee = currentUser.getEmployeeEntity();
+
+        if (Objects.isNull(employee)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST).body(commentEntity);
+        }
 
         String author = employee.getFirstName() + " " + employee.getLastName();
 
