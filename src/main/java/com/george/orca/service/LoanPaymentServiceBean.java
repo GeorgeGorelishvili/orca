@@ -194,7 +194,7 @@ public class LoanPaymentServiceBean implements LoanPaymentService {
             employeeId = currentEmployee.getId();
         }
 
-        loansWithoutCallDateQueryDTO.setLoanEntities(loanSortingRepository.findLoansWithoutCallDate(localId, employeeId, creditor, debtor, debtorIdentificator, convertedAmountStart, convertedAmountEnd, formattedDateStart, formattedDateEnd, assignedAgent, paging));
+        loansWithoutCallDateQueryDTO.setLoanEntities(loanSortingRepository.findLoansWithoutCallDate(localId, employeeId, creditor, debtor, debtorIdentificator, formattedDateStart, formattedDateEnd, assignedAgent, paging));
 
         List<BigDecimal> totalAmount = loanSortingRepository.findLoansWithoutCallDateSum(localId, employeeId, creditor, debtor, debtorIdentificator, formattedDateStart, formattedDateEnd, assignedAgent);
 
