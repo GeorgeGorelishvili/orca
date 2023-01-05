@@ -293,5 +293,21 @@ public class LoanController {
         return loanPaymentService.getPromiseLoans(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd, withCheck);
     }
 
+    @GetMapping("/getLoansWithoutCallDate")
+    @CrossOrigin
+    public LoansWithoutCallDateQueryDTO getLoansWithoutCallDate(Integer limit, Integer start,
+                                                   @RequestParam(required = false) String id,
+                                                   @RequestParam(required = false) String creditor,
+                                                   @RequestParam(required = false) String debtor,
+                                                   @RequestParam(required = false) String debtorIdentificator,
+                                                   @RequestParam(required = false) String assignedAgent,
+                                                   @RequestParam(required = false) Long amountStart,
+                                                   @RequestParam(required = false) Long amountEnd,
+                                                   @RequestParam(required = false) String dateStart,
+                                                   @RequestParam(required = false) String dateEnd,
+                                                   @RequestParam(required = false) Boolean withCheck) {
+        return loanPaymentService.getLoansWithoutCallDate(start, limit, id, creditor, debtor, debtorIdentificator, assignedAgent, amountStart, amountEnd, dateStart, dateEnd, withCheck);
+    }
+
 
 }

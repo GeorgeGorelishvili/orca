@@ -61,6 +61,7 @@ public class CommentController {
 
         if (commentEntity.getPromiseDate() != null) {
             LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
+            loanEntity.setPromiseAmount(commentEntity.getValue());
             loanEntity.setPromiseDate(commentEntity.getPromiseDate());
             PromiseEntity promiseEntity = new PromiseEntity().builder()
                     .loanId(loanEntity.getId())

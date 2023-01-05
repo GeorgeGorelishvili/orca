@@ -25,6 +25,9 @@ public class LoanEntity {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
+    @Column(name = "promise_amount")
+    private BigDecimal promiseAmount;
+
     @Column(name = "INITIAL_AMOUNT")
     private BigDecimal initialAmount;
 
