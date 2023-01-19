@@ -92,12 +92,33 @@ public class CommentController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @CrossOrigin
-    public CommentEntity edit(@RequestBody CommentEntity commentEntity) {
+    public ResponseEntity<CommentEntity> edit(@RequestBody CommentEntity commentEntity) {
         Date date = new Date();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity currentUser = userRepository.findByUsername(authentication.getName());
+        EmployeeEntity employee = currentUser.getEmployeeEntity();
+
+        if (Objects.isNull(employee)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST).body(commentEntity);
+        }
+
+        String author = employee.getFirstName() + " " + employee.getLastName();
 
         commentEntity.setCreateDate(date);
-        return commentService.edit(commentEntity);
+        if (commentEntity.getPromiseDate() != null) {
+            LoanEntity loanEntity = loanService.get(commentEntity.getLoanId());
+            loanEntity.setPromiseAmount(commentEntity.getValue());
+            loanEntity.setPromiseDate(commentEntity.getPromiseDate());
+            PromiseEntity promiseEntity = new PromiseEntity().builder()
+                    .loanId(loanEntity.getId())
+                    .date(commentEntity.getPromiseDate())
+                    .author(author).build();
+            promiseService.edit(promiseEntity);
+            loanService.edit(loanEntity);
+        }
+        return ResponseEntity.ok(commentService.edit(commentEntity));
     }
 
     @GetMapping("get")
