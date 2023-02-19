@@ -98,13 +98,13 @@ public class ExcelParser {
             ExcelRowDTO rowDTO = new ExcelRowDTO();
 
             DataFormatter formatter = new DataFormatter(); //creating formatter using the default locale
-            String personalNumber = formatter.formatCellValue(myrow.getCell(2));
+//            String personalNumber = formatter.formatCellValue(myrow.getCell(2));
 
-            Integer length = personalNumber.length();
+//            Integer length = personalNumber.length();
 
-            rowDTO.setFirstname(formatter.formatCellValue(myrow.getCell(0)));
-            rowDTO.setLastname(formatter.formatCellValue(myrow.getCell(1)));
-            rowDTO.setIdCode(personalNumber);
+//            rowDTO.setFirstname(formatter.formatCellValue(myrow.getCell(0)));
+//            rowDTO.setLastname(formatter.formatCellValue(myrow.getCell(1)));
+//            rowDTO.setIdCode(personalNumber);
 //                rowDTO.setPhysicalAddress(formatter.formatCellValue(myrow.getCell(4)));
 //                rowDTO.setPhone(formatter.formatCellValue(myrow.getCell(3)));
 
@@ -116,27 +116,28 @@ public class ExcelParser {
 //            rowDTO.setLoanId(loanId);
 
             //მისამართები
-//            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
-//            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
+            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
             // პირადი ნომერი
             // ს/კ
 //            DataFormatter formatter = new DataFormatter();
-//            String name = formatter.formatCellValue(myrow.getCell(1));
+            String name = formatter.formatCellValue(myrow.getCell(0));
 //
-//            rowDTO.setOrgName(name);
+            rowDTO.setOrgName(name);
 //
-//            String cadCode = formatter.formatCellValue(myrow.getCell(2));
+            String cadCode = formatter.formatCellValue(myrow.getCell(1));
 //
-//            rowDTO.setCadastrialCode(cadCode);
+            rowDTO.setIdCode(cadCode);
 //
 //
-//            String cont1 = formatter.formatCellValue(myrow.getCell(4));
-//            String cont2 = formatter.formatCellValue(myrow.getCell(5));
+            String cont1 = formatter.formatCellValue(myrow.getCell(4));
+            String mail = formatter.formatCellValue(myrow.getCell(5));
 //
-//            rowDTO.setContact(cont1 + " - " + cont2);
+            rowDTO.setContact(cont1);
+            rowDTO.setEmail(mail);
 
             //ნუმერიკი ბიგინტში
 
@@ -149,8 +150,8 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-            String startDate = formatter.formatCellValue(myrow.getCell(4));
-            String incomeDate = formatter.formatCellValue(myrow.getCell(5));
+            String startDate = formatter.formatCellValue(myrow.getCell(8));
+            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
 
 
             Date convertedIncomeDate;
@@ -167,19 +168,19 @@ public class ExcelParser {
             rowDTO.setStartDate(convertedStartDate);
 ////
 ////
-            String amountToConvert = formatter.formatCellValue(myrow.getCell(3));
+            String amountToConvert = formatter.formatCellValue(myrow.getCell(2));
             BigDecimal amountToBigDecimal = new BigDecimal(amountToConvert);
             rowDTO.setAmount(amountToBigDecimal);
 
-//            try {
+            try {
 //                //  Block of code to try to write to cell
-//                rowDTO.setPhone(myrow.getCell(5).getStringCellValue());
-//            }
-//            catch(Exception e) {
-//
-//                //  Block of code to handle errors and crate cell and write to it
-//                rowDTO.setPhone(" ");
-//            }
+                rowDTO.setPhone(myrow.getCell(3).getStringCellValue());
+            }
+            catch(Exception e) {
+
+                //  Block of code to handle errors and crate cell and write to it
+                rowDTO.setPhone(" ");
+            }
 
 
 //            DataFormatter formatter = new DataFormatter();

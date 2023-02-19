@@ -10,17 +10,18 @@ import java.util.List;
 @Data
 public class ExcelRowDTO {
 
-//   private String legalAddress;
-//   private String physicalAddress;
-//   private String name;
+   private String legalAddress;
+   private String physicalAddress;
+   private String email;
+   private String contact;
 //   private String lastname;
 //   private String birthYear;
-//   private String phone;
+   private String phone;
 //   private String personalNumber;
 //
    private String orgName;
-   private String firstname;
-   private String lastname;
+//   private String firstname;
+//   private String lastname;
 //   private String orgLegalAddress;
 //   private String orgPhysicalAddress;
    private String idCode;
@@ -35,8 +36,6 @@ public class ExcelRowDTO {
 
 
 //   private Long loanId;
-//   private String contact;
-
    //ხზ
 //   private Long creditorOrganizationId;
 
