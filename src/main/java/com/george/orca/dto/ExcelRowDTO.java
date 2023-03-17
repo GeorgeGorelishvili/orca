@@ -17,11 +17,11 @@ public class ExcelRowDTO {
 //   private String lastname;
 //   private String birthYear;
    private String phone;
-//   private String personalNumber;
+   private String personalNumber;
 //
-   private String orgName;
-//   private String firstname;
-//   private String lastname;
+//   private String orgName;
+   private String firstname;
+   private String lastname;
 //   private String orgLegalAddress;
 //   private String orgPhysicalAddress;
    private String idCode;

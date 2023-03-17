@@ -116,7 +116,7 @@ public class ExcelParser {
 //            rowDTO.setLoanId(loanId);
 
             //მისამართები
-            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(4).getStringCellValue());
 //            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 
 
@@ -126,14 +126,15 @@ public class ExcelParser {
 //            DataFormatter formatter = new DataFormatter();
             String name = formatter.formatCellValue(myrow.getCell(0));
 //
-            rowDTO.setOrgName(name);
+            rowDTO.setFirstname(name);
+            rowDTO.setLastname(" ");
 //
-            String cadCode = formatter.formatCellValue(myrow.getCell(1));
+            String id = formatter.formatCellValue(myrow.getCell(1));
 //
-            rowDTO.setIdCode(cadCode);
+            rowDTO.setIdCode(id);
 //
 //
-            String cont1 = formatter.formatCellValue(myrow.getCell(3));
+                String cont1 = formatter.formatCellValue(myrow.getCell(3));
 //            String mail = formatter.formatCellValue(myrow.getCell(5));
 //
             rowDTO.setContact(cont1);
@@ -150,8 +151,8 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-            String startDate = formatter.formatCellValue(myrow.getCell(6));
-            String incomeDate = formatter.formatCellValue(myrow.getCell(7));
+            String startDate = formatter.formatCellValue(myrow.getCell(5));
+            String incomeDate = formatter.formatCellValue(myrow.getCell(6));
 
 
             Date convertedIncomeDate;
