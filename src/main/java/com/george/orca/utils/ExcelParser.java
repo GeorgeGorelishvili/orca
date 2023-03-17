@@ -112,12 +112,12 @@ public class ExcelParser {
 //            long creditorOrganization = new Double(myrow.getCell(0).getNumericCellValue()).longValue();
 //            rowDTO.setCreditorOrganizationId(creditorOrganization);
 
-//
+//pho
 //            rowDTO.setLoanId(loanId);
 
             //მისამართები
-            rowDTO.setLegalAddress(myrow.getCell(6).getStringCellValue());
-            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
+            rowDTO.setLegalAddress(myrow.getCell(5).getStringCellValue());
+//            rowDTO.setPhysicalAddress(myrow.getCell(7).getStringCellValue());
 
 
             //ნებისმიერი ცვლადი სტრინგჰში
@@ -133,11 +133,11 @@ public class ExcelParser {
             rowDTO.setIdCode(cadCode);
 //
 //
-            String cont1 = formatter.formatCellValue(myrow.getCell(4));
-            String mail = formatter.formatCellValue(myrow.getCell(5));
+            String cont1 = formatter.formatCellValue(myrow.getCell(3));
+//            String mail = formatter.formatCellValue(myrow.getCell(5));
 //
             rowDTO.setContact(cont1);
-            rowDTO.setEmail(mail);
+//            rowDTO.setEmail(mail);
 
             //ნუმერიკი ბიგინტში
 
@@ -150,8 +150,8 @@ public class ExcelParser {
             // 5 შემოსვლის
             // 6 დაწყების
 
-            String startDate = formatter.formatCellValue(myrow.getCell(8));
-            String incomeDate = formatter.formatCellValue(myrow.getCell(9));
+            String startDate = formatter.formatCellValue(myrow.getCell(6));
+            String incomeDate = formatter.formatCellValue(myrow.getCell(7));
 
 
             Date convertedIncomeDate;
@@ -174,7 +174,7 @@ public class ExcelParser {
 
             try {
 //                //  Block of code to try to write to cell
-                rowDTO.setPhone(myrow.getCell(3).getStringCellValue());
+                rowDTO.setPhone(myrow.getCell(4).getStringCellValue());
             }
             catch(Exception e) {
 

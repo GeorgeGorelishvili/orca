@@ -157,7 +157,7 @@ public class FileReaderServiceBean implements FileReaderService {
 
 //
 //debtor
-            long creditorOrganization = 2633162;
+            long creditorOrganization = 7;
             LoanEntity loanEntity = new LoanEntity();
 
 
